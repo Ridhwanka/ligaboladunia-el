@@ -163,13 +163,14 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
       <div id="capture-header" class="capture-header-branding">
         <h2 style="font-family: 'Bebas Neue', cursive; font-size: 22px; color: var(--gold2); letter-spacing: 0.5px;">LIGA BOLA DUNIA - EL</h2>
         <p style="font-size: 10px; color: var(--gold);">UPDATE KLASEMEN PREDIKSI TERBARU</p>
+        <div id="capture-date" style="font-size: 10px; color: var(--gold);"></div>
       </div>
 
       <div id="pred-standings"></div>
 
       <div id="capture-footer" class="capture-footer-branding">
         <div>Generasi Otomatis • Sistem Integrasi GSheet</div>
-        <div style="font-weight: 700; color: var(--gold2); letter-spacing: 0.5px;">@growthfeeds.id</div>
+        <div style="font-weight: 700; color: var(--gold2); letter-spacing: 0.5px;">TEMPAT PROMO SPONSOR</div>
       </div>
     </div>
 
@@ -519,8 +520,18 @@ function downloadKlasemenGambar() {
   const targetArea = document.getElementById('capture-area-klasemen');
   const headerBranding = document.getElementById('capture-header');
   const footerBranding = document.getElementById('capture-footer');
+  const dateBranding = document.getElementById('capture-date'); // Ambil elemen tanggal
 
   if (!targetArea) return;
+
+  // Mendapatkan tanggal hari ini dengan format Indonesia (Contoh: 16 Juni 2026)
+  const opsiTanggal = { year: 'numeric', month: 'long', day: 'numeric' };
+  const tanggalHariIni = new Date().toLocaleDateString('id-ID', opsiTanggal);
+  
+  // Masukkan tanggal ke dalam footer sebelum di-render menjadi gambar
+  if (dateBranding) {
+    dateBranding.innerText = tanggalHariIni;
+  }
 
   // Tampilkan sementara header dan footer khusus visual gambar sebelum dicapture
   if (headerBranding) headerBranding.style.display = 'block';
@@ -541,7 +552,7 @@ function downloadKlasemenGambar() {
     const dataURL = canvas.toDataURL('image/png');
     const triggerLink = document.createElement('a');
     triggerLink.href = dataURL;
-    triggerLink.download = 'Klasemen_Liga_Bola_Dunia_EL.png';
+    triggerLink.download = `Klasemen_EL_${tanggalHariIni.replace(/ /g, '_')}.png`; // Nama file juga dinamis menggunakan tanggal
     document.body.appendChild(triggerLink);
     triggerLink.click();
     document.body.removeChild(triggerLink);
