@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>WC 2026 — Prediction League</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root {
   --bg:       #060D18;
@@ -22,6 +23,8 @@
   --win-bg:   rgba(46,125,50,.15);
   --win-text: #A5D6A7;
   --loss-text:#EF9A9A;
+  --wa-green: #25D366;
+  --emerald:  #10B981;
 }
 *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -54,7 +57,31 @@ body {
 
 .sec-title { font-family: 'Bebas Neue', cursive; font-size: 18px; letter-spacing: 1px; color: var(--gold2); margin: 12px 0 10px; padding-left: 8px; border-left: 3px solid var(--gold); }
 
-/* RESPONSIVE TABLES & CARDS */
+/* Pembungkus area tangkapan screenshot agar hasilnya rapi dan proporsional */
+.capture-wrapper {
+  padding: 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #060D18 0%, #0B1929 100%);
+  border: 1px solid rgba(201,168,76, 0.15);
+}
+.capture-header-branding {
+  display: none;
+  text-align: center;
+  margin-bottom: 12px;
+  border-bottom: 1px dashed rgba(201,168,76, 0.2);
+  padding-bottom: 8px;
+}
+.capture-footer-branding {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 9px;
+  color: var(--muted);
+  border-top: 1px dashed rgba(201,168,76, 0.2);
+  padding-top: 8px;
+}
+
 .s-table { width: 100%; border-collapse: collapse; font-size: 12px; background: rgba(11,25,41,0.4); border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
 .s-table th { background: rgba(21,40,64,0.7); padding: 10px 4px; font-size: 9px; font-weight: 700; color: var(--muted); text-transform: uppercase; }
 .s-table td { padding: 11px 4px; text-align: center; border-bottom: 1px solid rgba(255,255,255,.03); }
@@ -80,14 +107,14 @@ body {
 .mc-team.away { justify-content: flex-end; }
 .mc-score { font-family: 'Bebas Neue', cursive; font-size: 20px; letter-spacing: 0.5px; color: var(--white); }
 
-/* GAYA TERBARU DUA KOLOM PENDUKUNG */
 .mc-picks-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(201,168,76,0.08); border-top: 1px solid rgba(255,255,255,0.02); }
 .mc-pick-column { padding: 6px 8px; display: flex; flex-direction: column; gap: 4px; background: rgba(4,9,17,0.2); }
 .mc-pick-column:first-child { border-right: 1px solid rgba(201,168,76,0.1); }
 .column-title { font-size: 9px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 2px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pk-badge { padding: 3px 6px; border-radius: 4px; background: var(--s2); border: 1px solid var(--border); display: flex; align-items: center; gap: 4px; font-size: 10px; }
 
-/* MODAL PANEL ADMIN (POPUP MOBILE) */
+.mc-quick-pick-zone { background: rgba(201,168,76,0.05); padding: 8px; border-top: 1px dashed rgba(201,168,76,0.2); display: flex; gap: 6px; align-items: center; }
+
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4,9,17,0.85); backdrop-filter: blur(8px); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
 .modal-content { background: var(--s1); border-top: 2px solid var(--gold); border-radius: 16px 16px 0 0; width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto; padding: 16px; position: relative; animation: slideUp 0.25s ease-out; }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
@@ -101,10 +128,12 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
 .btn { padding: 8px 12px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
 .btn-gold { background: var(--gold); color: #060D18; }
 .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--white); }
+.btn-image-download { background: var(--emerald); color: #fff; font-weight: bold; width: 100%; margin-top: 10px; padding: 10px; border-radius: 6px; font-size: 12px; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); transition: background 0.2s; }
+.btn-image-download:active { background: #059669; }
 .chip-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
 .chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; background: var(--s2); border: 1px solid var(--border); border-radius: 4px; font-size: 10px; }
 .chip-del { background: none; border: none; color: var(--muted); cursor: pointer; font-weight: 700; margin-left: 2px; }
-.alert { padding: 6px 10px; border-radius: 6px; font-size: 11px; margin-bottom: 10px; background: rgba(201,168,76,0.1); border: 1px solid var(--gold); color: var(--gold2); }
+.alert { padding: 6px 10px; border-radius: 6px; font-size: 11px; margin-bottom: 10px; background: rgba(46,125,50,0.2); border: 1px solid var(--win-text); color: var(--win-text); text-align: center; }
 </style>
 </head>
 <body>
@@ -117,7 +146,7 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
       <span class="h-sub">Tempat Seru-Seruan Bersama</span>
     </div>
   </div>
-  <button class="admin-trigger-btn" onclick="openAdminModal()" title="Buka Panel Admin">⚙️</button>
+  <!-- <button class="admin-trigger-btn" onclick="openAdminModal()" title="Buka Panel Admin">⚙️</button> -->
 </header>
 
 <nav class="tabs">
@@ -127,13 +156,26 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
 </nav>
 
 <main class="content">
-  <!-- TAB 1: KLASEMEN LIGA -->
   <div id="tab-klasemen" class="tab-pane active">
     <div class="sec-title">🏆 Klasemen Liga Bola Dunia-EL</div>
-    <div id="pred-standings"></div>
+    
+    <div id="capture-area-klasemen" class="capture-wrapper">
+      <div id="capture-header" class="capture-header-branding">
+        <h2 style="font-family: 'Bebas Neue', cursive; font-size: 22px; color: var(--gold2); letter-spacing: 0.5px;">LIGA BOLA DUNIA - EL</h2>
+        <p style="font-size: 10px; color: var(--gold);">UPDATE KLASEMEN PREDIKSI TERBARU</p>
+      </div>
+
+      <div id="pred-standings"></div>
+
+      <div id="capture-footer" class="capture-footer-branding">
+        <div>Generasi Otomatis • Sistem Integrasi GSheet</div>
+        <div style="font-weight: 700; color: var(--gold2); letter-spacing: 0.5px;">@growthfeeds.id</div>
+      </div>
+    </div>
+
+    <div id="wa-share-standings-zone"></div>
   </div>
 
-  <!-- TAB 2: JADWAL KRONOLOGIS -->
   <div id="tab-pertandingan" class="tab-pane">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
       <div class="sec-title" style="margin:0;">⚽ Jadwal Pertandingan</div>
@@ -147,24 +189,37 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
         </select>
       </div>
     </div>
+
+    <div style="display:flex; background:var(--s2); border:1px solid var(--border); border-radius:6px; padding:3px; margin-bottom:10px; gap:4px;">
+      <button id="subtab-upcoming" onclick="switchMatchSubTab('upcoming')" style="flex:1; border:none; background:var(--gold); color:var(--bg); font-weight:600; font-size:11px; padding:8px 0; border-radius:4px; cursor:pointer; transition:all 0.2s;">
+        ⏳ UPCOMING / LIVE
+      </button>
+      <button id="subtab-finished" onclick="switchMatchSubTab('finished')" style="flex:1; border:none; background:transparent; color:var(--muted); font-weight:600; font-size:11px; padding:8px 0; border-radius:4px; cursor:pointer; transition:all 0.2s;">
+        ✓ FINISHED
+      </button>
+    </div>
+
+    <div id="front-user-selector-zone" style="margin-bottom:15px; background:rgba(21,40,64,0.4); border:1px solid var(--border); padding:8px; border-radius:6px; display:flex; align-items:center; gap:8px;">
+      <span style="font-size:11px; color:var(--gold2); font-weight:600; white-space:nowrap;">👤 Isi Pilihan Sebagai:</span>
+      <select id="front-sel-participant" onchange="renderMatches()" style="padding:4px 8px; height:30px; font-size:11px;"></select>
+    </div>
+
+    <div id="front-alert" class="alert" style="display:none;"></div>
     <div id="matches-container"></div>
   </div>
 
-  <!-- TAB 3: KLASEMEN GRUP REAL WORLD CUP -->
   <div id="tab-grup" class="tab-pane">
     <div class="sec-title">🌐 Klasemen Fase Grup</div>
     <div class="grid-groups" id="wc-groups-container"></div>
   </div>
 </main>
 
-<!-- POPUP MODAL CONTROL PANEL ADMIN -->
 <div id="admin-modal" class="modal-overlay" onclick="closeAdminModalOnBackdrop(event)">
   <div class="modal-content">
     <button class="modal-close-btn" onclick="closeAdminModal()">&times;</button>
     <div class="sec-title" style="margin-top:0; color:var(--gold);">⚙️ Kontrol Panel Admin</div>
     <div id="admin-alert"></div>
 
-    <!-- Kelola Anggota -->
     <div class="admin-box">
       <h3>👤 Kelola Anggota Liga</h3>
       <div class="form-row">
@@ -176,9 +231,8 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
       <div class="chip-list" id="chip-list"></div>
     </div>
 
-    <!-- Input Pilihan Peserta -->
     <div class="admin-box">
-      <h3>📝 Input Pilihan Tim Kontestan</h3>
+      <h3>📝 Input Pilihan Tim Kontestan (Admin Mode)</h3>
       <div class="form-row">
         <div class="form-col">
           <select id="sel-participant" onchange="renderPickForm()"></select>
@@ -188,7 +242,6 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
       <button class="btn btn-gold" style="margin-top:8px; width:100%" onclick="savePicks()">💾 Simpan Pilihan Tim</button>
     </div>
 
-    <!-- Sinkronisasi GSheet & Wikipedia -->
     <div class="admin-box">
       <h3>🔗 Cloud Sync & Wikipedia Scraper</h3>
       <div style="display:flex; flex-direction:column; gap:6px">
@@ -220,78 +273,78 @@ function getFlag(name) {
 }
 
 const BASE_MATCHES = [
-  {id:'A1',gr:'A',md:1,date:'11 Jun',t1:'Mexico',t2:'South Africa',s1:null,s2:null,done:false},
-  {id:'A2',gr:'A',md:1,date:'11 Jun',t1:'South Korea',t2:'Czechia',s1:null,s2:null,done:false},
-  {id:'B1',gr:'B',md:1,date:'12 Jun',t1:'Canada',t2:'Bosnia & Herz.',s1:null,s2:null,done:false},
-  {id:'B2',gr:'B',md:1,date:'12 Jun',t1:'Qatar',t2:'Switzerland',s1:null,s2:null,done:false},
-  {id:'C1',gr:'C',md:1,date:'13 Jun',t1:'Brazil',t2:'Morocco',s1:null,s2:null,done:false},
-  {id:'C2',gr:'C',md:1,date:'13 Jun',t1:'Haiti',t2:'Scotland',s1:null,s2:null,done:false},
-  {id:'D1',gr:'D',md:1,date:'13 Jun',t1:'USA',t2:'Paraguay',s1:null,s2:null,done:false},
-  {id:'D2',gr:'D',md:1,date:'14 Jun',t1:'Australia',t2:'Türkiye',s1:null,s2:null,done:false},
-  {id:'E1',gr:'E',md:1,date:'14 Jun',t1:'Germany',t2:'Curaçao',s1:null,s2:null,done:false},
-  {id:'E2',gr:'E',md:1,date:'15 Jun',t1:'Ivory Coast',t2:'Ecuador',s1:null,s2:null,done:false},
-  {id:'F1',gr:'F',md:1,date:'15 Jun',t1:'Japan',t2:'Netherlands',s1:null,s2:null,done:false},
-  {id:'F2',gr:'F',md:1,date:'15 Jun',t1:'Sweden',t2:'Tunisia',s1:null,s2:null,done:false},
-  {id:'G1',gr:'G',md:1,date:'16 Jun',t1:'Belgium',t2:'Egypt',s1:null,s2:null,done:false},
-  {id:'G2',gr:'G',md:1,date:'16 Jun',t1:'Iran',t2:'New Zealand',s1:null,s2:null,done:false},
-  {id:'H1',gr:'H',md:1,date:'16 Jun',t1:'Spain',t2:'Cape Verde',s1:null,s2:null,done:false},
-  {id:'H2',gr:'H',md:1,date:'16 Jun',t1:'Uruguay',t2:'Saudi Arabia',s1:null,s2:null,done:false},
-  {id:'I1',gr:'I',md:1,date:'17 Jun',t1:'France',t2:'Senegal',s1:null,s2:null,done:false},
-  {id:'I2',gr:'I',md:1,date:'17 Jun',t1:'Iraq',t2:'Norway',s1:null,s2:null,done:false},
-  {id:'J1',gr:'J',md:1,date:'17 Jun',t1:'Argentina',t2:'Algeria',s1:null,s2:null,done:false},
-  {id:'J2',gr:'J',md:1,date:'17 Jun',t1:'Austria',t2:'Jordan',s1:null,s2:null,done:false},
-  {id:'L1',gr:'L',md:1,date:'18 Jun',t1:'England',t2:'Croatia',s1:null,s2:null,done:false},
-  {id:'L2',gr:'L',md:1,date:'18 Jun',t1:'Ghana',t2:'Panama',s1:null,s2:null,done:false},
-  {id:'K3',gr:'K',md:2,date:'18 Jun',t1:'Portugal',t2:'DR Congo',s1:null,s2:null,done:false},
-  {id:'K4',gr:'K',md:2,date:'18 Jun',t1:'Colombia',t2:'Uzbekistan',s1:null,s2:null,done:false},
-  {id:'A4',gr:'A',md:2,date:'18 Jun',t1:'South Africa',t2:'Czechia',s1:null,s2:null,done:false},
-  {id:'A3',gr:'A',md:2,date:'19 Jun',t1:'Mexico',t2:'South Korea',s1:null,s2:null,done:false},
-  {id:'B4',gr:'B',md:2,date:'19 Jun',t1:'Bosnia & Herz.',t2:'Switzerland',s1:null,s2:null,done:false},
-  {id:'B3',gr:'B',md:2,date:'19 Jun',t1:'Canada',t2:'Qatar',s1:null,s2:null,done:false},
-  {id:'D3',gr:'D',md:2,date:'20 Jun',t1:'USA',t2:'Australia',s1:null,s2:null,done:false},
-  {id:'C3',gr:'C',md:2,date:'20 Jun',t1:'Brazil',t2:'Haiti',s1:null,s2:null,done:false},
-  {id:'C4',gr:'C',md:2,date:'20 Jun',t1:'Morocco',t2:'Scotland',s1:null,s2:null,done:false},
-  {id:'D4',gr:'D',md:2,date:'20 Jun',t1:'Paraguay',t2:'Türkiye',s1:null,s2:null,done:false},
-  {id:'F6',gr:'F',md:3,date:'21 Jun',t1:'Netherlands',t2:'Sweden',s1:null,s2:null,done:false},
-  {id:'E3',gr:'E',md:2,date:'21 Jun',t1:'Germany',t2:'Ivory Coast',s1:null,s2:null,done:false},
-  {id:'E4',gr:'E',md:2,date:'21 Jun',t1:'Curaçao',t2:'Ecuador',s1:null,s2:null,done:false},
-  {id:'F5',gr:'F',md:3,date:'21 Jun',t1:'Japan',t2:'Tunisia',s1:null,s2:null,done:false},
-  {id:'H5',gr:'H',md:3,date:'21 Jun',t1:'Spain',t2:'Saudi Arabia',s1:null,s2:null,done:false},
-  {id:'G3',gr:'G',md:2,date:'22 Jun',t1:'Belgium',t2:'Iran',s1:null,s2:null,done:false},
-  {id:'H6',gr:'H',md:3,date:'22 Jun',t1:'Cape Verde',t2:'Uruguay',s1:null,s2:null,done:false},
-  {id:'G4',gr:'G',md:2,date:'22 Jun',t1:'Egypt',t2:'New Zealand',s1:null,s2:null,done:false},
-  {id:'J3',gr:'J',md:2,date:'23 Jun',t1:'Argentina',t2:'Austria',s1:null,s2:null,done:false},
-  {id:'I3',gr:'I',md:2,date:'23 Jun',t1:'France',t2:'Iraq',s1:null,s2:null,done:false},
-  {id:'I4',gr:'I',md:2,date:'23 Jun',t1:'Senegal',t2:'Norway',s1:null,s2:null,done:false},
-  {id:'J4',gr:'J',md:2,date:'23 Jun',t1:'Algeria',t2:'Jordan',s1:null,s2:null,done:false},
-  {id:'K5',gr:'K',md:3,date:'24 Jun',t1:'Portugal',t2:'Uzbekistan',s1:null,s2:null,done:false},
-  {id:'K6',gr:'K',md:3,date:'24 Jun',t1:'Colombia',t2:'DR Congo',s1:null,s2:null,done:false},
-  {id:'L3',gr:'L',md:2,date:'24 Jun',t1:'England',t2:'Ghana',s1:null,s2:null,done:false},
-  {id:'L4',gr:'L',md:2,date:'24 Jun',t1:'Croatia',t2:'Panama',s1:null,s2:null,done:false},
-  {id:'B5',gr:'B',md:3,date:'25 Jun',t1:'Canada',t2:'Switzerland',s1:null,s2:null,done:false},
-  {id:'B6',gr:'B',md:3,date:'25 Jun',t1:'Bosnia & Herz.',t2:'Qatar',s1:null,s2:null,done:false},
-  {id:'C5',gr:'C',md:3,date:'25 Jun',t1:'Brazil',t2:'Scotland',s1:null,s2:null,done:false},
-  {id:'C6',gr:'C',md:3,date:'25 Jun',t1:'Morocco',t2:'Haiti',s1:null,s2:null,done:false},
-  {id:'A5',gr:'A',md:3,date:'25 Jun',t1:'Mexico',t2:'Czechia',s1:null,s2:null,done:false},
-  {id:'A6',gr:'A',md:3,date:'25 Jun',t1:'South Africa',t2:'South Korea',s1:null,s2:null,done:false},
-  {id:'E5',gr:'E',md:3,date:'26 Jun',t1:'Germany',t2:'Ecuador',s1:null,s2:null,done:false},
-  {id:'E6',gr:'E',md:3,date:'26 Jun',t1:'Curaçao',t2:'Ivory Coast',s1:null,s2:null,done:false},
-  {id:'F3',gr:'F',md:2,date:'26 Jun',t1:'Japan',t2:'Sweden',s1:null,s2:null,done:false},
-  {id:'F4',gr:'F',md:2,date:'26 Jun',t1:'Netherlands',t2:'Tunisia',s1:null,s2:null,done:false},
-  {id:'D5',gr:'D',md:3,date:'26 Jun',t1:'USA',t2:'Türkiye',s1:null,s2:null,done:false},
-  {id:'D6',gr:'D',md:3,date:'26 Jun',t1:'Paraguay',t2:'Australia',s1:null,s2:null,done:false},
-  {id:'I5',gr:'I',md:3,date:'27 Jun',t1:'France',t2:'Norway',s1:null,s2:null,done:false},
-  {id:'I6',gr:'I',md:3,date:'27 Jun',t1:'Senegal',t2:'Iraq',s1:null,s2:null,done:false},
-  {id:'H3',gr:'H',md:2,date:'27 Jun',t1:'Spain',t2:'Uruguay',s1:null,s2:null,done:false},
-  {id:'H4',gr:'H',md:2,date:'27 Jun',t1:'Cape Verde',t2:'Saudi Arabia',s1:null,s2:null,done:false},
-  {id:'G5',gr:'G',md:3,date:'27 Jun',t1:'Belgium',t2:'New Zealand',s1:null,s2:null,done:false},
-  {id:'G6',gr:'G',md:3,date:'27 Jun',t1:'Egypt',t2:'Iran',s1:null,s2:null,done:false},
-  {id:'L5',gr:'L',md:3,date:'28 Jun',t1:'England',t2:'Panama',s1:null,s2:null,done:false},
-  {id:'L6',gr:'L',md:3,date:'28 Jun',t1:'Croatia',t2:'Ghana',s1:null,s2:null,done:false},
-  {id:'K1',gr:'K',md:1,date:'28 Jun',t1:'Portugal',t2:'Colombia',s1:null,s2:null,done:false},
-  {id:'K2',gr:'K',md:1,date:'28 Jun',t1:'DR Congo',t2:'Uzbekistan',s1:null,s2:null,done:false},
-  {id:'J5',gr:'J',md:3,date:'28 Jun',t1:'Argentina',t2:'Jordan',s1:null,s2:null,done:false},
-  {id:'J6',gr:'J',md:3,date:'28 Jun',t1:'Algeria',t2:'Austria',s1:null,s2:null,done:false}
+  {id:'A1',gr:'A',md:1,date:'12 Jun',time:'2026-06-12T06:00:00',t1:'Mexico',t2:'South Africa',s1:null,s2:null,done:true},
+  {id:'A2',gr:'A',md:1,date:'12 Jun',time:'2026-06-12T06:59:00',t1:'South Korea',t2:'Czechia',s1:null,s2:null,done:true},
+  {id:'B1',gr:'B',md:1,date:'13 Jun',time:'2026-06-13T05:00:00',t1:'Canada',t2:'Bosnia & Herz.',s1:null,s2:null,done:true},
+  {id:'B2',gr:'B',md:1,date:'13 Jun',time:'2026-06-13T06:30:00',t1:'Qatar',t2:'Switzerland',s1:null,s2:null,done:true},
+  {id:'C1',gr:'C',md:1,date:'14 Jun',time:'2026-06-14T04:00:00',t1:'Brazil',t2:'Morocco',s1:null,s2:null,done:true},
+  {id:'C2',gr:'C',md:1,date:'14 Jun',time:'2026-06-14T06:00:00',t1:'Haiti',t2:'Scotland',s1:null,s2:null,done:true},
+  {id:'D1',gr:'D',md:1,date:'14 Jun',time:'2026-06-14T06:59:00',t1:'USA',t2:'Paraguay',s1:null,s2:null,done:true},
+  {id:'D2',gr:'D',md:1,date:'15 Jun',time:'2026-06-15T04:00:00',t1:'Australia',t2:'Türkiye',s1:null,s2:null,done:true},
+  {id:'E1',gr:'E',md:1,date:'15 Jun',time:'2026-06-15T06:00:00',t1:'Germany',t2:'Curaçao',s1:null,s2:null,done:true},
+  {id:'E2',gr:'E',md:1,date:'15 Jun',time:'2026-06-15T08:00:00',t1:'Ivory Coast',t2:'Ecuador',s1:null,s2:null,done:true},
+  {id:'F1',gr:'F',md:1,date:'16 Jun',time:'2026-06-16T04:00:00',t1:'Japan',t2:'Netherlands',s1:null,s2:null,done:true},
+  {id:'F2',gr:'F',md:1,date:'16 Jun',time:'2026-06-16T06:00:00',t1:'Sweden',t2:'Tunisia',s1:null,s2:null,done:true},
+  {id:'G1',gr:'G',md:1,date:'16 Jun',time:'2026-06-16T04:00:00',t1:'Belgium',t2:'Egypt',s1:null,s2:null,done:true},
+  {id:'G2',gr:'G',md:1,date:'16 Jun',time:'2026-06-16T06:00:00',t1:'Iran',t2:'New Zealand',s1:null,s2:null,done:true},
+  {id:'H1',gr:'H',md:1,date:'16 Jun',time:'2026-06-16T06:59:00',t1:'Spain',t2:'Cape Verde',s1:null,s2:null,done:true},
+  {id:'H2',gr:'H',md:1,date:'16 Jun',time:'2026-06-16T06:59:00',t1:'Uruguay',t2:'Saudi Arabia',s1:null,s2:null,done:true},
+  {id:'I1',gr:'I',md:1,date:'17 Jun',time:'2026-06-17T04:00:00',t1:'France',t2:'Senegal',s1:null,s2:null,done:false},
+  {id:'I2',gr:'I',md:1,date:'17 Jun',time:'2026-06-17T06:00:00',t1:'Iraq',t2:'Norway',s1:null,s2:null,done:false},
+  {id:'J1',gr:'J',md:1,date:'17 Jun',time:'2026-06-17T06:59:00',t1:'Argentina',t2:'Algeria',s1:null,s2:null,done:false},
+  {id:'J2',gr:'J',md:1,date:'17 Jun',time:'2026-06-17T06:59:00',t1:'Austria',t2:'Jordan',s1:null,s2:null,done:false},
+  {id:'L1',gr:'L',md:1,date:'18 Jun',time:'2026-06-18T04:00:00',t1:'England',t2:'Croatia',s1:null,s2:null,done:false},
+  {id:'L2',gr:'L',md:1,date:'18 Jun',time:'2026-06-18T06:00:00',t1:'Ghana',t2:'Panama',s1:null,s2:null,done:false},
+  {id:'K3',gr:'K',md:2,date:'18 Jun',time:'2026-06-18T06:59:00',t1:'Portugal',t2:'DR Congo',s1:null,s2:null,done:false},
+  {id:'K4',gr:'K',md:2,date:'18 Jun',time:'2026-06-18T06:59:00',t1:'Colombia',t2:'Uzbekistan',s1:null,s2:null,done:false},
+  {id:'A4',gr:'A',md:2,date:'18 Jun',time:'2026-06-18T06:59:00',t1:'South Africa',t2:'Czechia',s1:null,s2:null,done:false},
+  {id:'A3',gr:'A',md:2,date:'19 Jun',time:'2026-06-19T04:00:00',t1:'Mexico',t2:'South Korea',s1:null,s2:null,done:false},
+  {id:'B4',gr:'B',md:2,date:'19 Jun',time:'2026-06-19T06:00:00',t1:'Bosnia & Herz.',t2:'Switzerland',s1:null,s2:null,done:false},
+  {id:'B3',gr:'B',md:2,date:'19 Jun',time:'2026-06-19T06:59:00',t1:'Canada',t2:'Qatar',s1:null,s2:null,done:false},
+  {id:'D3',gr:'D',md:2,date:'20 Jun',time:'2026-06-20T04:00:00',t1:'USA',t2:'Australia',s1:null,s2:null,done:false},
+  {id:'C3',gr:'C',md:2,date:'20 Jun',time:'2026-06-20T06:00:00',t1:'Brazil',t2:'Haiti',s1:null,s2:null,done:false},
+  {id:'C4',gr:'C',md:2,date:'20 Jun',time:'2026-06-20T06:59:00',t1:'Morocco',t2:'Scotland',s1:null,s2:null,done:false},
+  {id:'D4',gr:'D',md:2,date:'20 Jun',time:'2026-06-20T06:59:00',t1:'Paraguay',t2:'Türkiye',s1:null,s2:null,done:false},
+  {id:'F6',gr:'F',md:3,date:'21 Jun',time:'2026-06-21T04:00:00',t1:'Netherlands',t2:'Sweden',s1:null,s2:null,done:false},
+  {id:'E3',gr:'E',md:2,date:'21 Jun',time:'2026-06-21T06:00:00',t1:'Germany',t2:'Ivory Coast',s1:null,s2:null,done:false},
+  {id:'E4',gr:'E',md:2,date:'21 Jun',time:'2026-06-21T06:59:00',t1:'Curaçao',t2:'Ecuador',s1:null,s2:null,done:false},
+  {id:'F5',gr:'F',md:3,date:'21 Jun',time:'2026-06-21T06:59:00',t1:'Japan',t2:'Tunisia',s1:null,s2:null,done:false},
+  {id:'H5',gr:'H',md:3,date:'21 Jun',time:'2026-06-21T06:59:00',t1:'Spain',t2:'Saudi Arabia',s1:null,s2:null,done:false},
+  {id:'G3',gr:'G',md:2,date:'22 Jun',time:'2026-06-22T04:00:00',t1:'Belgium',t2:'Iran',s1:null,s2:null,done:false},
+  {id:'H6',gr:'H',md:3,date:'22 Jun',time:'2026-06-22T06:00:00',t1:'Cape Verde',t2:'Uruguay',s1:null,s2:null,done:false},
+  {id:'G4',gr:'G',md:2,date:'22 Jun',time:'2026-06-22T06:59:00',t1:'Egypt',t2:'New Zealand',s1:null,s2:null,done:false},
+  {id:'J3',gr:'J',md:2,date:'23 Jun',time:'2026-06-23T04:00:00',t1:'Argentina',t2:'Austria',s1:null,s2:null,done:false},
+  {id:'I3',gr:'I',md:2,date:'23 Jun',time:'2026-06-23T06:00:00',t1:'France',t2:'Iraq',s1:null,s2:null,done:false},
+  {id:'I4',gr:'I',md:2,date:'23 Jun',time:'2026-06-23T06:59:00',t1:'Senegal',t2:'Norway',s1:null,s2:null,done:false},
+  {id:'J4',gr:'J',md:2,date:'23 Jun',time:'2026-06-23T06:59:00',t1:'Algeria',t2:'Jordan',s1:null,s2:null,done:false},
+  {id:'K5',gr:'K',md:3,date:'24 Jun',time:'2026-06-24T04:00:00',t1:'Portugal',t2:'Uzbekistan',s1:null,s2:null,done:false},
+  {id:'K6',gr:'K',md:3,date:'24 Jun',time:'2026-06-24T06:00:00',t1:'Colombia',t2:'DR Congo',s1:null,s2:null,done:false},
+  {id:'L3',gr:'L',md:2,date:'24 Jun',time:'2026-06-24T06:59:00',t1:'England',t2:'Ghana',s1:null,s2:null,done:false},
+  {id:'L4',gr:'L',md:2,date:'24 Jun',time:'2026-06-24T06:59:00',t1:'Croatia',t2:'Panama',s1:null,s2:null,done:false},
+  {id:'B5',gr:'B',md:3,date:'25 Jun',time:'2026-06-25T04:00:00',t1:'Canada',t2:'Switzerland',s1:null,s2:null,done:false},
+  {id:'B6',gr:'B',md:3,date:'25 Jun',time:'2026-06-25T06:00:00',t1:'Bosnia & Herz.',t2:'Qatar',s1:null,s2:null,done:false},
+  {id:'C5',gr:'C',md:3,date:'25 Jun',time:'2026-06-25T06:59:00',t1:'Brazil',t2:'Scotland',s1:null,s2:null,done:false},
+  {id:'C6',gr:'C',md:3,date:'25 Jun',time:'2026-06-25T06:59:00',t1:'Morocco',t2:'Haiti',s1:null,s2:null,done:false},
+  {id:'A5',gr:'A',md:3,date:'25 Jun',time:'2026-06-25T06:59:00',t1:'Mexico',t2:'Czechia',s1:null,s2:null,done:false},
+  {id:'A6',gr:'A',md:3,date:'25 Jun',time:'2026-06-25T06:59:00',t1:'South Africa',t2:'South Korea',s1:null,s2:null,done:false},
+  {id:'E5',gr:'E',md:3,date:'26 Jun',time:'2026-06-26T04:00:00',t1:'Germany',t2:'Ecuador',s1:null,s2:null,done:false},
+  {id:'E6',gr:'E',md:3,date:'26 Jun',time:'2026-06-26T06:00:00',t1:'Curaçao',t2:'Ivory Coast',s1:null,s2:null,done:false},
+  {id:'F3',gr:'F',md:2,date:'26 Jun',time:'2026-06-26T06:59:00',t1:'Japan',t2:'Sweden',s1:null,s2:null,done:false},
+  {id:'F4',gr:'F',md:2,date:'26 Jun',time:'2026-06-26T06:59:00',t1:'Netherlands',t2:'Tunisia',s1:null,s2:null,done:false},
+  {id:'D5',gr:'D',md:3,date:'26 Jun',time:'2026-06-26T06:59:00',t1:'USA',t2:'Türkiye',s1:null,s2:null,done:false},
+  {id:'D6',gr:'D',md:3,date:'26 Jun',time:'2026-06-26T06:59:00',t1:'Paraguay',t2:'Australia',s1:null,s2:null,done:false},
+  {id:'I5',gr:'I',md:3,date:'27 Jun',time:'2026-06-27T04:00:00',t1:'France',t2:'Norway',s1:null,s2:null,done:false},
+  {id:'I6',gr:'I',md:3,date:'27 Jun',time:'2026-06-27T06:00:00',t1:'Senegal',t2:'Iraq',s1:null,s2:null,done:false},
+  {id:'H3',gr:'H',md:2,date:'27 Jun',time:'2026-06-27T06:59:00',t1:'Spain',t2:'Uruguay',s1:null,s2:null,done:false},
+  {id:'H4',gr:'H',md:2,date:'27 Jun',time:'2026-06-27T06:59:00',t1:'Cape Verde',t2:'Saudi Arabia',s1:null,s2:null,done:false},
+  {id:'G5',gr:'G',md:3,date:'27 Jun',time:'2026-06-27T06:59:00',t1:'Belgium',t2:'New Zealand',s1:null,s2:null,done:false},
+  {id:'G6',gr:'G',md:3,date:'27 Jun',time:'2026-06-27T06:59:00',t1:'Egypt',t2:'Iran',s1:null,s2:null,done:false},
+  {id:'L5',gr:'L',md:3,date:'28 Jun',time:'2026-06-28T04:00:00',t1:'England',t2:'Panama',s1:null,s2:null,done:false},
+  {id:'L6',gr:'L',md:3,date:'28 Jun',time:'2026-06-28T06:00:00',t1:'Croatia',t2:'Ghana',s1:null,s2:null,done:false},
+  {id:'K1',gr:'K',md:1,date:'28 Jun',time:'2026-06-28T06:59:00',t1:'Portugal',t2:'Colombia',s1:null,s2:null,done:false},
+  {id:'K2',gr:'K',md:1,date:'28 Jun',time:'2026-06-28T06:59:00',t1:'DR Congo',t2:'Uzbekistan',s1:null,s2:null,done:false},
+  {id:'J5',gr:'J',md:3,date:'28 Jun',time:'2026-06-28T06:59:00',t1:'Argentina',t2:'Jordan',s1:null,s2:null,done:false},
+  {id:'J6',gr:'J',md:3,date:'28 Jun',time:'2026-06-28T06:59:00',t1:'Algeria',t2:'Austria',s1:null,s2:null,done:false}
 ];
 
 const GROUPS_BLUEPRINT = {
@@ -309,26 +362,33 @@ const GROUPS_BLUEPRINT = {
   'L': ['England', 'Croatia', 'Ghana', 'Panama']
 };
 
-let state = { participants: [], picks: [], overrides: {} };
-
+let state = { participants: [], picks: [], overrides: {}, currentTab: 'matchday', matchSubTab: 'upcoming' };
+let latestSortedStandings = []; 
 const GLOBAL_APPS_URL = "https://script.google.com/macros/s/AKfycbzwdrmDD8H9fGKY1UF0R-Bluioe2XVJSz0FwKaYIKiyJ4bSrcps0iGPffYLIKJ6Ngjq/exec";
 
 function init() {
   const saved = localStorage.getItem('wc_choice_state_v2');
-  if(saved) { try { state = JSON.parse(saved); if(!Array.isArray(state.picks)) state.picks=[]; } catch { state = { participants: [], picks: [], overrides: {} }; } }
-  
-  if(document.getElementById('inp-apps-url')) {
-    document.getElementById('inp-apps-url').value = GLOBAL_APPS_URL;
-  }
-  
+  if(saved) { try { state = JSON.parse(saved); if(!Array.isArray(state.picks)) state.picks=[]; } catch { state = { participants: [], picks: [], overrides: {}, currentTab: 'matchday', matchSubTab: 'upcoming' }; } }
+  if(!state.matchSubTab) { state.matchSubTab = 'upcoming'; }
+  if(document.getElementById('inp-apps-url')) { document.getElementById('inp-apps-url').value = GLOBAL_APPS_URL; }
   autoFetchCloudData();
+
+  setInterval(() => { if(state.matchSubTab === 'upcoming') renderMatches(); }, 60000);
 }
 
 function saveLocal() { localStorage.setItem('wc_choice_state_v2', JSON.stringify(state)); }
 function getMatches() { return BASE_MATCHES.map(m => state.overrides[m.id] ? { ...m, ...state.overrides[m.id] } : m); }
 
+function isKickoffPassed(matchTimeString) {
+  if(!matchTimeString) return false;
+  const now = new Date();
+  const kickoff = new Date(matchTimeString);
+  return now >= kickoff;
+}
+
 function renderAll() {
   renderStandings();
+  renderFrontUserSelector();
   renderMatches();
   renderWCGroups();
   renderParticipants();
@@ -339,20 +399,34 @@ function autoFetchCloudData() {
     renderAll();
     return;
   }
+
+  // Cek kapan terakhir kali cloud data sukses diambil
+  const lastFetch = localStorage.getItem('wc_last_cloud_fetch');
+  const now = Date.now();
+
+  // JIKA data lokal ada, DAN belum lewat 5 menit (300.000 ms), gunakan data lokal saja demi kecepatan instan!
+  if (state.participants.length > 0 && lastFetch && (now - parseInt(lastFetch) < 300000)) {
+    console.log("Menggunakan cache lokal agar loading instan.");
+    renderAll();
+    return; 
+  }
+
+  // Jika cache kosong atau sudah lewat 5 menit, baru fetch pelan-pelan ke cloud
   fetch(GLOBAL_APPS_URL + '?action=getData')
     .then(res => res.json())
     .then(resData => {
-      if(resData && !resData.error) { 
-        state.participants = resData.participants || []; 
-        state.picks = resData.picks || []; 
-        state.overrides = resData.overrides || {}; 
-        saveLocal(); 
+      if(resData && !resData.error) {
+        state.participants = resData.participants || [];
+        state.picks = resData.picks || [];
+        state.overrides = resData.overrides || {};
+        saveLocal();
+        localStorage.setItem('wc_last_cloud_fetch', Date.now().toString()); // simpan timestamp
       }
       renderAll();
     })
-    .catch(err => { 
-      console.log("Gagal memuat data cloud otomatis:", err.message);
-      renderAll();
+    .catch(err => {
+      console.log("Gagal cloud otomatis:", err.message);
+      renderAll(); // Tetap render data lokal yang ada jika offline/gagal
     });
 }
 
@@ -366,6 +440,24 @@ function switchTab(name) {
   document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
   document.getElementById('btn-tab-'+name).classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
+}
+
+function switchMatchSubTab(subTab) {
+  state.matchSubTab = subTab;
+  const btnUpcoming = document.getElementById('subtab-upcoming');
+  const btnFinished = document.getElementById('subtab-finished');
+  const frontSelector = document.getElementById('front-user-selector-zone');
+  
+  if (subTab === 'upcoming') {
+    btnUpcoming.style.background = 'var(--gold)'; btnUpcoming.style.color = '#060D18';
+    btnFinished.style.background = 'transparent'; btnFinished.style.color = 'var(--muted)';
+    if(frontSelector) frontSelector.style.display = 'flex';
+  } else {
+    btnFinished.style.background = 'var(--gold)'; btnFinished.style.color = '#060D18';
+    btnUpcoming.style.background = 'transparent'; btnUpcoming.style.color = 'var(--muted)';
+    if(frontSelector) frontSelector.style.display = 'none';
+  }
+  renderMatches();
 }
 
 function openAdminModal() { document.getElementById('admin-modal').style.display = 'flex'; renderParticipants(); renderPickForm(); }
@@ -395,6 +487,16 @@ function renderStandings() {
   });
 
   userStats.sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.name.localeCompare(b.name));
+  latestSortedStandings = userStats;
+
+  const shareZone = document.getElementById('wa-share-standings-zone');
+  if(userStats.length > 0) {
+    // TERUPDATE: Menggantikan fungsi share text WA lama menjadi download gambar klasemen
+    shareZone.innerHTML = `<button class="btn-image-download" onclick="downloadKlasemenGambar()">🖼️ Download Gambar Klasemen Terkini</button>`;
+  } else {
+    shareZone.innerHTML = '';
+  }
+
   if(userStats.length === 0) { container.innerHTML = '<p style="text-align:center;padding:20px;color:var(--muted)">Belum ada anggota terdaftar.</p>'; return; }
 
   let h = `<table class="s-table">
@@ -410,55 +512,145 @@ function renderStandings() {
   container.innerHTML = h + '</tbody></table>';
 }
 
-/* PERUBAHAN UTAMA: FUNGSI RENDER JADWAL DUA KOLOM TERPISAH */
+// ──────────────────────────────────────────────────────────────────────────────
+// LOGIKA BARU: JAVASCRIPT UNTUK DOWNLOAD GAMBAR KLASEMEN (html2canvas)
+// ──────────────────────────────────────────────────────────────────────────────
+function downloadKlasemenGambar() {
+  const targetArea = document.getElementById('capture-area-klasemen');
+  const headerBranding = document.getElementById('capture-header');
+  const footerBranding = document.getElementById('capture-footer');
+
+  if (!targetArea) return;
+
+  // Tampilkan sementara header dan footer khusus visual gambar sebelum dicapture
+  if (headerBranding) headerBranding.style.display = 'block';
+  if (footerBranding) footerBranding.style.display = 'flex';
+
+  // Eksekusi perenderaan elemen ke canvas
+  html2canvas(targetArea, {
+    scale: 2, // Resolusi HD agar teks tidak blur saat dikirim ke chat
+    backgroundColor: '#060D18', // Warna dasar fallback agar solid
+    logging: false,
+    useCORS: true
+  }).then(canvas => {
+    // Sembunyikan kembali elemen branding dari halaman interface utama
+    if (headerBranding) headerBranding.style.display = 'none';
+    if (footerBranding) footerBranding.style.display = 'none';
+
+    // Proses konversi dan pengunduhan file gambar otomatis
+    const dataURL = canvas.toDataURL('image/png');
+    const triggerLink = document.createElement('a');
+    triggerLink.href = dataURL;
+    triggerLink.download = 'Klasemen_Liga_Bola_Dunia_EL.png';
+    document.body.appendChild(triggerLink);
+    triggerLink.click();
+    document.body.removeChild(triggerLink);
+  }).catch(err => {
+    console.error("Gagal memproses gambar:", err);
+    // Kembalikan ke keadaan semula jika ada error tak terduga
+    if (headerBranding) headerBranding.style.display = 'none';
+    if (footerBranding) footerBranding.style.display = 'none';
+  });
+}
+
+function renderFrontUserSelector() {
+  const sel = document.getElementById('front-sel-participant');
+  if(!sel) return;
+  const currentSelected = sel.value;
+  sel.innerHTML = '<option value="">-- Lihat Semua (Tanpa Isi) --</option>';
+  state.participants.forEach(p => {
+    sel.innerHTML += `<option value="${p.id}" ${currentSelected === p.id ? 'selected' : ''}>${p.name}</option>`;
+  });
+}
+
 function renderMatches() {
   const container = document.getElementById('matches-container');
   const filter = document.getElementById('filter-grup').value;
+  const frontActiveUserId = document.getElementById('front-sel-participant')?.value || "";
   const matches = getMatches();
   let h = '';
 
-  const filtered = matches.filter(m => filter === 'ALL' || m.gr === filter);
-  filtered.forEach(m => {
-    let pickBadgesT1 = '';
-    let pickBadgesT2 = '';
-    let countT1 = 0;
-    let countT2 = 0;
+  let filtered = matches.filter(m => filter === 'ALL' || m.gr === filter);
+  if (state.matchSubTab === 'upcoming') {
+    filtered = filtered.filter(m => !m.done || m.done === 'false' || m.done === 'FALSE');
+  } else {
+    filtered = filtered.filter(m => m.done && m.done !== 'false' && m.done !== 'FALSE');
+  }
 
-    // Membagi pendukung berdasarkan tim yang mereka pilih
+  if (filtered.length === 0) {
+    container.innerHTML = `<div style="text-align:center; padding:40px 20px; color:var(--muted); font-size:12px;">Tidak ada pertandingan untuk grup ini.</div>`;
+    return;
+  }
+
+  filtered.forEach(m => {
+    let pickBadgesT1 = '', pickBadgesT2 = '';
+    let countT1 = 0, countT2 = 0;
+    let currentUserPick = '';
+
     state.participants.forEach(p => {
       const pk = state.picks.find(x => x.pid === p.id && x.mid === m.id);
       if(pk) {
-        const badgeHtml = `<div class="pk-badge">
-          <span style="width:6px;height:6px;border-radius:50%;background:${p.color};flex-shrink:0;"></span>
-          <strong style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</strong>
-        </div>`;
-        
-        if(pk.pick === m.t1) {
-          pickBadgesT1 += badgeHtml;
-          countT1++;
-        } else if(pk.pick === m.t2) {
-          pickBadgesT2 += badgeHtml;
-          countT2++;
-        }
+        if(p.id === frontActiveUserId) { currentUserPick = pk.pick; }
+        const badgeHtml = `<div class="pk-badge"><span style="width:6px;height:6px;border-radius:50%;background:${p.color};flex-shrink:0;"></span><strong style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</strong></div>`;
+        if(pk.pick === m.t1) { pickBadgesT1 += badgeHtml; countT1++; } 
+        else if(pk.pick === m.t2) { pickBadgesT2 += badgeHtml; countT2++; }
       }
     });
 
-    // Teks fallback jika kolom kosong
     if(!pickBadgesT1) pickBadgesT1 = '<span style="color:var(--muted);font-size:9px;text-align:center;display:block;padding:2px 0;">—</span>';
     if(!pickBadgesT2) pickBadgesT2 = '<span style="color:var(--muted);font-size:9px;text-align:center;display:block;padding:2px 0;">—</span>';
 
+    const isFinished = (m.done && m.done !== 'false' && m.done !== 'FALSE');
+    const isLocked = isKickoffPassed(m.time); 
+
+    let statusLabel = '⏳ BELUM';
+    let labelColor = 'var(--muted)';
+    if(isFinished) {
+      statusLabel = '✓ SELESAI'; labelColor = 'var(--gold2)';
+    } else if(isLocked) {
+      statusLabel = '🔒 LIVE / TERKUNCI'; labelColor = '#EF9A9A';
+    }
+
+    let timeLabel = '';
+    if(m.time) {
+      const dObj = new Date(m.time);
+      timeLabel = ' · ' + String(dObj.getHours()).padStart(2,'0') + ':' + String(dObj.getMinutes()).padStart(2,'0') + ' WIB';
+    }
+
+    let quickPickHtml = '';
+    if(!isFinished && frontActiveUserId) {
+      if(isLocked) {
+        quickPickHtml = `
+        <div class="mc-quick-pick-zone" style="background:rgba(192,40,47,0.08); flex-direction:column; gap:4px; align-items:stretch;">
+          <span style="color:var(--loss-text); font-size:10px; font-weight:600; text-align:center;">🔒 Kick-off telah dimulai. Pilihan dikunci!</span>
+          <button class="btn btn-outline" style="font-size:10px; padding:4px; border-color:var(--wa-green); color:var(--wa-green)" onclick="shareMatchPicksToWA('${m.id}')">📢 Share Peta Dukungan Match Ini ke WA</button>
+        </div>`;
+      } else {
+        quickPickHtml = `
+        <div class="mc-quick-pick-zone" style="flex-direction:column; gap:6px; align-items:stretch;">
+          <div style="display:flex; gap:6px; align-items:center;">
+            <select id="quick-sel-${m.id}" style="padding:4px 6px; font-size:11px; height:28px; flex:1;">
+              <option value="">- Belum Pilih Dukungan -</option>
+              <option value="${m.t1}" ${currentUserPick === m.t1 ? 'selected' : ''}>Dukung ${m.t1}</option>
+              <option value="${m.t2}" ${currentUserPick === m.t2 ? 'selected' : ''}>Dukung ${m.t2}</option>
+            </select>
+            <button class="btn btn-gold" style="padding:6px 10px; font-size:10px; height:28px;" onclick="saveQuickPick('${m.id}')">⚡ Simpan</button>
+          </div>
+          <button class="btn btn-outline" style="font-size:10px; padding:4px;" onclick="shareMatchPicksToWA('${m.id}')">📲 Ajak Rekan Lain Isi Match Ini</button>
+        </div>`;
+      }
+    }
+
     h += `<div class="match-card">
       <div class="mc-header">
-        <div>GRUP ${m.gr} · ${m.date}</div>
-        <div style="display:flex;align-items:center;gap:6px"><span class="md-badge">MD ${m.md}</span><span style="font-weight:700; font-size:9px; color:${m.done?'var(--gold2)':'var(--muted)'}">${m.done ? '✓ SELESAI' : '⏳ LIVE/BELUM'}</span></div>
+        <div>GRUP ${m.gr} · ${m.date}${timeLabel}</div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="md-badge">MD ${m.md}</span><span style="font-weight:700; font-size:9px; color:${labelColor}">${statusLabel}</span></div>
       </div>
       <div class="mc-body">
         <div class="mc-team">${getFlag(m.t1)} <span>${m.t1}</span></div>
-        <div class="mc-score" style="color: ${m.done ? 'var(--gold2)': 'var(--muted)'}">${m.done ? `${m.s1}-${m.s2}` : 'VS'}</div>
+        <div class="mc-score" style="color: ${isFinished ? 'var(--gold2)': 'var(--muted)'}">${isFinished ? `${m.s1}-${m.s2}` : 'VS'}</div>
         <div class="mc-team away"><span>${m.t2}</span> ${getFlag(m.t2)}</div>
       </div>
-      
-      <!-- Box Dua Kolom Pendukung -->
       <div class="mc-picks-container">
         <div class="mc-pick-column">
           <div class="column-title">${m.t1} (${countT1})</div>
@@ -469,21 +661,138 @@ function renderMatches() {
           ${pickBadgesT2}
         </div>
       </div>
+      ${quickPickHtml}
     </div>`;
   });
   container.innerHTML = h;
 }
 
+function shareMatchPicksToWA(matchId) {
+  const matches = getMatches();
+  const m = matches.find(x => x.id === matchId);
+  if(!m) return;
+  
+  const isLocked = isKickoffPassed(m.time);
+  let arrT1 = [], arrT2 = [];
+  
+  state.participants.forEach(p => {
+    const pk = state.picks.find(x => x.pid === p.id && x.mid === m.id);
+    if(pk) {
+      if(pk.pick === m.t1) arrT1.push(p.name);
+      else if(pk.pick === m.t2) arrT2.push(p.name);
+    }
+  });
+  
+  let text = "";
+  if(isLocked) {
+    text += `🔒 *PREDIKSI TERKUNCI: ${m.t1.toUpperCase()} vs ${m.t2.toUpperCase()}* 🔒\n`;
+    text += "=================================\n\n";
+    text += `⚽ *Pendukung ${m.t1} (${arrT1.length}):*\n`;
+    text += arrT1.length > 0 ? arrT1.map(n => `• ${n}`).join("\n") : "• Tidak ada pendukung";
+    text += "\n\n";
+    text += `⚽ *Pendukung ${m.t2} (${arrT2.length}):*\n`;
+    text += arrT2.length > 0 ? arrT2.map(n => `• ${n}`).join("\n") : "• Tidak ada pendukung";
+    text += "\n\n";
+  } else {
+    text += `⏳ *OPEN PREDICTION: ${m.t1} vs ${m.t2}* ⏳\n`;
+    text += `🗓️ Kick-off: ${m.date}\n`;
+    text += "=================================\n\n";
+    text += `📢 *Peta Dukungan Sementara:*\n`;
+    text += `• ${m.t1}: ${arrT1.length} orang\n`;
+    text += `• ${m.t2}: ${arrT2.length} orang\n\n`;
+    text += "👉 Jangan sampai ketinggalan/zonk! Segera isi atau ubah tim pilihanmu sebelum waktu kick-off terkunci otomatis di:\n";
+    text += window.location.href.includes("file://") ? "[Link Web Prediksi]" : window.location.href;
+  }
+  
+  window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(text), "_blank");
+}
+
+function saveQuickPick(matchId) {
+  const frontActiveUserId = document.getElementById('front-sel-participant')?.value || "";
+  if(!frontActiveUserId) {
+    alert("Silakan pilih nama peserta terlebih dahulu di bagian atas!");
+    return;
+  }
+  
+  const targetMatch = BASE_MATCHES.find(x => x.id === matchId);
+  if(targetMatch && isKickoffPassed(targetMatch.time)) {
+    alert("Waktu pengisian sudah habis! Pertandingan ini sudah kick-off.");
+    renderMatches();
+    return;
+  }
+  
+  const selectVal = document.getElementById(`quick-sel-${matchId}`).value;
+  
+  // Ambil tombol untuk indikator visual lokal
+  const btnEl = document.querySelector(`button[onclick="saveQuickPick('${matchId}')"]`);
+  const originalBtnText = btnEl ? btnEl.innerHTML : "⚡ Simpan";
+
+  // 1. UPDATE DATA LOKAL SECARA INSTAN
+  state.picks = state.picks.filter(x => !(x.pid === frontActiveUserId && x.mid === matchId));
+  if(selectVal) {
+    state.picks.push({ pid: frontActiveUserId, mid: matchId, pick: selectVal });
+  }
+  saveLocal();
+
+  // 2. RENDER ULANG UI SEGERA (User melihat perubahannya detik itu juga!)
+  renderStandings();
+  renderMatches();
+  
+  // Berikan umpan balik visual bahwa data tersimpan di perangkat
+  if(btnEl) {
+    btnEl.innerHTML = "⏳ Menyingkronkan...";
+    btnEl.style.opacity = "0.7";
+  }
+
+  // 3. KIRIM KE GSHEET DI LATAR BELAKANG (User bebas scroll / klik match lain)
+  if(GLOBAL_APPS_URL && !GLOBAL_APPS_URL.includes("...")) {
+    fetch(GLOBAL_APPS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action: 'saveAll', participants: state.participants, picks: state.picks, overrides: state.overrides })
+    })
+    .then(() => {
+      // Kembalikan tombol setelah sync cloud selesai di background
+      if(btnEl) {
+        btnEl.innerHTML = originalBtnText;
+        btnEl.style.opacity = "1";
+      }
+      showFrontAlert("✅ Pilihan berhasil disinkronkan ke Cloud GSheet!");
+    })
+    .catch(e => {
+      console.log("Gagal auto-sync:", e.message);
+      if(btnEl) {
+        btnEl.innerHTML = originalBtnText;
+        btnEl.style.opacity = "1";
+      }
+      showFrontAlert("⚠️ Tersimpan lokal, sinkronisasi cloud tertunda.");
+    });
+  } else {
+    if(btnEl) {
+      btnEl.innerHTML = originalBtnText;
+      btnEl.style.opacity = "1";
+    }
+    showFrontAlert("Pilihan disimpan secara lokal!");
+  }
+}
+
+function showFrontAlert(msg) {
+  const el = document.getElementById('front-alert'); if(!el) return;
+  el.innerText = msg; el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 2500);
+}
+
 function renderWCGroups() {
   const container = document.getElementById('wc-groups-container');
-  const matches = getMatches();
-  container.innerHTML = '';
+  const matches = getMatches(); container.innerHTML = '';
 
   ['A','B','C','D','E','F','G','H','I','J','K','L'].forEach(g => {
     let teams = {};
     GROUPS_BLUEPRINT[g].forEach(tName => { teams[tName] = { name:tName, gd:0, pts:0 }; });
     matches.filter(m => m.gr === g).forEach(m => {
-      if(!m.done) return;
+      const isFinished = (m.done && m.done !== 'false' && m.done !== 'FALSE');
+      if(!isFinished) return;
       let t1 = teams[m.t1], t2 = teams[m.t2]; if(!t1 || !t2) return;
       t1.gd += (m.s1 - m.s2); t2.gd += (m.s2 - m.s1);
       if(m.s1 > m.s2) t1.pts += 3; else if(m.s1 < m.s2) t2.pts += 3; else { t1.pts += 1; t2.pts += 1; }
@@ -503,6 +812,7 @@ function renderWCGroups() {
 
 function renderParticipants() {
   const list = document.getElementById('chip-list'); const sel = document.getElementById('sel-participant');
+  if(!list || !sel) return;
   list.innerHTML = ''; sel.innerHTML = '<option value="">-- Pilih Kontestan --</option>';
   state.participants.forEach(p => {
     list.innerHTML += `<div class="chip"><span style="width:6px;height:6px;border-radius:50%;background:${p.color}"></span><span>${p.name}</span><button class="chip-del" onclick="deleteParticipant('${p.id}')">&times;</button></div>`;
@@ -511,65 +821,279 @@ function renderParticipants() {
 }
 
 function addParticipant() {
-  const name = document.getElementById('inp-name').value.trim(); 
-  if(!name) return;
-  
+  const name = document.getElementById('inp-name').value.trim(); if(!name) return;
   const randomColor = generateRandomColor();
   state.participants.push({ id:'p_'+Date.now(), name, color: randomColor }); 
-  document.getElementById('inp-name').value = ''; 
-  saveLocal(); 
-  renderParticipants();
+  document.getElementById('inp-name').value = ''; saveLocal(); renderFrontUserSelector(); renderParticipants();
 }
 
-function deleteParticipant(id) { state.participants = state.participants.filter(p => p.id !== id); state.picks = state.picks.filter(p => p.pid !== id); saveLocal(); renderParticipants(); }
+function deleteParticipant(id) { state.participants = state.participants.filter(p => p.id !== id); state.picks = state.picks.filter(p => p.pid !== id); saveLocal(); renderFrontUserSelector(); renderParticipants(); }
 
 function renderPickForm() {
-  const area = document.getElementById('pick-form-area'); const pid = document.getElementById('sel-participant').value;
-  if(!pid) { area.innerHTML = '<p style="color:var(--muted);text-align:center;font-size:11px;padding:10px;">Pilih peserta untuk mengisi tim pilihan.</p>'; return; }
+  const area = document.getElementById('pick-form-area');
+  if(!area) return;
+  const pid = document.getElementById('sel-participant').value;
+  if(!pid) {
+    area.innerHTML = '<p style="color:var(--muted);text-align:center;font-size:11px;padding:10px;">Pilih peserta untuk mengisi tim pilihan.</p>';
+    return;
+  }
   let h = '<div style="display:flex; flex-direction:column; gap:5px">';
   getMatches().forEach(m => {
     const cur = state.picks.find(x => x.pid === pid && x.mid === m.id);
+    const isLocked = isKickoffPassed(m.time);
     h += `<div class="form-row" style="background:var(--s3); padding:5px; border-radius:6px" data-mid="${m.id}">
-      <div style="flex:1; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${m.t1} vs ${m.t2}</div>
-      <div style="width:110px"><select class="pick-select" style="padding:4px; font-size:10px;"><option value="">- Lewati -</option><option value="${m.t1}" ${cur?.pick===m.t1?'selected':''}>${m.t1}</option><option value="${m.t2}" ${cur?.pick===m.t2?'selected':''}>${m.t2}</option></select></div>
+      <div style="flex:1; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+        ${m.t1} vs ${m.t2} ${isLocked ? '<span style="color:var(--loss-text)">[🔒 Kunci]</span>':''}
+      </div>
+      <div style="width:110px">
+        <select class="pick-select" style="padding:4px; font-size:10px;" ${isLocked ? 'disabled' : ''}>
+          <option value="">- Lewati -</option>
+          <option value="${m.t1}" ${cur?.pick===m.t1?'selected':''}>${m.t1}</option>
+          <option value="${m.t2}" ${cur?.pick===m.t2?'selected':''}>${m.t2}</option>
+        </select>
+      </div>
     </div>`;
   });
   area.innerHTML = h + '</div>';
 }
 
 function savePicks() {
-  const pid = document.getElementById('sel-participant').value; if(!pid) return;
+  const pid = document.getElementById('sel-participant').value;
+  if(!pid) return;
+
+  const btnEl = document.querySelector('button[onclick="savePicks()"]');
+  const originalBtnText = btnEl ? btnEl.innerHTML : "💾 Simpan Pilihan Tim";
+
+  if(btnEl) {
+    btnEl.disabled = true;
+    btnEl.innerHTML = "⏳ Menyimpan ke Cloud...";
+    btnEl.style.opacity = "0.6";
+  }
+
+  const currentPicks = [...state.picks];
   state.picks = state.picks.filter(x => x.pid !== pid);
+  
   document.querySelectorAll('#pick-form-area .form-row').forEach(row => {
-    const mid = row.getAttribute('data-mid'); const val = row.querySelector('.pick-select').value;
-    if(val) state.picks.push({ pid, mid, pick: val });
+    const mid = row.getAttribute('data-mid');
+    const selectEl = row.querySelector('.pick-select');
+    if(!selectEl) return;
+    const val = selectEl.value;
+    const targetMatch = BASE_MATCHES.find(x => x.id === mid);
+    if(targetMatch && isKickoffPassed(targetMatch.time)) {
+      const backup = currentPicks.find(x => x.pid === pid && x.mid === mid);
+      if(backup) state.picks.push(backup);
+    } else {
+      if(val) state.picks.push({ pid, mid, pick: val });
+    }
   });
-  saveLocal(); showAdminAlert('Pilihan berhasil disimpan!');
+  
+  saveLocal();
+
+  // Kirim data langsung ke cloud
+  if(GLOBAL_APPS_URL && !GLOBAL_APPS_URL.includes("...")) {
+    fetch(GLOBAL_APPS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action: 'saveAll', participants: state.participants, picks: state.picks, overrides: state.overrides })
+    })
+    .then(() => {
+      if(btnEl) {
+        btnEl.disabled = false;
+        btnEl.innerHTML = originalBtnText;
+        btnEl.style.opacity = "1";
+      }
+      renderStandings();
+      renderMatches();
+      showAdminAlert('✅ Semua pilihan berhasil disimpan ke GSheet!');
+    })
+    .catch(err => {
+      if(btnEl) {
+        btnEl.disabled = false;
+        btnEl.innerHTML = originalBtnText;
+        btnEl.style.opacity = "1";
+      }
+      showAdminAlert('❌ Gagal sinkronisasi cloud: ' + err.message, 'err');
+    });
+  } else {
+    if(btnEl) {
+      btnEl.disabled = false;
+      btnEl.innerHTML = originalBtnText;
+      btnEl.style.opacity = "1";
+    }
+    renderStandings();
+    renderMatches();
+    showAdminAlert('Pilihan berhasil disimpan lokal!');
+  }
 }
 
-function getScriptUrl() { const url = document.getElementById('inp-apps-url').value.trim(); if(url) localStorage.setItem('wc_apps_url_v2', url); return url; }
-function syncPush() {
-  const url = getScriptUrl(); if(!url) { alert('URL Kosong!'); return; }
-  const status = document.getElementById('sync-status'); status.innerHTML = '<span style="color:var(--gold)">⏳ Mengirim data...</span>';
-  fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ action: 'saveAll', participants: state.participants, picks: state.picks, overrides: state.overrides }) })
-  .then(() => { status.innerHTML = '<span style="color:var(--win-text)">✅ Berhasil Upload Cloud GSheet!</span>'; }).catch(err => { status.innerHTML = `<span style="color:var(--loss-text)">❌ Gagal: ${err.message}</span>`; });
+function renderParticipants() {
+  const list = document.getElementById('chip-list');
+  const selAdmin = document.getElementById('sel-participant');
+  const selFront = document.getElementById('front-sel-participant');
+  if(!list) return;
+  
+  let h = '';
+  state.participants.forEach(p => {
+    h += `<div class="chip">
+      <span style="width:8px;height:8px;border-radius:50%;background:${p.color}"></span>
+      <span>${p.name}</span>
+      <button class="chip-del" onclick="deleteParticipant('${p.id}')">&times;</button>
+    </div>`;
+  });
+  list.innerHTML = h || '<p style="color:var(--muted);font-size:11px;">Belum ada anggota.</p>';
+  
+  // Update dropdown admin
+  const currAdmin = selAdmin ? selAdmin.value : "";
+  if(selAdmin) {
+    selAdmin.innerHTML = '<option value="">-- Pilih Peserta --</option>';
+    state.participants.forEach(p => {
+      selAdmin.innerHTML += `<option value="${p.id}" ${currAdmin===p.id?'selected':''}>${p.name}</option>`;
+    });
+  }
+  
+  // Update dropdown depan
+  if(selFront) {
+    const currFront = selFront.value;
+    selFront.innerHTML = '<option value="">-- Lihat Semua (Tanpa Isi) --</option>';
+    state.participants.forEach(p => {
+      selFront.innerHTML += `<option value="${p.id}" ${currFront===p.id?'selected':''}>${p.name}</option>`;
+    });
+  }
 }
+
+function addParticipant() {
+  const inp = document.getElementById('inp-name');
+  if(!inp || !inp.value.trim()) return;
+  const name = inp.value.trim();
+  const colors = ['#C9A84C', '#E2BE6E', '#10B981', '#25D366', '#3B82F6', '#6366F1', '#EC4899', '#F43F5E', '#14B8A6', '#F59E0B'];
+  const color = colors[state.participants.length % colors.length];
+  const id = 'p_' + Date.now();
+  
+  state.participants.push({ id, name, color });
+  inp.value = '';
+  saveLocal();
+  renderAll();
+  showAdminAlert('Anggota baru berhasil didaftarkan!');
+}
+
+function deleteParticipant(id) {
+  if(!confirm('Hapus anggota ini beserta seluruh data pilihannya?')) return;
+  state.participants = state.participants.filter(x => x.id !== id);
+  state.picks = state.picks.filter(x => x.pid !== id);
+  saveLocal();
+  renderAll();
+  showAdminAlert('Anggota berhasil dihapus.');
+}
+
+function openAdminModal() {
+  const m = document.getElementById('admin-modal');
+  if(m) { m.style.display = 'flex'; renderParticipants(); renderPickForm(); }
+}
+
+function closeAdminModal() {
+  const m = document.getElementById('admin-modal');
+  if(m) m.style.display = 'none';
+}
+
+function closeAdminModalOnBackdrop(e) {
+  if(e.target.id === 'admin-modal') closeAdminModal();
+}
+
+function showAdminAlert(msg, type='ok') {
+  const el = document.getElementById('admin-alert');
+  if(!el) return;
+  el.className = 'alert';
+  el.style.background = type === 'err' ? 'rgba(192,40,47,0.2)' : 'rgba(46,125,50,0.2)';
+  el.style.borderColor = type === 'err' ? 'var(--red2)' : 'var(--win-text)';
+  el.style.color = type === 'err' ? 'var(--red2)' : 'var(--win-text)';
+  el.innerText = msg;
+  el.style.display = 'block';
+  setTimeout(() => { el.style.style = 'none'; el.innerText = ''; }, 3000);
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  const btn = document.getElementById('btn-tab-' + tab);
+  const pane = document.getElementById('tab-' + tab);
+  if(btn && pane) { btn.classList.add('active'); pane.classList.add('active'); }
+}
+
+function switchMatchSubTab(sub) {
+  state.matchSubTab = sub;
+  const btnUp = document.getElementById('subtab-upcoming');
+  const btnFi = document.getElementById('subtab-finished');
+  if(sub === 'upcoming') {
+    if(btnUp) { btnUp.style.background = 'var(--gold)'; btnUp.style.color = 'var(--bg)'; }
+    if(btnFi) { btnFi.style.background = 'transparent'; btnFi.style.color = 'var(--muted)'; }
+  } else {
+    if(btnUp) { btnUp.style.background = 'transparent'; btnUp.style.color = 'var(--muted)'; }
+    if(btnFi) { btnFi.style.background = 'var(--gold)'; btnFi.style.color = 'var(--bg)'; }
+  }
+  renderMatches();
+}
+
+function getScriptUrl() {
+  const inp = document.getElementById('inp-apps-url');
+  return inp ? inp.value.trim() : GLOBAL_APPS_URL;
+}
+
 function syncFetch() {
-  const url = getScriptUrl(); if(!url) { alert('URL Kosong!'); return; }
-  const status = document.getElementById('sync-status'); status.innerHTML = '<span style="color:var(--gold)">⏳ Mengambil data cloud...</span>';
+  const url = getScriptUrl();
+  if(!url) { showAdminAlert('Error: Masukkan Apps Script URL!', 'err'); return; }
+  const status = document.getElementById('sync-status');
+  status.innerHTML = '<span style="color:var(--gold)">⏳ Mengambil data cloud...</span>';
   fetch(url + '?action=getData').then(res => res.json()).then(resData => {
-    if(resData && !resData.error) { state.participants = resData.participants || []; state.picks = resData.picks || []; state.overrides = resData.overrides || {}; saveLocal(); status.innerHTML = '<span style="color:var(--win-text)">✅ Sinkronisasi Selesai!</span>'; }
-  }).catch(err => { status.innerHTML = `<span style="color:var(--loss-text)">❌ Gagal: ${err.message}</span>`; });
+    if(resData && !resData.error) {
+      state.participants = resData.participants || [];
+      state.picks = resData.picks || [];
+      state.overrides = resData.overrides || {};
+      saveLocal();
+      status.innerHTML = '<span style="color:var(--win-text)\">✅ Sinkronisasi Selesai!</span>';
+    }
+    renderAll();
+  }).catch(err => {
+    status.innerHTML = `<span style="color:var(--loss-text)">❌ Gagal: ${err.message}</span>`;
+    renderAll();
+  });
 }
-function scrapeWikipedia() {
-  const url = getScriptUrl(); if(!url) { showAdminAlert('Error: Masukkan Apps Script URL!', 'err'); return; }
-  const statusEl = document.getElementById('sync-status'); statusEl.innerHTML = '<span style="color:var(--gold)">⏳ Memicu Scraper Wikipedia...</span>';
-  fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'scrapeWikipedia' }) })
-  .then(() => { statusEl.innerHTML = '<span style="color:var(--win-text)">✅ Sukses! Mengunduh data teranyar...</span>'; setTimeout(() => { syncFetch(); }, 2500); }).catch(err => { statusEl.innerHTML = '<span style="color:var(--loss-text)">❌ Gagal terhubung.</span>'; });
-}
-function showAdminAlert(msg, type='ok') { const el = document.getElementById('admin-alert'); if(!el) return; el.innerHTML = msg; setTimeout(() => el.innerHTML = '', 3000); }
 
-window.onload = init;
+function syncPush() {
+  const url = getScriptUrl();
+  if(!url) { showAdminAlert('Error: Masukkan Apps Script URL!', 'err'); return; }
+  const status = document.getElementById('sync-status');
+  status.innerHTML = '<span style="color:var(--gold)">⏳ Mengirim data ke cloud...</span>';
+  fetch(url, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({ action: 'saveAll', participants: state.participants, picks: state.picks, overrides: state.overrides })
+  }).then(() => {
+    status.innerHTML = '<span style="color:var(--win-text)">✅ Data Berhasil Diunggah!</span>';
+  }).catch(err => {
+    status.innerHTML = `<span style="color:var(--loss-text)">❌ Gagal mengunggah: ${err.message}</span>`;
+  });
+}
+
+function scrapeWikipedia() {
+  const url = getScriptUrl();
+  if(!url) { showAdminAlert('Error: Masukkan Apps Script URL!', 'err'); return; }
+  const statusEl = document.getElementById('sync-status');
+  statusEl.innerHTML = '<span style="color:var(--gold)">⏳ Memicu Scraper Wikipedia...</span>';
+  fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'scrapeWikipedia' }) })
+  .then(() => {
+    statusEl.innerHTML = '<span style="color:var(--win-text)">✅ Sukses! Mengunduh data teranyar...</span>';
+    setTimeout(() => { syncFetch(); }, 2500);
+  }).catch(err => {
+    statusEl.innerHTML = '<span style="color:var(--loss-text)">❌ Gagal terhubung.</span>';
+  });
+}
+
+// Inisialisasi Aplikasi Saat Window Dimuat
+window.onload = function() {
+  init();
+};
 </script>
 </body>
 </html>
