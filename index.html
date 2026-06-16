@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>WC 2026 — Prediction League</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #060D18;
+  --s1:       #0B1929;
+  --s2:       #0F2035;
+  --s3:       #152840;
+  --gold:     #C9A84C;
+  --gold2:    #E2BE6E;
+  --red:      #C0282F;
+  --red2:     #E03039;
+  --white:    #EDF2FF;
+  --muted:    #6A7D94;
+  --border:   rgba(201,168,76,.12);
+  --border2:  rgba(201,168,76,.35);
+  --win-bg:   rgba(46,125,50,.15);
+  --win-text: #A5D6A7;
+  --loss-text:#EF9A9A;
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', sans-serif; background-color: var(--bg);
+  background-image: radial-gradient(circle at 50% 0%, #0f2540 0%, var(--bg) 80%);
+  color: var(--white); min-height: 100vh; font-size: 13px; line-height: 1.4;
+  -webkit-tap-highlight-color: transparent;
+}
+.header {
+  background: linear-gradient(to bottom, var(--s1), rgba(11,25,41,0.9));
+  border-bottom: 1px solid var(--border); padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px);
+}
+.h-logo { display: flex; align-items: center; gap: 10px; }
+.h-badge { font-size: 22px; background: linear-gradient(135deg, var(--gold), var(--gold2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.h-title { font-family: 'Bebas Neue', cursive; letter-spacing: 0.5px; }
+.h-main { font-size: 18px; color: var(--white); display: block; line-height: 1; }
+.h-sub { font-size: 9px; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 1px; display: block; }
+.admin-trigger-btn { background: var(--s2); border: 1px solid var(--border); color: var(--gold2); font-size: 16px; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.admin-trigger-btn:active { background: var(--s3); transform: scale(0.95); }
+
+.tabs { display: flex; background: var(--s1); border-bottom: 1px solid var(--border); position: sticky; top: 62px; z-index: 90; backdrop-filter: blur(8px); }
+.tab-btn { flex: 1; padding: 14px 2px; border: none; background: transparent; color: var(--muted); font-size: 11px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; text-transform: uppercase; text-align: center; }
+.tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); background: rgba(201,168,76,0.02); }
+
+.content { padding: 12px; max-width: 600px; margin: 0 auto; padding-bottom: 40px; }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+.sec-title { font-family: 'Bebas Neue', cursive; font-size: 18px; letter-spacing: 1px; color: var(--gold2); margin: 12px 0 10px; padding-left: 8px; border-left: 3px solid var(--gold); }
+
+/* RESPONSIVE TABLES & CARDS */
+.s-table { width: 100%; border-collapse: collapse; font-size: 12px; background: rgba(11,25,41,0.4); border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+.s-table th { background: rgba(21,40,64,0.7); padding: 10px 4px; font-size: 9px; font-weight: 700; color: var(--muted); text-transform: uppercase; }
+.s-table td { padding: 11px 4px; text-align: center; border-bottom: 1px solid rgba(255,255,255,.03); }
+.s-table td.tl { text-align: left; padding-left: 8px; }
+.rank-circle { width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; background: var(--s3); color: var(--muted); }
+.rank-0 { background: var(--gold); color: #000; }
+.rank-1 { background: var(--gold2); color: #000; }
+.rank-2 { background: #A0AAB5; color: #000; }
+.pts-pill { padding: 2px 5px; border-radius: 4px; background: rgba(201,168,76,0.12); border: 1px solid var(--border2); color: var(--gold2); font-weight: 700; font-size: 11px; white-space: nowrap; }
+
+.grid-groups { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media(min-width: 480px) { .grid-groups { grid-template-columns: repeat(2, 1fr); } }
+.group-card { background: var(--s1); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.group-header { background: var(--s3); padding: 6px 10px; font-family: 'Bebas Neue', cursive; font-size: 14px; color: var(--gold); letter-spacing: 0.5px; }
+
+.wc-flag { width: 18px; height: 12px; border-radius: 1px; object-fit: cover; vertical-align: middle; border: 1px solid rgba(255,255,255,0.1); margin-right: 4px; }
+.match-card { background: var(--s1); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
+.mc-header { padding: 6px 10px; background: rgba(21,40,64,0.5); display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); align-items: center; }
+.md-badge { background: var(--s3); color: var(--gold2); padding: 1px 4px; border-radius: 3px; font-weight: 600; font-size: 9px; }
+.mc-body { display: grid; grid-template-columns: 1fr 60px 1fr; align-items: center; padding: 10px 8px; text-align: center; }
+.mc-team { display: flex; align-items: center; gap: 6px; font-weight: 500; font-size: 12px; overflow: hidden; }
+.mc-team span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mc-team.away { justify-content: flex-end; }
+.mc-score { font-family: 'Bebas Neue', cursive; font-size: 20px; letter-spacing: 0.5px; color: var(--white); }
+.mc-picks { padding: 6px 10px; background: rgba(0,0,0,0.12); display: flex; flex-direction: column; gap: 3px; font-size: 10px; border-top: 1px solid rgba(255,255,255,0.02); }
+.pk-badge { padding: 2px 6px; border-radius: 4px; background: var(--s2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+
+/* MODAL PANEL ADMIN (POPUP MOBILE) */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4,9,17,0.85); backdrop-filter: blur(8px); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
+.modal-content { background: var(--s1); border-top: 2px solid var(--gold); border-radius: 16px 16px 0 0; width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto; padding: 16px; position: relative; animation: slideUp 0.25s ease-out; }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal-close-btn { position: absolute; top: 14px; right: 16px; background: var(--s2); border: 1px solid var(--border); color: var(--muted); border-radius: 50%; width: 28px; height: 28px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+select, input[type=text], input[type=number] { background: var(--s2); border: 1px solid var(--border); color: var(--white); padding: 8px 10px; border-radius: 6px; outline: none; width: 100%; font-size: 12px; -webkit-appearance: none; }
+.admin-box { background: rgba(4,9,17,0.4); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+.admin-box h3 { font-family: 'Bebas Neue', cursive; color: var(--gold); margin-bottom: 8px; font-size: 14px; border-bottom: 1px solid var(--border); padding-bottom: 2px; }
+.form-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; align-items: flex-end; }
+.form-col { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 100px; }
+.btn { padding: 8px 12px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
+.btn-gold { background: var(--gold); color: #060D18; }
+.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--white); }
+.chip-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; background: var(--s2); border: 1px solid var(--border); border-radius: 4px; font-size: 10px; }
+.chip-del { background: none; border: none; color: var(--muted); cursor: pointer; font-weight: 700; margin-left: 2px; }
+.alert { padding: 6px 10px; border-radius: 6px; font-size: 11px; margin-bottom: 10px; background: rgba(201,168,76,0.1); border: 1px solid var(--gold); color: var(--gold2); }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="h-logo">
+    <div class="h-badge">🏆</div>
+    <div class="h-title">
+      <span class="h-main">LIGA BOLA DUNIA - EL</span>
+      <span class="h-sub">FIFA World Cup 2026</span>
+    </div>
+  </div>
+  <button class="admin-trigger-btn" onclick="openAdminModal()" title="Buka Panel Admin">⚙️</button>
+</header>
+
+<nav class="tabs">
+  <button id="btn-tab-klasemen" class="tab-btn active" onclick="switchTab('klasemen')">📊 Klasemen EL</button>
+  <button id="btn-tab-pertandingan" class="tab-btn" onclick="switchTab('pertandingan')">⚽ Matchday</button>
+  <button id="btn-tab-grup" class="tab-btn" onclick="switchTab('grup')">🌐 Group Standings</button>
+</nav>
+
+<main class="content">
+  <!-- TAB 1: KLASEMEN LIGA -->
+  <div id="tab-klasemen" class="tab-pane active">
+    <div class="sec-title">🏆 Klasemen Liga Bola Dunia-EL</div>
+    <div id="pred-standings"></div>
+  </div>
+
+  <!-- TAB 2: JADWAL KRONOLOGIS -->
+  <div id="tab-pertandingan" class="tab-pane">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <div class="sec-title" style="margin:0;">⚽ Jadwal Pertandingan</div>
+      <div style="width:130px">
+        <select id="filter-grup" onchange="renderMatches()" style="padding: 4px 8px;">
+          <option value="ALL">Semua Grup</option>
+          <option value="A">Grup A</option><option value="B">Grup B</option><option value="C">Grup C</option>
+          <option value="D">Grup D</option><option value="E">Grup E</option><option value="F">Grup F</option>
+          <option value="G">Grup G</option><option value="H">Grup H</option><option value="I">Grup I</option>
+          <option value="J">Grup J</option><option value="K">Grup K</option><option value="L">Grup L</option>
+        </select>
+      </div>
+    </div>
+    <div id="matches-container"></div>
+  </div>
+
+  <!-- TAB 3: KLASEMEN GRUP REAL WORLD CUP -->
+  <div id="tab-grup" class="tab-pane">
+    <div class="sec-title">🌐 Klasemen Fase Grup</div>
+    <div class="grid-groups" id="wc-groups-container"></div>
+  </div>
+</main>
+
+<!-- POPUP MODAL CONTROL PANEL ADMIN -->
+<div id="admin-modal" class="modal-overlay" onclick="closeAdminModalOnBackdrop(event)">
+  <div class="modal-content">
+    <button class="modal-close-btn" onclick="closeAdminModal()">&times;</button>
+    <div class="sec-title" style="margin-top:0; color:var(--gold);">⚙️ Kontrol Panel Admin</div>
+    <div id="admin-alert"></div>
+
+    <!-- Kelola Anggota -->
+    <div class="admin-box">
+      <h3>👤 Kelola Anggota Liga</h3>
+      <div class="form-row">
+        <div class="form-col" style="flex:2">
+          <input type="text" id="inp-name" placeholder="Nama Kontestan...">
+        </div>
+        <button class="btn btn-gold" onclick="addParticipant()">+ Daftar</button>
+      </div>
+      <div class="chip-list" id="chip-list"></div>
+    </div>
+
+    <!-- Input Pilihan Peserta -->
+    <div class="admin-box">
+      <h3>📝 Input Pilihan Tim Kontestan</h3>
+      <div class="form-row">
+        <div class="form-col">
+          <select id="sel-participant" onchange="renderPickForm()"></select>
+        </div>
+      </div>
+      <div id="pick-form-area" style="max-height:220px; overflow-y:auto; margin-top:6px; border:1px solid var(--border); padding:4px; border-radius:6px; background:rgba(0,0,0,0.2);"></div>
+      <button class="btn btn-gold" style="margin-top:8px; width:100%" onclick="savePicks()">💾 Simpan Pilihan Tim</button>
+    </div>
+
+    <!-- Sinkronisasi GSheet & Wikipedia -->
+    <div class="admin-box">
+      <h3>🔗 Cloud Sync & Wikipedia Scraper</h3>
+      <div style="display:flex; flex-direction:column; gap:6px">
+        <input type="text" id="inp-apps-url" placeholder="https://script.google.com/macros/s/.../exec">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; margin-top:4px;">
+          <button class="btn btn-gold" onclick="syncFetch()">⬇ Ambil Data</button>
+          <button class="btn btn-outline" onclick="syncPush()">⬆ Kirim Data</button>
+        </div>
+        <button class="btn" onclick="scrapeWikipedia()" style="background-color: #2E7D32; color: white; width:100%; margin-top:2px;">🔄 Scrape & Update Wikipedia</button>
+      </div>
+      <div id="sync-status" style="margin-top:8px; font-size:11px; font-weight:500; text-align:center;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ISO_MAPPING = {
+  'Mexico':'mx', 'South Africa':'za', 'South Korea':'kr', 'Czechia':'cz', 'Canada':'ca', 'Bosnia & Herz.':'ba', 'Qatar':'qa', 'Switzerland':'ch',
+  'Brazil':'br', 'Morocco':'ma', 'Haiti':'ht', 'Scotland':'gb-sct', 'USA':'us', 'Paraguay':'py', 'Australia':'au', 'Türkiye':'tr',
+  'Germany':'de', 'Curaçao':'cw', 'Ivory Coast':'ci', 'Ecuador':'ec', 'Japan':'jp', 'Netherlands':'nl', 'Sweden':'se', 'Tunisia':'tn',
+  'Belgium':'be', 'Egypt':'eg', 'Iran':'ir', 'New Zealand':'nz', 'Spain':'es', 'Cape Verde':'cv', 'Uruguay':'uy', 'Saudi Arabia':'sa',
+  'France':'fr', 'Senegal':'sn', 'Iraq':'iq', 'Norway':'no', 'Argentina':'ar', 'Algeria':'dz', 'Austria':'at', 'Jordan':'jo',
+  'Portugal':'pt', 'Colombia':'co', 'DR Congo':'cd', 'Uzbekistan':'uz', 'England':'gb-eng', 'Croatia':'hr', 'Ghana':'gh', 'Panama':'pa'
+};
+
+function getFlag(name) {
+  const code = ISO_MAPPING[name];
+  return code ? `<img src="https://flagcdn.com/w40/${code}.png" class="wc-flag">` : '⚽';
+}
+
+const BASE_MATCHES = [
+  {id:'A1',gr:'A',md:1,date:'11 Jun',t1:'Mexico',t2:'South Africa',s1:null,s2:null,done:false},
+  {id:'A2',gr:'A',md:1,date:'11 Jun',t1:'South Korea',t2:'Czechia',s1:null,s2:null,done:false},
+  {id:'B1',gr:'B',md:1,date:'12 Jun',t1:'Canada',t2:'Bosnia & Herz.',s1:null,s2:null,done:false},
+  {id:'B2',gr:'B',md:1,date:'12 Jun',t1:'Qatar',t2:'Switzerland',s1:null,s2:null,done:false},
+  {id:'C1',gr:'C',md:1,date:'13 Jun',t1:'Brazil',t2:'Morocco',s1:null,s2:null,done:false},
+  {id:'C2',gr:'C',md:1,date:'13 Jun',t1:'Haiti',t2:'Scotland',s1:null,s2:null,done:false},
+  {id:'D1',gr:'D',md:1,date:'13 Jun',t1:'USA',t2:'Paraguay',s1:null,s2:null,done:false},
+  {id:'D2',gr:'D',md:1,date:'14 Jun',t1:'Australia',t2:'Türkiye',s1:null,s2:null,done:false},
+  {id:'E1',gr:'E',md:1,date:'14 Jun',t1:'Germany',t2:'Curaçao',s1:null,s2:null,done:false},
+  {id:'E2',gr:'E',md:1,date:'15 Jun',t1:'Ivory Coast',t2:'Ecuador',s1:null,s2:null,done:false},
+  {id:'F1',gr:'F',md:1,date:'15 Jun',t1:'Japan',t2:'Netherlands',s1:null,s2:null,done:false},
+  {id:'F2',gr:'F',md:1,date:'15 Jun',t1:'Sweden',t2:'Tunisia',s1:null,s2:null,done:false},
+  {id:'G1',gr:'G',md:1,date:'16 Jun',t1:'Belgium',t2:'Egypt',s1:null,s2:null,done:false},
+  {id:'G2',gr:'G',md:1,date:'16 Jun',t1:'Iran',t2:'New Zealand',s1:null,s2:null,done:false},
+  {id:'H1',gr:'H',md:1,date:'16 Jun',t1:'Spain',t2:'Cape Verde',s1:null,s2:null,done:false},
+  {id:'A3',gr:'A',md:2,date:'17 Jun',t1:'Mexico',t2:'South Korea',s1:null,s2:null,done:false},
+  {id:'A4',gr:'A',md:2,date:'17 Jun',t1:'South Africa',t2:'Czechia',s1:null,s2:null,done:false},
+  {id:'H2',gr:'H',md:1,date:'17 Jun',t1:'Uruguay',t2:'Saudi Arabia',s1:null,s2:null,done:false},
+  {id:'I1',gr:'I',md:1,date:'17 Jun',t1:'France',t2:'Senegal',s1:null,s2:null,done:false},
+  {id:'I2',gr:'I',md:1,date:'17 Jun',t1:'Iraq',t2:'Norway',s1:null,s2:null,done:false},
+  {id:'B3',gr:'B',md:2,date:'18 Jun',t1:'Canada',t2:'Qatar',s1:null,s2:null,done:false},
+  {id:'B4',gr:'B',md:2,date:'18 Jun',t1:'Bosnia & Herz.',t2:'Switzerland',s1:null,s2:null,done:false},
+  {id:'J1',gr:'J',md:1,date:'18 Jun',t1:'Argentina',t2:'Algeria',s1:null,s2:null,done:false},
+  {id:'J2',gr:'J',md:1,date:'18 Jun',t1:'Austria',t2:'Jordan',s1:null,s2:null,done:false},
+  {id:'C3',gr:'C',md:2,date:'19 Jun',t1:'Brazil',t2:'Haiti',s1:null,s2:null,done:false},
+  {id:'C4',gr:'C',md:2,date:'19 Jun',t1:'Morocco',t2:'Scotland',s1:null,s2:null,done:false},
+  {id:'D3',gr:'D',md:2,date:'19 Jun',t1:'USA',t2:'Australia',s1:null,s2:null,done:false},
+  {id:'K1',gr:'K',md:1,date:'19 Jun',t1:'Portugal',t2:'Colombia',s1:null,s2:null,done:false},
+  {id:'K2',gr:'K',md:1,date:'19 Jun',t1:'DR Congo',t2:'Uzbekistan',s1:null,s2:null,done:false},
+  {id:'D4',gr:'D',md:2,date:'20 Jun',t1:'Paraguay',t2:'Türkiye',s1:null,s2:null,done:false},
+  {id:'E3',gr:'E',md:2,date:'20 Jun',t1:'Germany',t2:'Ivory Coast',s1:null,s2:null,done:false},
+  {id:'L1',gr:'L',md:1,date:'20 Jun',t1:'England',t2:'Croatia',s1:null,s2:null,done:false},
+  {id:'L2',gr:'L',md:1,date:'20 Jun',t1:'Ghana',t2:'Panama',s1:null,s2:null,done:false},
+  {id:'E4',gr:'E',md:2,date:'21 Jun',t1:'Curaçao',t2:'Ecuador',s1:null,s2:null,done:false},
+  {id:'F3',gr:'F',md:2,date:'21 Jun',t1:'Japan',t2:'Sweden',s1:null,s2:null,done:false},
+  {id:'F4',gr:'F',md:2,date:'21 Jun',t1:'Netherlands',t2:'Tunisia',s1:null,s2:null,done:false},
+  {id:'G3',gr:'G',md:2,date:'22 Jun',t1:'Belgium',t2:'Iran',s1:null,s2:null,done:false},
+  {id:'G4',gr:'G',md:2,date:'22 Jun',t1:'Egypt',t2:'New Zealand',s1:null,s2:null,done:false},
+  {id:'H3',gr:'H',md:2,date:'22 Jun',t1:'Spain',t2:'Uruguay',s1:null,s2:null,done:false},
+  {id:'H4',gr:'H',md:2,date:'22 Jun',t1:'Cape Verde',t2:'Saudi Arabia',s1:null,s2:null,done:false},
+  {id:'I3',gr:'I',md:2,date:'23 Jun',t1:'France',t2:'Iraq',s1:null,s2:null,done:false},
+  {id:'I4',gr:'I',md:2,date:'23 Jun',t1:'Senegal',t2:'Norway',s1:null,s2:null,done:false},
+  {id:'J3',gr:'J',md:2,date:'23 Jun',t1:'Argentina',t2:'Austria',s1:null,s2:null,done:false},
+  {id:'A5',gr:'A',md:3,date:'24 Jun',t1:'Mexico',t2:'Czechia',s1:null,s2:null,done:false},
+  {id:'A6',gr:'A',md:3,date:'24 Jun',t1:'South Africa',t2:'South Korea',s1:null,s2:null,done:false},
+  {id:'B5',gr:'B',md:3,date:'24 Jun',t1:'Canada',t2:'Switzerland',s1:null,s2:null,done:false},
+  {id:'B6',gr:'B',md:3,date:'24 Jun',t1:'Bosnia & Herz.',t2:'Qatar',s1:null,s2:null,done:false},
+  {id:'C5',gr:'C',md:3,date:'24 Jun',t1:'Brazil',t2:'Scotland',s1:null,s2:null,done:false},
+  {id:'C6',gr:'C',md:3,date:'24 Jun',t1:'Morocco',t2:'Haiti',s1:null,s2:null,done:false},
+  {id:'J4',gr:'J',md:2,date:'24 Jun',t1:'Algeria',t2:'Jordan',s1:null,s2:null,done:false},
+  {id:'K3',gr:'K',md:2,date:'24 Jun',t1:'Portugal',t2:'DR Congo',s1:null,s2:null,done:false},
+  {id:'K4',gr:'K',md:2,date:'24 Jun',t1:'Colombia',t2:'Uzbekistan',s1:null,s2:null,done:false},
+  {id:'D5',gr:'D',md:3,date:'25 Jun',t1:'USA',t2:'Türkiye',s1:null,s2:null,done:false},
+  {id:'D6',gr:'D',md:3,date:'25 Jun',t1:'Paraguay',t2:'Australia',s1:null,s2:null,done:false},
+  {id:'E5',gr:'E',md:3,date:'25 Jun',t1:'Germany',t2:'Ecuador',s1:null,s2:null,done:false},
+  {id:'E6',gr:'E',md:3,date:'25 Jun',t1:'Curaçao',t2:'Ivory Coast',s1:null,s2:null,done:false},
+  {id:'L3',gr:'L',md:2,date:'25 Jun',t1:'England',t2:'Ghana',s1:null,s2:null,done:false},
+  {id:'L4',gr:'L',md:2,date:'25 Jun',t1:'Croatia',t2:'Panama',s1:null,s2:null,done:false},
+  {id:'F5',gr:'F',md:3,date:'26 Jun',t1:'Japan',t2:'Tunisia',s1:null,s2:null,done:false},
+  {id:'F6',gr:'F',md:3,date:'26 Jun',t1:'Netherlands',t2:'Sweden',s1:null,s2:null,done:false},
+  {id:'G5',gr:'G',md:3,date:'26 Jun',t1:'Belgium',t2:'New Zealand',s1:null,s2:null,done:false},
+  {id:'G6',gr:'G',md:3,date:'26 Jun',t1:'Egypt',t2:'Iran',s1:null,s2:null,done:false},
+  {id:'H5',gr:'H',md:3,date:'27 Jun',t1:'Spain',t2:'Saudi Arabia',s1:null,s2:null,done:false},
+  {id:'H6',gr:'H',md:3,date:'27 Jun',t1:'Cape Verde',t2:'Uruguay',s1:null,s2:null,done:false},
+  {id:'I5',gr:'I',md:3,date:'27 Jun',t1:'France',t2:'Norway',s1:null,s2:null,done:false},
+  {id:'I6',gr:'I',md:3,date:'27 Jun',t1:'Senegal',t2:'Iraq',s1:null,s2:null,done:false},
+  {id:'J5',gr:'J',md:3,date:'28 Jun',t1:'Argentina',t2:'Jordan',s1:null,s2:null,done:false},
+  {id:'J6',gr:'J',md:3,date:'28 Jun',t1:'Algeria',t2:'Austria',s1:null,s2:null,done:false},
+  {id:'K5',gr:'K',md:3,date:'28 Jun',t1:'Portugal',t2:'Uzbekistan',s1:null,s2:null,done:false},
+  {id:'K6',gr:'K',md:3,date:'28 Jun',t1:'Colombia',t2:'DR Congo',s1:null,s2:null,done:false},
+  {id:'L5',gr:'L',md:3,date:'29 Jun',t1:'England',t2:'Panama',s1:null,s2:null,done:false},
+  {id:'L6',gr:'L',md:3,date:'29 Jun',t1:'Croatia',t2:'Ghana',s1:null,s2:null,done:false}
+];
+
+const GROUPS_BLUEPRINT = {
+  'A': ['Mexico', 'South Africa', 'South Korea', 'Czechia'],
+  'B': ['Canada', 'Bosnia & Herz.', 'Qatar', 'Switzerland'],
+  'C': ['Brazil', 'Morocco', 'Haiti', 'Scotland'],
+  'D': ['USA', 'Paraguay', 'Australia', 'Türkiye'],
+  'E': ['Germany', 'Curaçao', 'Ivory Coast', 'Ecuador'],
+  'F': ['Japan', 'Netherlands', 'Sweden', 'Tunisia'],
+  'G': ['Belgium', 'Egypt', 'Iran', 'New Zealand'],
+  'H': ['Spain', 'Cape Verde', 'Uruguay', 'Saudi Arabia'],
+  'I': ['France', 'Senegal', 'Iraq', 'Norway'],
+  'J': ['Argentina', 'Algeria', 'Austria', 'Jordan'],
+  'K': ['Portugal', 'Colombia', 'DR Congo', 'Uzbekistan'],
+  'L': ['England', 'Croatia', 'Ghana', 'Panama']
+};
+
+let state = { participants: [], picks: [], overrides: {} };
+
+function init() {
+  const saved = localStorage.getItem('wc_choice_state_v2');
+  if(saved) { try { state = JSON.parse(saved); if(!Array.isArray(state.picks)) state.picks=[]; } catch { state = { participants: [], picks: [], overrides: {} }; } }
+  const url = localStorage.getItem('wc_apps_url_v2');
+  if(url) document.getElementById('inp-apps-url').value = url;
+  renderAll();
+}
+function saveLocal() { localStorage.setItem('wc_choice_state_v2', JSON.stringify(state)); }
+function getMatches() { return BASE_MATCHES.map(m => state.overrides[m.id] ? { ...m, ...state.overrides[m.id] } : m); }
+
+function renderAll() {
+  renderStandings();
+  renderMatches();
+  renderWCGroups();
+  renderParticipants();
+}
+
+// GENERATOR WARNA ACAK (TEMBUS PANDANG & CERAH)
+function generateRandomColor() {
+  const hue = Math.floor(Math.random() * 360);
+  return `hsl(${hue}, 85%, 65%)`;
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('btn-tab-'+name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+
+function openAdminModal() { document.getElementById('admin-modal').style.display = 'flex'; renderParticipants(); renderPickForm(); }
+function closeAdminModal() { document.getElementById('admin-modal').style.display = 'none'; renderAll(); }
+function closeAdminModalOnBackdrop(e) { if(e.target.id === 'admin-modal') closeAdminModal(); }
+
+function renderStandings() {
+  const container = document.getElementById('pred-standings');
+  const matches = getMatches();
+  const userStats = state.participants.map(p => {
+    let stat = { id:p.id, name:p.name, color:p.color, p:0, w:0, d:0, l:0, gf:0, ga:0, gd:0, pts:0 };
+    state.picks.forEach(pk => {
+      if(pk.pid !== p.id) return;
+      const m = matches.find(match => match.id === pk.mid);
+      if(!m || !m.done) return;
+      stat.p++;
+      if(pk.pick === m.t1) {
+        stat.gf += m.s1; stat.ga += m.s2;
+        if(m.s1 > m.s2) { stat.w++; stat.pts += 3; } else if(m.s1 < m.s2) { stat.l++; } else { stat.d++; stat.pts += 1; }
+      } else if(pk.pick === m.t2) {
+        stat.gf += m.s2; stat.ga += m.s1;
+        if(m.s2 > m.s1) { stat.w++; stat.pts += 3; } else if(m.s2 < m.s1) { stat.l++; } else { stat.d++; stat.pts += 1; }
+      }
+    });
+    stat.gd = stat.gf - stat.ga;
+    return stat;
+  });
+
+  userStats.sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.name.localeCompare(b.name));
+  if(userStats.length === 0) { container.innerHTML = '<p style="text-align:center;padding:20px;color:var(--muted)">Belum ada anggota terdaftar.</p>'; return; }
+
+  let h = `<table class="s-table">
+    <thead><tr><th style="width:30px">Pos</th><th class="tl">Nama</th><th>Mn</th><th style="color:#A5D6A7">M</th><th>S</th><th style="color:#EF9A9A">K</th><th>SG</th><th>Poin</th></tr></thead><tbody>`;
+  userStats.forEach((p, idx) => {
+    h += `<tr>
+      <td><span class="rank-circle rank-${idx < 3 ? idx : 'default'}">${idx+1}</span></td>
+      <td class="tl" style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${p.color};margin-right:4px"></span>${p.name}</td>
+      <td>${p.p}</td><td>${p.w}</td><td>${p.d}</td><td>${p.l}</td><td>${p.gd > 0 ? '+'+p.gd : p.gd}</td>
+      <td><span class="pts-pill">${p.pts} Pts</span></td>
+    </tr>`;
+  });
+  container.innerHTML = h + '</tbody></table>';
+}
+
+function renderMatches() {
+  const container = document.getElementById('matches-container');
+  const filter = document.getElementById('filter-grup').value;
+  const matches = getMatches();
+  let h = '';
+
+  const filtered = matches.filter(m => filter === 'ALL' || m.gr === filter);
+  filtered.forEach(m => {
+    let pickBadges = '';
+    state.participants.forEach(p => {
+      const pk = state.picks.find(x => x.pid === p.id && x.mid === m.id);
+      if(pk) {
+        pickBadges += `<div class="pk-badge">
+          <div style="display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:${p.color}"></span><strong>${p.name}</strong></div>
+          <div>${getFlag(pk.pick)} ${pk.pick}</div>
+        </div>`;
+      }
+    });
+
+    h += `<div class="match-card">
+      <div class="mc-header">
+        <div>GRUP ${m.gr} · ${m.date}</div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="md-badge">MD ${m.md}</span><span style="font-weight:700; font-size:9px; color:${m.done?'var(--gold2)':'var(--muted)'}">${m.done ? '✓ SELESAI' : '⏳ LIVE/BELUM'}</span></div>
+      </div>
+      <div class="mc-body">
+        <div class="mc-team">${getFlag(m.t1)} <span>${m.t1}</span></div>
+        <div class="mc-score" style="color: ${m.done ? 'var(--gold2)': 'var(--muted)'}">${m.done ? `${m.s1}-${m.s2}` : 'VS'}</div>
+        <div class="mc-team away"><span>${m.t2}</span> ${getFlag(m.t2)}</div>
+      </div>
+      <div class="mc-picks">${pickBadges || '<span style="color:var(--muted);text-align:center;font-size:9px">Belum ada pilihan masuk</span>'}</div>
+    </div>`;
+  });
+  container.innerHTML = h;
+}
+
+function renderWCGroups() {
+  const container = document.getElementById('wc-groups-container');
+  const matches = getMatches();
+  container.innerHTML = '';
+
+  ['A','B','C','D','E','F','G','H','I','J','K','L'].forEach(g => {
+    let teams = {};
+    GROUPS_BLUEPRINT[g].forEach(tName => { teams[tName] = { name:tName, gd:0, pts:0 }; });
+    matches.filter(m => m.gr === g).forEach(m => {
+      if(!m.done) return;
+      let t1 = teams[m.t1], t2 = teams[m.t2]; if(!t1 || !t2) return;
+      t1.gd += (m.s1 - m.s2); t2.gd += (m.s2 - m.s1);
+      if(m.s1 > m.s2) t1.pts += 3; else if(m.s1 < m.s2) t2.pts += 3; else { t1.pts += 1; t2.pts += 1; }
+    });
+
+    let sortedTeams = Object.values(teams).sort((a,b) => b.pts - a.pts || b.gd - a.gd);
+    let h = `<div class="group-card"><div class="group-header">GRUP ${g}</div><table class="s-table" style="font-size:11px"><thead><tr><th class="tl">Tim</th><th>SG</th><th>Pts</th></tr></thead><tbody>`;
+    sortedTeams.forEach(t => {
+      h += `<tr>
+        <td class="tl" style="display:flex;align-items:center;gap:4px;font-weight:500;">${getFlag(t.name)} <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:85px">${t.name}</span></td>
+        <td>${t.gd > 0 ? '+'+t.gd : t.gd}</td><td><span style="color:var(--gold);font-weight:700">${t.pts}</span></td>
+      </tr>`;
+    });
+    container.innerHTML += h + `</tbody></table></div>`;
+  });
+}
+
+function renderParticipants() {
+  const list = document.getElementById('chip-list'); const sel = document.getElementById('sel-participant');
+  list.innerHTML = ''; sel.innerHTML = '<option value="">-- Pilih Kontestan --</option>';
+  state.participants.forEach(p => {
+    list.innerHTML += `<div class="chip"><span style="width:6px;height:6px;border-radius:50%;background:${p.color}"></span><span>${p.name}</span><button class="chip-del" onclick="deleteParticipant('${p.id}')">&times;</button></div>`;
+    sel.innerHTML += `<option value="${p.id}">${p.name}</option>`;
+  });
+}
+
+function addParticipant() {
+  const name = document.getElementById('inp-name').value.trim(); 
+  if(!name) return;
+  
+  const randomColor = generateRandomColor();
+  state.participants.push({ id:'p_'+Date.now(), name, color: randomColor }); 
+  document.getElementById('inp-name').value = ''; 
+  saveLocal(); 
+  renderParticipants();
+}
+
+function deleteParticipant(id) { state.participants = state.participants.filter(p => p.id !== id); state.picks = state.picks.filter(p => p.pid !== id); saveLocal(); renderParticipants(); }
+
+function renderPickForm() {
+  const area = document.getElementById('pick-form-area'); const pid = document.getElementById('sel-participant').value;
+  if(!pid) { area.innerHTML = '<p style="color:var(--muted);text-align:center;font-size:11px;padding:10px;">Pilih peserta untuk mengisi tim pilihan.</p>'; return; }
+  let h = '<div style="display:flex; flex-direction:column; gap:5px">';
+  getMatches().forEach(m => {
+    const cur = state.picks.find(x => x.pid === pid && x.mid === m.id);
+    h += `<div class="form-row" style="background:var(--s3); padding:5px; border-radius:6px" data-mid="${m.id}">
+      <div style="flex:1; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${m.t1} vs ${m.t2}</div>
+      <div style="width:110px"><select class="pick-select" style="padding:4px; font-size:10px;"><option value="">- Lewati -</option><option value="${m.t1}" ${cur?.pick===m.t1?'selected':''}>${m.t1}</option><option value="${m.t2}" ${cur?.pick===m.t2?'selected':''}>${m.t2}</option></select></div>
+    </div>`;
+  });
+  area.innerHTML = h + '</div>';
+}
+
+function savePicks() {
+  const pid = document.getElementById('sel-participant').value; if(!pid) return;
+  state.picks = state.picks.filter(x => x.pid !== pid);
+  document.querySelectorAll('#pick-form-area .form-row').forEach(row => {
+    const mid = row.getAttribute('data-mid'); const val = row.querySelector('.pick-select').value;
+    if(val) state.picks.push({ pid, mid, pick: val });
+  });
+  saveLocal(); showAdminAlert('Pilihan berhasil disimpan!');
+}
+
+function getScriptUrl() { const url = document.getElementById('inp-apps-url').value.trim(); if(url) localStorage.setItem('wc_apps_url_v2', url); return url; }
+function syncPush() {
+  const url = getScriptUrl(); if(!url) { alert('URL Kosong!'); return; }
+  const status = document.getElementById('sync-status'); status.innerHTML = '<span style="color:var(--gold)">⏳ Mengirim data...</span>';
+  fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ action: 'saveAll', participants: state.participants, picks: state.picks, overrides: state.overrides }) })
+  .then(() => { status.innerHTML = '<span style="color:var(--win-text)">✅ Berhasil Upload Cloud GSheet!</span>'; }).catch(err => { status.innerHTML = `<span style="color:var(--loss-text)">❌ Gagal: ${err.message}</span>`; });
+}
+function syncFetch() {
+  const url = getScriptUrl(); if(!url) { alert('URL Kosong!'); return; }
+  const status = document.getElementById('sync-status'); status.innerHTML = '<span style="color:var(--gold)">⏳ Mengambil data cloud...</span>';
+  fetch(url + '?action=getData').then(res => res.json()).then(resData => {
+    if(resData && !resData.error) { state.participants = resData.participants || []; state.picks = resData.picks || []; state.overrides = resData.overrides || {}; saveLocal(); status.innerHTML = '<span style="color:var(--win-text)">✅ Sinkronisasi Selesai!</span>'; }
+  }).catch(err => { status.innerHTML = `<span style="color:var(--loss-text)">❌ Gagal: ${err.message}</span>`; });
+}
+function scrapeWikipedia() {
+  const url = getScriptUrl(); if(!url) { showAdminAlert('Error: Masukkan Apps Script URL!', 'err'); return; }
+  const statusEl = document.getElementById('sync-status'); statusEl.innerHTML = '<span style="color:var(--gold)">⏳ Memicu Scraper Wikipedia...</span>';
+  fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'scrapeWikipedia' }) })
+  .then(() => { statusEl.innerHTML = '<span style="color:var(--win-text)">✅ Sukses! Mengunduh data teranyar...</span>'; setTimeout(() => { syncFetch(); }, 2500); }).catch(err => { statusEl.innerHTML = '<span style="color:var(--loss-text)">❌ Gagal terhubung.</span>'; });
+}
+function showAdminAlert(msg, type='ok') { const el = document.getElementById('admin-alert'); if(!el) return; el.innerHTML = msg; setTimeout(() => el.innerHTML = '', 3000); }
+
+window.onload = init;
+</script>
+</body>
+</html>
