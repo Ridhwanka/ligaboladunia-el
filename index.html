@@ -520,45 +520,52 @@ function downloadKlasemenGambar() {
   const targetArea = document.getElementById('capture-area-klasemen');
   const headerBranding = document.getElementById('capture-header');
   const footerBranding = document.getElementById('capture-footer');
-  const dateBranding = document.getElementById('capture-date'); // Ambil elemen tanggal
+  const dateBranding = document.getElementById('capture-date');
 
   if (!targetArea) return;
 
-  // Mendapatkan tanggal hari ini dengan format Indonesia (Contoh: 16 Juni 2026)
   const opsiTanggal = { year: 'numeric', month: 'long', day: 'numeric' };
   const tanggalHariIni = new Date().toLocaleDateString('id-ID', opsiTanggal);
   
-  // Masukkan tanggal ke dalam footer sebelum di-render menjadi gambar
-  if (dateBranding) {
-    dateBranding.innerText = tanggalHariIni;
-  }
-
-  // Tampilkan sementara header dan footer khusus visual gambar sebelum dicapture
+  if (dateBranding) dateBranding.innerText = tanggalHariIni;
   if (headerBranding) headerBranding.style.display = 'block';
   if (footerBranding) footerBranding.style.display = 'flex';
 
-  // Eksekusi perenderaan elemen ke canvas
   html2canvas(targetArea, {
-    scale: 2, // Resolusi HD agar teks tidak blur saat dikirim ke chat
-    backgroundColor: '#060D18', // Warna dasar fallback agar solid
+    scale: 2,
+    backgroundColor: '#060D18',
     logging: false,
     useCORS: true
   }).then(canvas => {
-    // Sembunyikan kembali elemen branding dari halaman interface utama
     if (headerBranding) headerBranding.style.display = 'none';
     if (footerBranding) footerBranding.style.display = 'none';
 
-    // Proses konversi dan pengunduhan file gambar otomatis
-    const dataURL = canvas.toDataURL('image/png');
-    const triggerLink = document.createElement('a');
-    triggerLink.href = dataURL;
-    triggerLink.download = `Klasemen_EL_${tanggalHariIni.replace(/ /g, '_')}.png`; // Nama file juga dinamis menggunakan tanggal
-    document.body.appendChild(triggerLink);
-    triggerLink.click();
-    document.body.removeChild(triggerLink);
+    // Konversi canvas menjadi Blob (file objek asli) bukan DataURL string
+    canvas.toBlob(blob => {
+      const fileGambar = new File([blob], `Klasemen_EL_${tanggalHariIni.replace(/ /g, '_')}.png`, { type: 'image/png' });
+      
+      // Cek apakah browser HP mendukung fitur Share File
+      if (navigator.canShare && navigator.canShare({ files: [fileGambar] })) {
+        navigator.share({
+          files: [fileGambar],
+          title: 'Klasemen Liga Bola Dunia - EL',
+          text: `Update Klasemen Terbaru Per Tanggal ${tanggalHariIni}`
+        })
+        .then(() => console.log('Berhasil share!'))
+        .catch(err => console.log('Batal share:', err));
+      } else {
+        // Fallback: Jika dibuka di laptop/browser yang tidak mendukung, otomatis download biasa
+        const dataURL = canvas.toDataURL('image/png');
+        const triggerLink = document.createElement('a');
+        triggerLink.href = dataURL;
+        triggerLink.download = `Klasemen_EL_${tanggalHariIni.replace(/ /g, '_')}.png`;
+        document.body.appendChild(triggerLink);
+        triggerLink.click();
+        document.body.removeChild(triggerLink);
+      }
+    }, 'image/png');
   }).catch(err => {
     console.error("Gagal memproses gambar:", err);
-    // Kembalikan ke keadaan semula jika ada error tak terduga
     if (headerBranding) headerBranding.style.display = 'none';
     if (footerBranding) footerBranding.style.display = 'none';
   });
