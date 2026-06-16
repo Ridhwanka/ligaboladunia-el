@@ -79,8 +79,13 @@ body {
 .mc-team span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mc-team.away { justify-content: flex-end; }
 .mc-score { font-family: 'Bebas Neue', cursive; font-size: 20px; letter-spacing: 0.5px; color: var(--white); }
-.mc-picks { padding: 6px 10px; background: rgba(0,0,0,0.12); display: flex; flex-direction: column; gap: 3px; font-size: 10px; border-top: 1px solid rgba(255,255,255,0.02); }
-.pk-badge { padding: 2px 6px; border-radius: 4px; background: var(--s2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+
+/* GAYA TERBARU DUA KOLOM PENDUKUNG */
+.mc-picks-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(201,168,76,0.08); border-top: 1px solid rgba(255,255,255,0.02); }
+.mc-pick-column { padding: 6px 8px; display: flex; flex-direction: column; gap: 4px; background: rgba(4,9,17,0.2); }
+.mc-pick-column:first-child { border-right: 1px solid rgba(201,168,76,0.1); }
+.column-title { font-size: 9px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 2px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pk-badge { padding: 3px 6px; border-radius: 4px; background: var(--s2); border: 1px solid var(--border); display: flex; align-items: center; gap: 4px; font-size: 10px; }
 
 /* MODAL PANEL ADMIN (POPUP MOBILE) */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4,9,17,0.85); backdrop-filter: blur(8px); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
@@ -230,63 +235,63 @@ const BASE_MATCHES = [
   {id:'G1',gr:'G',md:1,date:'16 Jun',t1:'Belgium',t2:'Egypt',s1:null,s2:null,done:false},
   {id:'G2',gr:'G',md:1,date:'16 Jun',t1:'Iran',t2:'New Zealand',s1:null,s2:null,done:false},
   {id:'H1',gr:'H',md:1,date:'16 Jun',t1:'Spain',t2:'Cape Verde',s1:null,s2:null,done:false},
-  {id:'A3',gr:'A',md:2,date:'17 Jun',t1:'Mexico',t2:'South Korea',s1:null,s2:null,done:false},
-  {id:'A4',gr:'A',md:2,date:'17 Jun',t1:'South Africa',t2:'Czechia',s1:null,s2:null,done:false},
-  {id:'H2',gr:'H',md:1,date:'17 Jun',t1:'Uruguay',t2:'Saudi Arabia',s1:null,s2:null,done:false},
+  {id:'H2',gr:'H',md:1,date:'16 Jun',t1:'Uruguay',t2:'Saudi Arabia',s1:null,s2:null,done:false},
   {id:'I1',gr:'I',md:1,date:'17 Jun',t1:'France',t2:'Senegal',s1:null,s2:null,done:false},
   {id:'I2',gr:'I',md:1,date:'17 Jun',t1:'Iraq',t2:'Norway',s1:null,s2:null,done:false},
-  {id:'B3',gr:'B',md:2,date:'18 Jun',t1:'Canada',t2:'Qatar',s1:null,s2:null,done:false},
-  {id:'B4',gr:'B',md:2,date:'18 Jun',t1:'Bosnia & Herz.',t2:'Switzerland',s1:null,s2:null,done:false},
-  {id:'J1',gr:'J',md:1,date:'18 Jun',t1:'Argentina',t2:'Algeria',s1:null,s2:null,done:false},
-  {id:'J2',gr:'J',md:1,date:'18 Jun',t1:'Austria',t2:'Jordan',s1:null,s2:null,done:false},
-  {id:'C3',gr:'C',md:2,date:'19 Jun',t1:'Brazil',t2:'Haiti',s1:null,s2:null,done:false},
-  {id:'C4',gr:'C',md:2,date:'19 Jun',t1:'Morocco',t2:'Scotland',s1:null,s2:null,done:false},
-  {id:'D3',gr:'D',md:2,date:'19 Jun',t1:'USA',t2:'Australia',s1:null,s2:null,done:false},
-  {id:'K1',gr:'K',md:1,date:'19 Jun',t1:'Portugal',t2:'Colombia',s1:null,s2:null,done:false},
-  {id:'K2',gr:'K',md:1,date:'19 Jun',t1:'DR Congo',t2:'Uzbekistan',s1:null,s2:null,done:false},
+  {id:'J1',gr:'J',md:1,date:'17 Jun',t1:'Argentina',t2:'Algeria',s1:null,s2:null,done:false},
+  {id:'J2',gr:'J',md:1,date:'17 Jun',t1:'Austria',t2:'Jordan',s1:null,s2:null,done:false},
+  {id:'L1',gr:'L',md:1,date:'18 Jun',t1:'England',t2:'Croatia',s1:null,s2:null,done:false},
+  {id:'L2',gr:'L',md:1,date:'18 Jun',t1:'Ghana',t2:'Panama',s1:null,s2:null,done:false},
+  {id:'K3',gr:'K',md:2,date:'18 Jun',t1:'Portugal',t2:'DR Congo',s1:null,s2:null,done:false},
+  {id:'K4',gr:'K',md:2,date:'18 Jun',t1:'Colombia',t2:'Uzbekistan',s1:null,s2:null,done:false},
+  {id:'A4',gr:'A',md:2,date:'18 Jun',t1:'South Africa',t2:'Czechia',s1:null,s2:null,done:false},
+  {id:'A3',gr:'A',md:2,date:'19 Jun',t1:'Mexico',t2:'South Korea',s1:null,s2:null,done:false},
+  {id:'B4',gr:'B',md:2,date:'19 Jun',t1:'Bosnia & Herz.',t2:'Switzerland',s1:null,s2:null,done:false},
+  {id:'B3',gr:'B',md:2,date:'19 Jun',t1:'Canada',t2:'Qatar',s1:null,s2:null,done:false},
+  {id:'D3',gr:'D',md:2,date:'20 Jun',t1:'USA',t2:'Australia',s1:null,s2:null,done:false},
+  {id:'C3',gr:'C',md:2,date:'20 Jun',t1:'Brazil',t2:'Haiti',s1:null,s2:null,done:false},
+  {id:'C4',gr:'C',md:2,date:'20 Jun',t1:'Morocco',t2:'Scotland',s1:null,s2:null,done:false},
   {id:'D4',gr:'D',md:2,date:'20 Jun',t1:'Paraguay',t2:'Türkiye',s1:null,s2:null,done:false},
-  {id:'E3',gr:'E',md:2,date:'20 Jun',t1:'Germany',t2:'Ivory Coast',s1:null,s2:null,done:false},
-  {id:'L1',gr:'L',md:1,date:'20 Jun',t1:'England',t2:'Croatia',s1:null,s2:null,done:false},
-  {id:'L2',gr:'L',md:1,date:'20 Jun',t1:'Ghana',t2:'Panama',s1:null,s2:null,done:false},
+  {id:'F6',gr:'F',md:3,date:'21 Jun',t1:'Netherlands',t2:'Sweden',s1:null,s2:null,done:false},
+  {id:'E3',gr:'E',md:2,date:'21 Jun',t1:'Germany',t2:'Ivory Coast',s1:null,s2:null,done:false},
   {id:'E4',gr:'E',md:2,date:'21 Jun',t1:'Curaçao',t2:'Ecuador',s1:null,s2:null,done:false},
-  {id:'F3',gr:'F',md:2,date:'21 Jun',t1:'Japan',t2:'Sweden',s1:null,s2:null,done:false},
-  {id:'F4',gr:'F',md:2,date:'21 Jun',t1:'Netherlands',t2:'Tunisia',s1:null,s2:null,done:false},
+  {id:'F5',gr:'F',md:3,date:'21 Jun',t1:'Japan',t2:'Tunisia',s1:null,s2:null,done:false},
+  {id:'H5',gr:'H',md:3,date:'21 Jun',t1:'Spain',t2:'Saudi Arabia',s1:null,s2:null,done:false},
   {id:'G3',gr:'G',md:2,date:'22 Jun',t1:'Belgium',t2:'Iran',s1:null,s2:null,done:false},
+  {id:'H6',gr:'H',md:3,date:'22 Jun',t1:'Cape Verde',t2:'Uruguay',s1:null,s2:null,done:false},
   {id:'G4',gr:'G',md:2,date:'22 Jun',t1:'Egypt',t2:'New Zealand',s1:null,s2:null,done:false},
-  {id:'H3',gr:'H',md:2,date:'22 Jun',t1:'Spain',t2:'Uruguay',s1:null,s2:null,done:false},
-  {id:'H4',gr:'H',md:2,date:'22 Jun',t1:'Cape Verde',t2:'Saudi Arabia',s1:null,s2:null,done:false},
+  {id:'J3',gr:'J',md:2,date:'23 Jun',t1:'Argentina',t2:'Austria',s1:null,s2:null,done:false},
   {id:'I3',gr:'I',md:2,date:'23 Jun',t1:'France',t2:'Iraq',s1:null,s2:null,done:false},
   {id:'I4',gr:'I',md:2,date:'23 Jun',t1:'Senegal',t2:'Norway',s1:null,s2:null,done:false},
-  {id:'J3',gr:'J',md:2,date:'23 Jun',t1:'Argentina',t2:'Austria',s1:null,s2:null,done:false},
-  {id:'A5',gr:'A',md:3,date:'24 Jun',t1:'Mexico',t2:'Czechia',s1:null,s2:null,done:false},
-  {id:'A6',gr:'A',md:3,date:'24 Jun',t1:'South Africa',t2:'South Korea',s1:null,s2:null,done:false},
-  {id:'B5',gr:'B',md:3,date:'24 Jun',t1:'Canada',t2:'Switzerland',s1:null,s2:null,done:false},
-  {id:'B6',gr:'B',md:3,date:'24 Jun',t1:'Bosnia & Herz.',t2:'Qatar',s1:null,s2:null,done:false},
-  {id:'C5',gr:'C',md:3,date:'24 Jun',t1:'Brazil',t2:'Scotland',s1:null,s2:null,done:false},
-  {id:'C6',gr:'C',md:3,date:'24 Jun',t1:'Morocco',t2:'Haiti',s1:null,s2:null,done:false},
-  {id:'J4',gr:'J',md:2,date:'24 Jun',t1:'Algeria',t2:'Jordan',s1:null,s2:null,done:false},
-  {id:'K3',gr:'K',md:2,date:'24 Jun',t1:'Portugal',t2:'DR Congo',s1:null,s2:null,done:false},
-  {id:'K4',gr:'K',md:2,date:'24 Jun',t1:'Colombia',t2:'Uzbekistan',s1:null,s2:null,done:false},
-  {id:'D5',gr:'D',md:3,date:'25 Jun',t1:'USA',t2:'Türkiye',s1:null,s2:null,done:false},
-  {id:'D6',gr:'D',md:3,date:'25 Jun',t1:'Paraguay',t2:'Australia',s1:null,s2:null,done:false},
-  {id:'E5',gr:'E',md:3,date:'25 Jun',t1:'Germany',t2:'Ecuador',s1:null,s2:null,done:false},
-  {id:'E6',gr:'E',md:3,date:'25 Jun',t1:'Curaçao',t2:'Ivory Coast',s1:null,s2:null,done:false},
-  {id:'L3',gr:'L',md:2,date:'25 Jun',t1:'England',t2:'Ghana',s1:null,s2:null,done:false},
-  {id:'L4',gr:'L',md:2,date:'25 Jun',t1:'Croatia',t2:'Panama',s1:null,s2:null,done:false},
-  {id:'F5',gr:'F',md:3,date:'26 Jun',t1:'Japan',t2:'Tunisia',s1:null,s2:null,done:false},
-  {id:'F6',gr:'F',md:3,date:'26 Jun',t1:'Netherlands',t2:'Sweden',s1:null,s2:null,done:false},
-  {id:'G5',gr:'G',md:3,date:'26 Jun',t1:'Belgium',t2:'New Zealand',s1:null,s2:null,done:false},
-  {id:'G6',gr:'G',md:3,date:'26 Jun',t1:'Egypt',t2:'Iran',s1:null,s2:null,done:false},
-  {id:'H5',gr:'H',md:3,date:'27 Jun',t1:'Spain',t2:'Saudi Arabia',s1:null,s2:null,done:false},
-  {id:'H6',gr:'H',md:3,date:'27 Jun',t1:'Cape Verde',t2:'Uruguay',s1:null,s2:null,done:false},
+  {id:'J4',gr:'J',md:2,date:'23 Jun',t1:'Algeria',t2:'Jordan',s1:null,s2:null,done:false},
+  {id:'K5',gr:'K',md:3,date:'24 Jun',t1:'Portugal',t2:'Uzbekistan',s1:null,s2:null,done:false},
+  {id:'K6',gr:'K',md:3,date:'24 Jun',t1:'Colombia',t2:'DR Congo',s1:null,s2:null,done:false},
+  {id:'L3',gr:'L',md:2,date:'24 Jun',t1:'England',t2:'Ghana',s1:null,s2:null,done:false},
+  {id:'L4',gr:'L',md:2,date:'24 Jun',t1:'Croatia',t2:'Panama',s1:null,s2:null,done:false},
+  {id:'B5',gr:'B',md:3,date:'25 Jun',t1:'Canada',t2:'Switzerland',s1:null,s2:null,done:false},
+  {id:'B6',gr:'B',md:3,date:'25 Jun',t1:'Bosnia & Herz.',t2:'Qatar',s1:null,s2:null,done:false},
+  {id:'C5',gr:'C',md:3,date:'25 Jun',t1:'Brazil',t2:'Scotland',s1:null,s2:null,done:false},
+  {id:'C6',gr:'C',md:3,date:'25 Jun',t1:'Morocco',t2:'Haiti',s1:null,s2:null,done:false},
+  {id:'A5',gr:'A',md:3,date:'25 Jun',t1:'Mexico',t2:'Czechia',s1:null,s2:null,done:false},
+  {id:'A6',gr:'A',md:3,date:'25 Jun',t1:'South Africa',t2:'South Korea',s1:null,s2:null,done:false},
+  {id:'E5',gr:'E',md:3,date:'26 Jun',t1:'Germany',t2:'Ecuador',s1:null,s2:null,done:false},
+  {id:'E6',gr:'E',md:3,date:'26 Jun',t1:'Curaçao',t2:'Ivory Coast',s1:null,s2:null,done:false},
+  {id:'F3',gr:'F',md:2,date:'26 Jun',t1:'Japan',t2:'Sweden',s1:null,s2:null,done:false},
+  {id:'F4',gr:'F',md:2,date:'26 Jun',t1:'Netherlands',t2:'Tunisia',s1:null,s2:null,done:false},
+  {id:'D5',gr:'D',md:3,date:'26 Jun',t1:'USA',t2:'Türkiye',s1:null,s2:null,done:false},
+  {id:'D6',gr:'D',md:3,date:'26 Jun',t1:'Paraguay',t2:'Australia',s1:null,s2:null,done:false},
   {id:'I5',gr:'I',md:3,date:'27 Jun',t1:'France',t2:'Norway',s1:null,s2:null,done:false},
   {id:'I6',gr:'I',md:3,date:'27 Jun',t1:'Senegal',t2:'Iraq',s1:null,s2:null,done:false},
+  {id:'H3',gr:'H',md:2,date:'27 Jun',t1:'Spain',t2:'Uruguay',s1:null,s2:null,done:false},
+  {id:'H4',gr:'H',md:2,date:'27 Jun',t1:'Cape Verde',t2:'Saudi Arabia',s1:null,s2:null,done:false},
+  {id:'G5',gr:'G',md:3,date:'27 Jun',t1:'Belgium',t2:'New Zealand',s1:null,s2:null,done:false},
+  {id:'G6',gr:'G',md:3,date:'27 Jun',t1:'Egypt',t2:'Iran',s1:null,s2:null,done:false},
+  {id:'L5',gr:'L',md:3,date:'28 Jun',t1:'England',t2:'Panama',s1:null,s2:null,done:false},
+  {id:'L6',gr:'L',md:3,date:'28 Jun',t1:'Croatia',t2:'Ghana',s1:null,s2:null,done:false},
+  {id:'K1',gr:'K',md:1,date:'28 Jun',t1:'Portugal',t2:'Colombia',s1:null,s2:null,done:false},
+  {id:'K2',gr:'K',md:1,date:'28 Jun',t1:'DR Congo',t2:'Uzbekistan',s1:null,s2:null,done:false},
   {id:'J5',gr:'J',md:3,date:'28 Jun',t1:'Argentina',t2:'Jordan',s1:null,s2:null,done:false},
-  {id:'J6',gr:'J',md:3,date:'28 Jun',t1:'Algeria',t2:'Austria',s1:null,s2:null,done:false},
-  {id:'K5',gr:'K',md:3,date:'28 Jun',t1:'Portugal',t2:'Uzbekistan',s1:null,s2:null,done:false},
-  {id:'K6',gr:'K',md:3,date:'28 Jun',t1:'Colombia',t2:'DR Congo',s1:null,s2:null,done:false},
-  {id:'L5',gr:'L',md:3,date:'29 Jun',t1:'England',t2:'Panama',s1:null,s2:null,done:false},
-  {id:'L6',gr:'L',md:3,date:'29 Jun',t1:'Croatia',t2:'Ghana',s1:null,s2:null,done:false}
+  {id:'J6',gr:'J',md:3,date:'28 Jun',t1:'Algeria',t2:'Austria',s1:null,s2:null,done:false}
 ];
 
 const GROUPS_BLUEPRINT = {
@@ -306,19 +311,16 @@ const GROUPS_BLUEPRINT = {
 
 let state = { participants: [], picks: [], overrides: {} };
 
-// 1. PASANG URL WEB APP GOOGLE APPS SCRIPT ANDA DI SINI
 const GLOBAL_APPS_URL = "https://script.google.com/macros/s/AKfycbzwdrmDD8H9fGKY1UF0R-Bluioe2XVJSz0FwKaYIKiyJ4bSrcps0iGPffYLIKJ6Ngjq/exec";
 
 function init() {
   const saved = localStorage.getItem('wc_choice_state_v2');
   if(saved) { try { state = JSON.parse(saved); if(!Array.isArray(state.picks)) state.picks=[]; } catch { state = { participants: [], picks: [], overrides: {} }; } }
   
-  // 2. Isi kolom input otomatis dari variabel global di atas agar tidak kosong saat admin membukanya
   if(document.getElementById('inp-apps-url')) {
     document.getElementById('inp-apps-url').value = GLOBAL_APPS_URL;
   }
   
-  // 3. OTOMATIS LOAD DATA DARI CLOUD GSHEETS SAAT PERTAMA KALI WEB DIBUKA
   autoFetchCloudData();
 }
 
@@ -332,7 +334,6 @@ function renderAll() {
   renderParticipants();
 }
 
-// 4. FUNGSI TAMBAHAN AGAR USER OTOMATIS MELAKUKAN FETCH BEGITU WEB DIBUKA
 function autoFetchCloudData() {
   if(!GLOBAL_APPS_URL || GLOBAL_APPS_URL.includes("...")) {
     renderAll();
@@ -351,11 +352,10 @@ function autoFetchCloudData() {
     })
     .catch(err => { 
       console.log("Gagal memuat data cloud otomatis:", err.message);
-      renderAll(); // Tetap render data lokal yang ada di localStorage jika internet/GSheet offline
+      renderAll();
     });
 }
 
-// GENERATOR WARNA ACAK (TEMBUS PANDANG & CERAH)
 function generateRandomColor() {
   const hue = Math.floor(Math.random() * 360);
   return `hsl(${hue}, 85%, 65%)`;
@@ -410,6 +410,7 @@ function renderStandings() {
   container.innerHTML = h + '</tbody></table>';
 }
 
+/* PERUBAHAN UTAMA: FUNGSI RENDER JADWAL DUA KOLOM TERPISAH */
 function renderMatches() {
   const container = document.getElementById('matches-container');
   const filter = document.getElementById('filter-grup').value;
@@ -418,16 +419,33 @@ function renderMatches() {
 
   const filtered = matches.filter(m => filter === 'ALL' || m.gr === filter);
   filtered.forEach(m => {
-    let pickBadges = '';
+    let pickBadgesT1 = '';
+    let pickBadgesT2 = '';
+    let countT1 = 0;
+    let countT2 = 0;
+
+    // Membagi pendukung berdasarkan tim yang mereka pilih
     state.participants.forEach(p => {
       const pk = state.picks.find(x => x.pid === p.id && x.mid === m.id);
       if(pk) {
-        pickBadges += `<div class="pk-badge">
-          <div style="display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:${p.color}"></span><strong>${p.name}</strong></div>
-          <div>${getFlag(pk.pick)} ${pk.pick}</div>
+        const badgeHtml = `<div class="pk-badge">
+          <span style="width:6px;height:6px;border-radius:50%;background:${p.color};flex-shrink:0;"></span>
+          <strong style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</strong>
         </div>`;
+        
+        if(pk.pick === m.t1) {
+          pickBadgesT1 += badgeHtml;
+          countT1++;
+        } else if(pk.pick === m.t2) {
+          pickBadgesT2 += badgeHtml;
+          countT2++;
+        }
       }
     });
+
+    // Teks fallback jika kolom kosong
+    if(!pickBadgesT1) pickBadgesT1 = '<span style="color:var(--muted);font-size:9px;text-align:center;display:block;padding:2px 0;">—</span>';
+    if(!pickBadgesT2) pickBadgesT2 = '<span style="color:var(--muted);font-size:9px;text-align:center;display:block;padding:2px 0;">—</span>';
 
     h += `<div class="match-card">
       <div class="mc-header">
@@ -439,7 +457,18 @@ function renderMatches() {
         <div class="mc-score" style="color: ${m.done ? 'var(--gold2)': 'var(--muted)'}">${m.done ? `${m.s1}-${m.s2}` : 'VS'}</div>
         <div class="mc-team away"><span>${m.t2}</span> ${getFlag(m.t2)}</div>
       </div>
-      <div class="mc-picks">${pickBadges || '<span style="color:var(--muted);text-align:center;font-size:9px">Belum ada pilihan masuk</span>'}</div>
+      
+      <!-- Box Dua Kolom Pendukung -->
+      <div class="mc-picks-container">
+        <div class="mc-pick-column">
+          <div class="column-title">${m.t1} (${countT1})</div>
+          ${pickBadgesT1}
+        </div>
+        <div class="mc-pick-column">
+          <div class="column-title" style="text-align:center;">(${countT2}) ${m.t2}</div>
+          ${pickBadgesT2}
+        </div>
+      </div>
     </div>`;
   });
   container.innerHTML = h;
