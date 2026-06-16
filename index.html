@@ -306,13 +306,22 @@ const GROUPS_BLUEPRINT = {
 
 let state = { participants: [], picks: [], overrides: {} };
 
+// 1. PASANG URL WEB APP GOOGLE APPS SCRIPT ANDA DI SINI
+const GLOBAL_APPS_URL = "https://script.google.com/macros/s/AKfycbzwdrmDD8H9fGKY1UF0R-Bluioe2XVJSz0FwKaYIKiyJ4bSrcps0iGPffYLIKJ6Ngjq/exec";
+
 function init() {
   const saved = localStorage.getItem('wc_choice_state_v2');
   if(saved) { try { state = JSON.parse(saved); if(!Array.isArray(state.picks)) state.picks=[]; } catch { state = { participants: [], picks: [], overrides: {} }; } }
-  const url = localStorage.getItem('wc_apps_url_v2');
-  if(url) document.getElementById('inp-apps-url').value = url;
-  renderAll();
+  
+  // 2. Isi kolom input otomatis dari variabel global di atas agar tidak kosong saat admin membukanya
+  if(document.getElementById('inp-apps-url')) {
+    document.getElementById('inp-apps-url').value = GLOBAL_APPS_URL;
+  }
+  
+  // 3. OTOMATIS LOAD DATA DARI CLOUD GSHEETS SAAT PERTAMA KALI WEB DIBUKA
+  autoFetchCloudData();
 }
+
 function saveLocal() { localStorage.setItem('wc_choice_state_v2', JSON.stringify(state)); }
 function getMatches() { return BASE_MATCHES.map(m => state.overrides[m.id] ? { ...m, ...state.overrides[m.id] } : m); }
 
@@ -321,6 +330,29 @@ function renderAll() {
   renderMatches();
   renderWCGroups();
   renderParticipants();
+}
+
+// 4. FUNGSI TAMBAHAN AGAR USER OTOMATIS MELAKUKAN FETCH BEGITU WEB DIBUKA
+function autoFetchCloudData() {
+  if(!GLOBAL_APPS_URL || GLOBAL_APPS_URL.includes("...")) {
+    renderAll();
+    return;
+  }
+  fetch(GLOBAL_APPS_URL + '?action=getData')
+    .then(res => res.json())
+    .then(resData => {
+      if(resData && !resData.error) { 
+        state.participants = resData.participants || []; 
+        state.picks = resData.picks || []; 
+        state.overrides = resData.overrides || {}; 
+        saveLocal(); 
+      }
+      renderAll();
+    })
+    .catch(err => { 
+      console.log("Gagal memuat data cloud otomatis:", err.message);
+      renderAll(); // Tetap render data lokal yang ada di localStorage jika internet/GSheet offline
+    });
 }
 
 // GENERATOR WARNA ACAK (TEMBUS PANDANG & CERAH)
