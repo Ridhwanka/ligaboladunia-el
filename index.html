@@ -619,7 +619,7 @@ function renderMatches() {
     if(!pickBadgesT2) pickBadgesT2 = '<span style="color:var(--muted);font-size:9px;text-align:center;display:block;padding:2px 0;">—</span>';
 
     const isFinished = (m.done && m.done !== 'false' && m.done !== 'FALSE');
-    const isLocked = isKickoffPassed(m.time); 
+    const isLocked = true; 
 
     let statusLabel = '⏳ BELUM';
     let labelColor = 'var(--muted)';
@@ -640,7 +640,7 @@ function renderMatches() {
       if(isLocked) {
         quickPickHtml = `
         <div class="mc-quick-pick-zone" style="background:rgba(192,40,47,0.08); flex-direction:column; gap:4px; align-items:stretch;">
-          <span style="color:var(--loss-text); font-size:10px; font-weight:600; text-align:center;">🔒 Kick-off telah dimulai. Pilihan dikunci!</span>
+          <span style="color:var(--loss-text); font-size:10px; font-weight:600; text-align:center;">🔒 Fitur Belum Tersedia. Tunggu Update Selanjutnya 🔒</span>
           <button class="btn btn-outline" style="font-size:10px; padding:4px; border-color:var(--wa-green); color:var(--wa-green)" onclick="shareMatchPicksToWA('${m.id}')">📢 Share Peta Dukungan Match Ini ke WA</button>
         </div>`;
       } else {
