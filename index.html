@@ -137,6 +137,38 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
 </style>
 </head>
 <body>
+  <div id="initial-loader" style="
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: #060D18; /* Menyesuaikan --bg utama Anda */
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    z-index: 999999; /* Di atas segalanya */
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  ">
+    <div style="
+      width: 50px; height: 50px;
+      border: 4px solid rgba(201,168,76,0.1);
+      border-top: 4px solid #C9A84C; /* Warna --gold Anda */
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
+    "></div>
+    <div style="
+      color: #EDF2FF; 
+      font-family: 'Inter', sans-serif; 
+      font-size: 14px; 
+      letter-spacing: 1px;
+      font-weight: 500;
+    ">MEMUAT DATA LEAGUE...</div>
+  </div>
+
+  <style>
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 
 <header class="header">
   <div class="h-logo">
@@ -146,7 +178,7 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
       <span class="h-sub">Tempat Seru-Seruan Bersama</span>
     </div>
   </div>
-  <!-- <button class="admin-trigger-btn" onclick="openAdminModal()" title="Buka Panel Admin">⚙️</button> -->
+  <!--<button class="admin-trigger-btn" onclick="openAdminModal()" title="Buka Panel Admin">⚙️</button> -->
 </header>
 
 <nav class="tabs">
@@ -201,8 +233,20 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
     </div>
 
     <div id="front-user-selector-zone" style="margin-bottom:15px; background:rgba(21,40,64,0.4); border:1px solid var(--border); padding:8px; border-radius:6px; display:flex; align-items:center; gap:8px;">
-      <span style="font-size:11px; color:var(--gold2); font-weight:600; white-space:nowrap;">👤 Isi Pilihan Sebagai:</span>
-      <select id="front-sel-participant" onchange="renderMatches()" style="padding:4px 8px; height:30px; font-size:11px;"></select>
+      <label style="color: var(--muted); font-size: 12px; display: block; margin-bottom: 8px; font-weight: 600; letter-spacing: 0.5px;">PESERTA LIGA PREDIKSI</label>
+  
+      <div id="wrapper-pilih-user" style="display: flex; gap: 8px; align-items: center;">
+        <select id="front-sel-participant" onchange="state.activeUser = this.value; saveLocal(); renderAll();" style="flex: 1; padding: 10px; background: var(--s3); color: var(--white); border: 1px solid var(--border); border-radius: 6px;">
+          <option value="">-- Pilih Nama Anda --</option>
+        </select>
+        <button class="btn" onclick="bukaFormUserBaru()" style="background: var(--s3); border: 1px solid var(--gold); color: var(--gold); padding: 10px 14px; font-size: 12px; border-radius: 6px; cursor: pointer;">➕ Baru</button>
+      </div>
+
+      <div id="wrapper-input-user-baru" style="display: none; gap: 8px; align-items: center;">
+        <input type="text" id="inp-nama-baru" placeholder="Ketik nama lengkap Anda..." style="flex: 1; padding: 10px; background: var(--s3); color: var(--white); border: 1px solid var(--gold); border-radius: 6px; font-size: 14px;">
+        <button class="btn" onclick="simpanUserBaruKeCloud()" style="background: var(--gold); color: var(--bg); padding: 10px 14px; font-weight: 600; font-size: 12px; border-radius: 6px; cursor: pointer;">💾 Daftar</button>
+        <button class="btn" onclick="batalFormUserBaru()" style="background: transparent; color: var(--muted); padding: 10px; font-size: 12px; border-radius: 6px; cursor: pointer;">❌</button>
+      </div>
     </div>
 
     <div id="front-alert" class="alert" style="display:none;"></div>
@@ -367,14 +411,41 @@ let state = { participants: [], picks: [], overrides: {}, currentTab: 'matchday'
 let latestSortedStandings = []; 
 const GLOBAL_APPS_URL = "https://script.google.com/macros/s/AKfycbzwdrmDD8H9fGKY1UF0R-Bluioe2XVJSz0FwKaYIKiyJ4bSrcps0iGPffYLIKJ6Ngjq/exec";
 
+
 function init() {
   const saved = localStorage.getItem('wc_choice_state_v2');
-  if(saved) { try { state = JSON.parse(saved); if(!Array.isArray(state.picks)) state.picks=[]; } catch { state = { participants: [], picks: [], overrides: {}, currentTab: 'matchday', matchSubTab: 'upcoming' }; } }
+  if(saved) { 
+    try { 
+      state = JSON.parse(saved); 
+      if(!Array.isArray(state.picks)) state.picks=[]; 
+    } catch { 
+      state = { participants: [], picks: [], overrides: {}, currentTab: 'matchday', matchSubTab: 'upcoming' }; 
+    } 
+  }
   if(!state.matchSubTab) { state.matchSubTab = 'upcoming'; }
   if(document.getElementById('inp-apps-url')) { document.getElementById('inp-apps-url').value = GLOBAL_APPS_URL; }
+  
+  // Jalankan penarikan data cloud bawaan skrip Anda
   autoFetchCloudData();
 
+  // Proteksi jika koneksi timeout/gagal total, hapus loader setelah 8 detik agar halaman tidak membeku selamanya
+  setTimeout(() => {
+    hilangkanInitialLoader();
+  }, 8000);
+
   setInterval(() => { if(state.matchSubTab === 'upcoming') renderMatches(); }, 60000);
+}
+
+// FUNGSI BARU: Untuk menghapus screen loading dengan efek memudar halus
+function hilangkanInitialLoader() {
+  const loader = document.getElementById('initial-loader');
+  if (loader) {
+    loader.style.opacity = '0';
+    loader.style.visibility = 'hidden';
+    setTimeout(() => {
+      loader.remove(); // Hancurkan elemen dari memori browser agar enteng
+    }, 500); // 500ms sesuai durasi transition CSS overlay
+  }
 }
 
 function saveLocal() { localStorage.setItem('wc_choice_state_v2', JSON.stringify(state)); }
@@ -395,9 +466,11 @@ function renderAll() {
   renderParticipants();
 }
 
-function autoFetchCloudData() {
+// Tambahkan parameter opsional forceRefresh (default bernilai false)
+function autoFetchCloudData(forceRefresh = false) {
   if(!GLOBAL_APPS_URL || GLOBAL_APPS_URL.includes("...")) {
     renderAll();
+    if(typeof hilangkanInitialLoader === "function") hilangkanInitialLoader();
     return;
   }
 
@@ -405,14 +478,17 @@ function autoFetchCloudData() {
   const lastFetch = localStorage.getItem('wc_last_cloud_fetch');
   const now = Date.now();
 
-  // JIKA data lokal ada, DAN belum lewat 5 menit (300.000 ms), gunakan data lokal saja demi kecepatan instan!
-  if (state.participants.length > 0 && lastFetch && (now - parseInt(lastFetch) < 300000)) {
+  // JIKA forceRefresh bernilai TRUE, blok IF di bawah ini akan dilewati (Abaikan Cache!)
+  if (!forceRefresh && state.participants.length > 0 && lastFetch && (now - parseInt(lastFetch) < 300000)) {
     console.log("Menggunakan cache lokal agar loading instan.");
     renderAll();
+    if(typeof hilangkanInitialLoader === "function") hilangkanInitialLoader();
     return; 
   }
 
-  // Jika cache kosong atau sudah lewat 5 menit, baru fetch pelan-pelan ke cloud
+  console.log("Mengambil data segar langsung dari Cloud Server...");
+  
+  // Jika cache kosong, sudah lewat 5 menit, atau sedang DIPAKSA REFRESH:
   fetch(GLOBAL_APPS_URL + '?action=getData')
     .then(res => res.json())
     .then(resData => {
@@ -421,13 +497,15 @@ function autoFetchCloudData() {
         state.picks = resData.picks || [];
         state.overrides = resData.overrides || {};
         saveLocal();
-        localStorage.setItem('wc_last_cloud_fetch', Date.now().toString()); // simpan timestamp
+        localStorage.setItem('wc_last_cloud_fetch', Date.now().toString()); // Simpan timestamp baru
       }
       renderAll();
+      if(typeof hilangkanInitialLoader === "function") hilangkanInitialLoader();
     })
     .catch(err => {
       console.log("Gagal cloud otomatis:", err.message);
-      renderAll(); // Tetap render data lokal yang ada jika offline/gagal
+      renderAll(); 
+      if(typeof hilangkanInitialLoader === "function") hilangkanInitialLoader();
     });
 }
 
@@ -574,11 +652,17 @@ function downloadKlasemenGambar() {
 function renderFrontUserSelector() {
   const sel = document.getElementById('front-sel-participant');
   if(!sel) return;
-  const currentSelected = sel.value;
-  sel.innerHTML = '<option value="">-- Lihat Semua (Tanpa Isi) --</option>';
+  // Ambil nilai yang sedang aktif/dipilih sebelumnya
+  const currentActive = state.activeUser || ""; 
+  
+  let h = '<option value="">-- Pilih Nama Anda --</option>';
   state.participants.forEach(p => {
-    sel.innerHTML += `<option value="${p.id}" ${currentSelected === p.id ? 'selected' : ''}>${p.name}</option>`;
+    // Berikan tanda selected jika ID peserta cocok dengan yang sedang aktif di state lokal
+    const isSelected = (p.id === currentActive) ? 'selected' : '';
+    h += `<option value="${p.id}" ${isSelected}>${p.name}</option>`;
   });
+  
+  sel.innerHTML = h;
 }
 
 function renderMatches() {
@@ -588,12 +672,60 @@ function renderMatches() {
   const matches = getMatches();
   let h = '';
 
+  // 1. Filter berdasarkan grup (ALL atau grup spesifik)
   let filtered = matches.filter(m => filter === 'ALL' || m.gr === filter);
+  
+  // 2. Filter & Sortir berdasarkan Subtab yang Aktif
   if (state.matchSubTab === 'upcoming') {
+    // Untuk subtab UPCOMING: Biarkan urutan bawaan GSheet (kronologis normal/A1-L6)
     filtered = filtered.filter(m => !m.done || m.done === 'false' || m.done === 'FALSE');
+    
   } else {
+    // Untuk subtab FINISHED: Saring yang sudah selesai
     filtered = filtered.filter(m => m.done && m.done !== 'false' && m.done !== 'FALSE');
+    
+    // KUNCI PERBAIKAN: Fungsi sort di bawah ini WAJIB berada di dalam blok ELSE ini
+    filtered.sort((a, b) => {
+      const timeA = a.time ? new Date(a.time).getTime() : 0;
+      const timeB = b.time ? new Date(b.time).getTime() : 0;
+      return timeB - timeA; // Waktu terbaru (angka milidetik lebih besar) naik ke atas
+    });
   }
+  
+
+  // ─── LOGIKA DINAMIS: KUNCI SESI BERUNTUN (TAMBAHKAN DI SINI) ───
+  // Buat duplikat master matches lalu urutkan kronologis (waktu terlama ke terbaru)
+  const masterSorted = [...matches].sort((a, b) => {
+    return (a.time ? new Date(a.time).getTime() : 0) - (b.time ? new Date(b.time).getTime() : 0);
+  });
+
+  // Cari match pertama di turnamen yang belum selesai (Sesi awal aktif saat ini)
+  const firstUnfinishedIndex = masterSorted.findIndex(m => !m.done || m.done === 'false' || m.done === 'FALSE');
+  
+  // Siapkan Set untuk menyimpan ID match apa saja yang masuk batas "Boleh Diisi"
+  const allowedMatchIds = new Set();
+  
+  if (firstUnfinishedIndex !== -1) {
+    // Jalankan loop dari match aktif pertama untuk menyaring kluster beruntun sesi sekarang
+    for (let i = firstUnfinishedIndex; i < masterSorted.length; i++) {
+      const currentMatch = masterSorted[i];
+      allowedMatchIds.add(currentMatch.id);
+
+      // Periksa apakah ada match berikutnya untuk dibandingkan jeda waktunya
+      if (i + 1 < masterSorted.length) {
+        const nextMatch = masterSorted[i + 1];
+        const currentTime = currentMatch.time ? new Date(currentMatch.time).getTime() : 0;
+        const nextTime = nextMatch.time ? new Date(nextMatch.time).getTime() : 0;
+        
+        // Cek jika jarak waktu ke match selanjutnya lebih dari 12 jam (12 * 60 * 60 * 1000 ms)
+        if (nextTime - currentTime > 43200000) {
+          // Jeda terdeteksi! Sesi beruntun saat ini berakhir di currentMatch. Break loop!
+          break;
+        }
+      }
+    }
+  }
+  // ──────────────────────────────────────────────────────────────
 
   if (filtered.length === 0) {
     container.innerHTML = `<div style="text-align:center; padding:40px 20px; color:var(--muted); font-size:12px;">Tidak ada pertandingan untuk grup ini.</div>`;
@@ -619,14 +751,26 @@ function renderMatches() {
     if(!pickBadgesT2) pickBadgesT2 = '<span style="color:var(--muted);font-size:9px;text-align:center;display:block;padding:2px 0;">—</span>';
 
     const isFinished = (m.done && m.done !== 'false' && m.done !== 'FALSE');
-    const isLocked = true; 
+    // ─── PERUBAHAN PENENTUAN STATUS LOCK SECARA OTOMATIS ───
+    // Match akan TERKUNCI jika: 
+    // 1. Memang sudah lewat kickoff (logika bawaan Anda), ATAU
+    // 2. Pada subtab upcoming, match ID tersebut tidak terdaftar di Sesi Beruntun Aktif (allowedMatchIds)
+    let isLocked = isKickoffPassed(m.time); 
+    if (state.matchSubTab === 'upcoming' && !allowedMatchIds.has(m.id)) {
+      isLocked = true; 
+    } 
+    
 
     let statusLabel = '⏳ BELUM';
     let labelColor = 'var(--muted)';
     if(isFinished) {
       statusLabel = '✓ SELESAI'; labelColor = 'var(--gold2)';
     } else if(isLocked) {
-      statusLabel = '🔒 LIVE / TERKUNCI'; labelColor = '#EF9A9A';
+      if (state.matchSubTab === 'upcoming' && !allowedMatchIds.has(m.id)) {
+        statusLabel = '🔒 LOCKED (SESI BESOK)'; labelColor = '#FFA726'; // Warna orange info
+      } else {
+        statusLabel = '🔒 LIVE / TERKUNCI'; labelColor = '#EF9A9A';
+      }
     }
 
     let timeLabel = '';
@@ -741,8 +885,9 @@ function saveQuickPick(matchId) {
   
   const selectVal = document.getElementById(`quick-sel-${matchId}`).value;
   
-  // Ambil tombol untuk indikator visual lokal
+  // Cari element container baris match atau tombol spesifik untuk dikunci
   const btnEl = document.querySelector(`button[onclick="saveQuickPick('${matchId}')"]`);
+  const selectEl = document.getElementById(`quick-sel-${matchId}`);
   const originalBtnText = btnEl ? btnEl.innerHTML : "⚡ Simpan";
 
   // 1. UPDATE DATA LOKAL SECARA INSTAN
@@ -752,53 +897,138 @@ function saveQuickPick(matchId) {
   }
   saveLocal();
 
-  // 2. RENDER ULANG UI SEGERA (User melihat perubahannya detik itu juga!)
+  // 2. RENDER STANDING LOKAL (UI update instan untuk background kalkulasi)
   renderStandings();
-  renderMatches();
   
-  // Berikan umpan balik visual bahwa data tersimpan di perangkat
+  // Proteksi Spam & Jeda Visual Lokal: Kunci elemen kontrol khusus pada baris pertandingan ini
   if(btnEl) {
-    btnEl.innerHTML = "⏳ Menyingkronkan...";
-    btnEl.style.opacity = "0.7";
+    btnEl.disabled = true;
+    btnEl.innerHTML = "⏳ Kirim...";
+    btnEl.style.opacity = "0.5";
+    btnEl.style.cursor = "not-allowed";
+  }
+  if(selectEl) {
+    selectEl.disabled = true;
+    selectEl.style.opacity = "0.6";
   }
 
-  // 3. KIRIM KE GSHEET DI LATAR BELAKANG (User bebas scroll / klik match lain)
+  // Catat waktu awal kirim paket data
+  const startTime = Date.now();
+
+  // 3. SINKRONISASI KE GSHEET (Menggunakan skema payload parsial super ringan)
   if(GLOBAL_APPS_URL && !GLOBAL_APPS_URL.includes("...")) {
+    const payload = {
+      action: 'saveAll',
+      picks: [
+        { pid: String(frontActiveUserId), mid: String(matchId), pick: String(selectVal) }
+      ]
+    };
+
     fetch(GLOBAL_APPS_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ action: 'saveAll', participants: state.participants, picks: state.picks, overrides: state.overrides })
+      body: JSON.stringify(payload)
     })
     .then(() => {
-      // Kembalikan tombol setelah sync cloud selesai di background
-      if(btnEl) {
-        btnEl.innerHTML = originalBtnText;
-        btnEl.style.opacity = "1";
+      const duration = Date.now() - startTime;
+      const targetDelay = 1500; // Berikan jeda penahan aman selama 1.5 detik
+
+      const normalisasiUI = () => {
+        if(btnEl) {
+          btnEl.disabled = false;
+          btnEl.innerHTML = originalBtnText;
+          btnEl.style.opacity = "1";
+          btnEl.style.cursor = "pointer";
+        }
+        if(selectEl) {
+          selectEl.disabled = false;
+          selectEl.style.opacity = "1";
+        }
+        // Jalankan renderMatches setelah UI dinormalisasi agar status dropdown & warna terbaru terkunci
+        renderMatches();
+        showFrontAlert("✅ Sinkronisasi Cloud Berhasil!");
+      };
+
+      if (duration < targetDelay) {
+        setTimeout(normalisasiUI, targetDelay - duration);
+      } else {
+        normalisasiUI();
       }
-      showFrontAlert("✅ Pilihan berhasil disinkronkan ke Cloud GSheet!");
     })
     .catch(e => {
       console.log("Gagal auto-sync:", e.message);
       if(btnEl) {
+        btnEl.disabled = false;
         btnEl.innerHTML = originalBtnText;
         btnEl.style.opacity = "1";
+        btnEl.style.cursor = "pointer";
       }
-      showFrontAlert("⚠️ Tersimpan lokal, sinkronisasi cloud tertunda.");
+      if(selectEl) {
+        selectEl.disabled = false;
+        selectEl.style.opacity = "1";
+      }
+      renderMatches();
+      showFrontAlert("⚠️ Tersimpan Lokal. Sinkronisasi Cloud Tertunda.");
     });
   } else {
+    // Jika URL Apps Script kosong, langsung kembalikan UI ke kondisi normal
     if(btnEl) {
+      btnEl.disabled = false;
       btnEl.innerHTML = originalBtnText;
       btnEl.style.opacity = "1";
     }
+    if(selectEl) {
+      selectEl.disabled = false;
+    }
+    renderMatches();
     showFrontAlert("Pilihan disimpan secara lokal!");
   }
 }
 
 function showFrontAlert(msg) {
-  const el = document.getElementById('front-alert'); if(!el) return;
-  el.innerText = msg; el.style.display = 'block';
-  setTimeout(() => { el.style.display = 'none'; }, 2500);
+  // Cari atau buat kontainer toast melayang secara dinamis
+  let toastContainer = document.getElementById('global-toast-popup');
+  
+  if (!toastContainer) {
+    toastContainer = document.createElement('div');
+    toastContainer.id = 'global-toast-popup';
+    // Menerapkan styling CSS modern langsung di elemen pop-up melayang
+    Object.assign(toastContainer.style, {
+      position: 'fixed',
+      bottom: '30px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      backgroundColor: '#152840',
+      color: '#EDF2FF',
+      padding: '12px 24px',
+      borderRadius: '30px',
+      boxShadow: '0px 10px 25px rgba(0, 0, 0, 0.5)',
+      border: '1px solid #C9A84C',
+      zIndex: '99999',
+      fontSize: '14px',
+      fontWeight: '500',
+      textAlign: 'center',
+      whiteSpace: 'nowrap',
+      opacity: '0',
+      transition: 'opacity 0.3s ease, bottom 0.3s ease',
+      pointerEvents: 'none'
+    });
+    document.body.appendChild(toastContainer);
+  }
+
+  // Set isi pesan teks pemberitahuan
+  toastContainer.innerText = msg;
+  
+  // Tampilkan pop-up dengan efek transisi memudar naik (fade in)
+  toastContainer.style.opacity = '1';
+  toastContainer.style.bottom = '40px';
+
+  // Sembunyikan kembali pop-up setelah durasi 2.5 detik
+  setTimeout(() => {
+    toastContainer.style.opacity = '0';
+    toastContainer.style.bottom = '30px';
+  }, 2500);
 }
 
 function renderWCGroups() {
@@ -1002,6 +1232,72 @@ function deleteParticipant(id) {
   saveLocal();
   renderAll();
   showAdminAlert('Anggota berhasil dihapus.');
+}
+
+// Fungsi untuk memindahkan tampilan ke kolom ketik nama baru
+function bukaFormUserBaru() {
+  document.getElementById('wrapper-pilih-user').style.display = 'none';
+  document.getElementById('wrapper-input-user-baru').style.display = 'flex';
+  document.getElementById('inp-nama-baru').focus();
+}
+
+// Fungsi untuk membatalkan input nama baru
+function batalFormUserBaru() {
+  document.getElementById('wrapper-pilih-user').style.display = 'flex';
+  document.getElementById('wrapper-input-user-baru').style.display = 'none';
+  document.getElementById('inp-nama-baru').value = '';
+}
+
+// Fungsi utama mendaftarkan nama baru ke Google Sheets secara realtime
+function simpanUserBaruKeCloud() {
+  const inputEl = document.getElementById('inp-nama-baru');
+  const namaBaru = inputEl.value.trim();
+  
+  if (!namaBaru) {
+    alert("Silakan masukkan nama Anda terlebih dahulu!");
+    return;
+  }
+  
+  if (!GLOBAL_APPS_URL || GLOBAL_APPS_URL.includes("...")) {
+    alert("URL Apps Script belum dikonfigurasi dengan benar!");
+    return;
+  }
+
+  // Tampilkan loading lokal pada tombol sementara proses mendaftar
+  showFrontAlert("⏳ Mendaftarkan nama Anda ke server...");
+  
+  const payload = {
+    action: 'addParticipant',
+    name: namaBaru
+  };
+
+  // Menggunakan method POST untuk mengirim data peserta baru
+  fetch(GLOBAL_APPS_URL, {
+    method: 'POST',
+    mode: 'no-cors', // Tetap no-cors agar pengiriman instan di mobile browser
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    // Karena menggunakan mode 'no-cors', browser tidak bisa membaca data return JSON secara langsung.
+    // Solusi cerdas: Kita langsung trigger fungsi refresh otomatis ambil data cloud teranyar.
+    showFrontAlert("✅ Pendaftaran dikirim! Memperbarui list liga...");
+    
+    // Berikan jeda 1.5 detik agar server selesai memproses penulisan baris di GSheet
+    setTimeout(() => {
+      inputEl.value = '';
+      batalFormUserBaru();
+      
+      // Ambil data terbaru dari cloud agar dropdown terupdate otomatis memuat nama baru tersebut
+      if (typeof autoFetchCloudData === 'function') {
+        autoFetchCloudData(true);
+      }
+    }, 1500);
+  })
+  .catch(err => {
+    console.error("Gagal mendaftarkan user baru:", err);
+    showFrontAlert("❌ Gagal mendaftar. Periksa koneksi internet Anda.");
+  });
 }
 
 function openAdminModal() {
