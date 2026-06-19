@@ -547,31 +547,68 @@ function closeAdminModalOnBackdrop(e) { if(e.target.id === 'admin-modal') closeA
 function renderStandings() {
   const container = document.getElementById('pred-standings');
   const matches = getMatches();
+  
+  // ─── 1. CARI MATCH TERAKHIR YANG SUDAH SELESAI (Untuk Baseline Tren) ───
+  const completedMatches = matches.filter(m => m.done);
+  const sortedCompleted = [...completedMatches].sort((a, b) => new Date(b.time) - new Date(a.time));
+  const latestMatchId = sortedCompleted.length > 0 ? sortedCompleted[0].id : null;
+
   const userStats = state.participants.map(p => {
-    let stat = { id:p.id, name:p.name, color:p.color, p:0, w:0, d:0, l:0, gf:0, ga:0, gd:0, pts:0 };
+    // pts adalah poin sekarang, prevPts adalah poin sebelum pertandingan terakhir selesai
+    let stat = { id:p.id, name:p.name, color:p.color, p:0, w:0, d:0, l:0, gf:0, ga:0, gd:0, pts:0, prevPts:0, prevGd:0, prevGf:0 };
+    
     state.picks.forEach(pk => {
       if(pk.pid !== p.id) return;
       const m = matches.find(match => match.id === pk.mid);
       if(!m || !m.done) return;
+      
       stat.p++;
       if(pk.pick === m.t1) {
         stat.gf += m.s1; stat.ga += m.s2;
-        if(m.s1 > m.s2) { stat.w++; stat.pts += 3; } else if(m.s1 < m.s2) { stat.l++; } else { stat.d++; stat.pts += 1; }
+        if(m.s1 > m.s2) { 
+          stat.w++; stat.pts += 3; 
+          if(m.id !== latestMatchId) stat.prevPts += 3; // Simpan ke poin lama jika bukan match terakhir
+        } else if(m.s1 < m.s2) { 
+          stat.l++; 
+        } else { 
+          stat.d++; stat.pts += 1; 
+          if(m.id !== latestMatchId) stat.prevPts += 1; // Simpan ke poin lama jika bukan match terakhir
+        }
       } else if(pk.pick === m.t2) {
         stat.gf += m.s2; stat.ga += m.s1;
-        if(m.s2 > m.s1) { stat.w++; stat.pts += 3; } else if(m.s2 < m.s1) { stat.l++; } else { stat.d++; stat.pts += 1; }
+        if(m.s2 > m.s1) { 
+          stat.w++; stat.pts += 3; 
+          if(m.id !== latestMatchId) stat.prevPts += 3; // Simpan ke poin lama jika bukan match terakhir
+        } else if(m.s2 < m.s1) { 
+          stat.l++; 
+        } else { 
+          stat.d++; stat.pts += 1; 
+          if(m.id !== latestMatchId) stat.prevPts += 1; // Simpan ke poin lama jika bukan match terakhir
+        }
+      }
+
+      // Hitung statistik Goal Difference khusus untuk kondisi "Sebelum Match Terakhir"
+      if(m.id !== latestMatchId) {
+        if(pk.pick === m.t1) {
+          stat.prevGf += m.s1; stat.prevGd += (m.s1 - m.s2);
+        } else if(pk.pick === m.t2) {
+          stat.prevGf += m.s2; stat.prevGd += (m.s2 - m.s1);
+        }
       }
     });
     stat.gd = stat.gf - stat.ga;
     return stat;
   });
 
+  // ─── 2. BUAT KLASEMEN BAYANGAN MASA LALU UNTUK TAHU PERINGKAT LAMA ───
+  const previousRanked = [...userStats].sort((a,b) => b.prevPts - a.prevPts || b.prevGd - a.prevGd || b.prevGf - a.prevGf || a.name.localeCompare(b.name));
+
+  // ─── 3. URUTKAN KLASEMEN UTAMA SAAT INI (BAWAAAN ASLI KODE ANDA) ───
   userStats.sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.name.localeCompare(b.name));
   latestSortedStandings = userStats;
 
   const shareZone = document.getElementById('wa-share-standings-zone');
   if(userStats.length > 0) {
-    // TERUPDATE: Menggantikan fungsi share text WA lama menjadi download gambar klasemen
     shareZone.innerHTML = `<button class="btn-image-download" onclick="downloadKlasemenGambar()">🖼️ Download Gambar Klasemen Terkini</button>`;
   } else {
     shareZone.innerHTML = '';
@@ -581,10 +618,35 @@ function renderStandings() {
 
   let h = `<table class="s-table">
     <thead><tr><th style="width:30px">Pos</th><th class="tl">Nama</th><th>Mn</th><th style="color:#A5D6A7">M</th><th>S</th><th style="color:#EF9A9A">K</th><th>SG</th><th>Poin</th></tr></thead><tbody>`;
+  
   userStats.forEach((p, idx) => {
+    const currentRank = idx + 1;
+    
+    // ─── 4. CARI TAHU POSISI PERINGKAT USER DI KLASEMEN LAMA ───
+    const prevIdx = previousRanked.findIndex(pr => pr.id === p.id);
+    const previousRank = prevIdx + 1;
+
+    // ─── 5. LOGIKA PENENTUAN ICON TREN NAIK / TURUN ───
+    let trendIcon = "";
+    if (completedMatches.length === 0) {
+      trendIcon = ""; // Jika liga baru mulai/belum ada match done, kosongkan icon
+    } else if (currentRank < previousRank) {
+      // Naik peringkat (Angka peringkat mengecil, misal dari 4 ke 2)
+      trendIcon = `<span style="color: #4CAF50; margin-left: 4px; font-size: 11px; font-weight: bold;" title="Naik ${previousRank - currentRank} posisi">▲</span>`;
+    } else if (currentRank > previousRank) {
+      // Turun peringkat
+      trendIcon = `<span style="color: #FF5252; margin-left: 4px; font-size: 11px; font-weight: bold;" title="Turun ${currentRank - previousRank} posisi">▼</span>`;
+    } else {
+      // Posisi tetap / stagnan
+      trendIcon = `<span style="color: var(--muted); margin-left: 4px; font-size: 8px; vertical-align: middle;">●</span>`;
+    }
+
     h += `<tr>
-      <td><span class="rank-circle rank-${idx < 3 ? idx : 'default'}">${idx+1}</span></td>
-      <td class="tl" style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${p.color};margin-right:4px"></span>${p.name}</td>
+      <td><span class="rank-circle rank-${idx < 3 ? idx : 'default'}">${currentRank}</span></td>
+      <td class="tl" style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px">
+        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${p.color};margin-right:4px"></span>
+        ${p.name}
+        ${trendIcon} </td>
       <td>${p.p}</td><td>${p.w}</td><td>${p.d}</td><td>${p.l}</td><td>${p.gd > 0 ? '+'+p.gd : p.gd}</td>
       <td><span class="pts-pill">${p.pts} Pts</span></td>
     </tr>`;
