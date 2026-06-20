@@ -20,7 +20,7 @@
   --muted:    #6A7D94;
   --border:   rgba(201,168,76,.12);
   --border2:  rgba(201,168,76,.35);
-  --win-bg:   rgba(46,125,50,.15);
+  --win-bg:   #eee;
   --win-text: #A5D6A7;
   --loss-text:#EF9A9A;
   --wa-green: #25D366;
@@ -44,7 +44,12 @@ body {
 .h-title { font-family: 'Bebas Neue', cursive; letter-spacing: 0.5px; }
 .h-main { font-size: 18px; color: var(--white); display: block; line-height: 1; }
 .h-sub { font-size: 9px; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 1px; display: block; }
-.admin-trigger-btn { background: var(--s2); border: 1px solid var(--border); color: var(--gold2); font-size: 16px; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+
+/* Kustomisasi Sembunyikan Tombol Admin secara Manual */
+.admin-trigger-btn { 
+  display: none; /* Ubah ke 'flex' jika Anda sebagai admin ingin memunculkannya kembali saat setup */
+  background: var(--s2); border: 1px solid var(--border); color: var(--gold2); font-size: 16px; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; align-items: center; justify-content: center; transition: all 0.2s; 
+}
 .admin-trigger-btn:active { background: var(--s3); transform: scale(0.95); }
 
 .tabs { display: flex; background: var(--s1); border-bottom: 1px solid var(--border); position: sticky; top: 62px; z-index: 90; backdrop-filter: blur(8px); }
@@ -57,7 +62,6 @@ body {
 
 .sec-title { font-family: 'Bebas Neue', cursive; font-size: 18px; letter-spacing: 1px; color: var(--gold2); margin: 12px 0 10px; padding-left: 8px; border-left: 3px solid var(--gold); }
 
-/* Pembungkus area tangkapan screenshot agar hasilnya rapi dan proporsional */
 .capture-wrapper {
   padding: 16px;
   border-radius: 12px;
@@ -140,16 +144,16 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
   <div id="initial-loader" style="
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background-color: #060D18; /* Menyesuaikan --bg utama Anda */
+    background-color: #060D18;
     display: flex; flex-direction: column;
     justify-content: center; align-items: center;
-    z-index: 999999; /* Di atas segalanya */
+    z-index: 999999;
     transition: opacity 0.5s ease, visibility 0.5s ease;
   ">
     <div style="
       width: 50px; height: 50px;
       border: 4px solid rgba(201,168,76,0.1);
-      border-top: 4px solid #C9A84C; /* Warna --gold Anda */
+      border-top: 4px solid #C9A84C;
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin-bottom: 16px;
@@ -178,7 +182,7 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
       <span class="h-sub">Tempat Seru-Seruan Bersama</span>
     </div>
   </div>
-  <!--<button class="admin-trigger-btn" onclick="openAdminModal()" title="Buka Panel Admin">⚙️</button> -->
+  <button class="admin-trigger-btn" onclick="openAdminModal()" title="Buka Panel Admin">⚙️</button>
 </header>
 
 <nav class="tabs">
@@ -232,17 +236,17 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
       </button>
     </div>
 
-    <div id="front-user-selector-zone" style="margin-bottom:15px; background:rgba(21,40,64,0.4); border:1px solid var(--border); padding:8px; border-radius:6px; display:flex; align-items:center; gap:8px;">
-      <label style="color: var(--muted); font-size: 12px; display: block; margin-bottom: 8px; font-weight: 600; letter-spacing: 0.5px;">PESERTA LIGA PREDIKSI</label>
+    <div id="front-user-selector-zone" style="margin-bottom:15px; background:rgba(21,40,64,0.4); border:1px solid var(--border); padding:8px; border-radius:6px; display:flex; flex-direction:column; gap:4px;">
+      <label style="color: var(--muted); font-size: 11px; display: block; margin-bottom: 2px; font-weight: 600; letter-spacing: 0.5px;">PESERTA LIGA PREDIKSI</label>
   
-      <div id="wrapper-pilih-user" style="display: flex; gap: 8px; align-items: center;">
+      <div id="wrapper-pilih-user" style="display: flex; gap: 8px; align-items: center; width: 100%;">
         <select id="front-sel-participant" onchange="state.activeUser = this.value; saveLocal(); renderAll();" style="flex: 1; padding: 10px; background: var(--s3); color: var(--white); border: 1px solid var(--border); border-radius: 6px;">
           <option value="">-- Pilih Nama Anda --</option>
         </select>
         <button class="btn" onclick="bukaFormUserBaru()" style="background: var(--s3); border: 1px solid var(--gold); color: var(--gold); padding: 10px 14px; font-size: 12px; border-radius: 6px; cursor: pointer;">➕ Baru</button>
       </div>
 
-      <div id="wrapper-input-user-baru" style="display: none; gap: 8px; align-items: center;">
+      <div id="wrapper-input-user-baru" style="display: none; gap: 8px; align-items: center; width: 100%;">
         <input type="text" id="inp-nama-baru" placeholder="Ketik nama lengkap Anda..." style="flex: 1; padding: 10px; background: var(--s3); color: var(--white); border: 1px solid var(--gold); border-radius: 6px; font-size: 14px;">
         <button class="btn" onclick="simpanUserBaruKeCloud()" style="background: var(--gold); color: var(--bg); padding: 10px 14px; font-weight: 600; font-size: 12px; border-radius: 6px; cursor: pointer;">💾 Daftar</button>
         <button class="btn" onclick="batalFormUserBaru()" style="background: transparent; color: var(--muted); padding: 10px; font-size: 12px; border-radius: 6px; cursor: pointer;">❌</button>
@@ -277,20 +281,24 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
     </div>
 
     <div class="admin-box">
-      <h3>📝 Input Pilihan Tim Kontestan (Admin Mode)</h3>
+      <h3>📝 Input Pilihan Tim Kontestan (Berdasarkan Matchday)</h3>
       <div class="form-row">
         <div class="form-col">
-          <select id="sel-participant" onchange="renderPickForm()"></select>
+          <select id="sel-admin-matchday" onchange="renderAdminMatchdayForm()">
+            <option value="">-- Pilih Pertandingan --</option>
+          </select>
         </div>
       </div>
-      <div id="pick-form-area" style="max-height:220px; overflow-y:auto; margin-top:6px; border:1px solid var(--border); padding:4px; border-radius:6px; background:rgba(0,0,0,0.2);"></div>
-      <button class="btn btn-gold" style="margin-top:8px; width:100%" onclick="savePicks()">💾 Simpan Pilihan Tim</button>
+      <div id="admin-matchday-form-area" style="max-height:280px; overflow-y:auto; margin-top:6px; border:1px solid var(--border); padding:6px; border-radius:6px; background:rgba(0,0,0,0.2);">
+        <p style="text-align:center; color:var(--muted); padding:10px;">Silakan pilih pertandingan terlebih dahulu.</p>
+      </div>
+      <button id="btn-save-admin-picks" class="btn btn-gold" style="margin-top:8px; width:100%" onclick="saveAdminPicksByMatchday()" disabled>💾 Simpan Pilihan Seluruh Peserta</button>
     </div>
 
     <div class="admin-box">
       <h3>🔗 Cloud Sync & Wikipedia Scraper</h3>
       <div style="display:flex; flex-direction:column; gap:6px">
-        <input type="text" id="inp-apps-url" placeholder="https://script.google.com/macros/s/.../exec">
+        <input type="text" id="inp-apps-url" style="display:none;">
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; margin-top:4px;">
           <button class="btn btn-gold" onclick="syncFetch()">⬇ Ambil Data</button>
           <button class="btn btn-outline" onclick="syncPush()">⬆ Kirim Data</button>
@@ -303,6 +311,11 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
 </div>
 
 <script>
+// ==========================================
+// 🔴 TARUH URL GOOGLE APPS SCRIPT ANDA DI SINI
+// ==========================================
+const MASTER_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzwdrmDD8H9fGKY1UF0R-Bluioe2XVJSz0FwKaYIKiyJ4bSrcps0iGPffYLIKJ6Ngjq/exec";
+
 const ISO_MAPPING = {
   'Mexico':'mx', 'South Africa':'za', 'South Korea':'kr', 'Czechia':'cz', 'Canada':'ca', 'Bosnia & Herz.':'ba', 'Qatar':'qa', 'Switzerland':'ch',
   'Brazil':'br', 'Morocco':'ma', 'Haiti':'ht', 'Scotland':'gb-sct', 'USA':'us', 'Paraguay':'py', 'Australia':'au', 'Türkiye':'tr',
@@ -338,10 +351,10 @@ const BASE_MATCHES = [
   {id:'I2',gr:'I',md:1,date:'17 Jun',time:'2026-06-17T04:00:00',t1:'Iraq',t2:'Norway',s1:null,s2:null,done:false},
   {id:'J1',gr:'J',md:1,date:'17 Jun',time:'2026-06-17T07:00:00',t1:'Argentina',t2:'Algeria',s1:null,s2:null,done:false},
   {id:'J2',gr:'J',md:1,date:'17 Jun',time:'2026-06-17T10:00:00',t1:'Austria',t2:'Jordan',s1:null,s2:null,done:false},
-  {id:'K3',gr:'K',md:2,date:'17 Jun',time:'2026-06-17T23:00:00',t1:'Portugal',t2:'DR Congo',s1:null,s2:null,done:false},
+  {id:'K3',gr:'K',md:1,date:'17 Jun',time:'2026-06-17T23:00:00',t1:'Portugal',t2:'DR Congo',s1:null,s2:null,done:false},
   {id:'L1',gr:'L',md:1,date:'18 Jun',time:'2026-06-18T02:00:00',t1:'England',t2:'Croatia',s1:null,s2:null,done:false},
   {id:'L2',gr:'L',md:1,date:'18 Jun',time:'2026-06-18T05:00:00',t1:'Ghana',t2:'Panama',s1:null,s2:null,done:false},
-  {id:'K4',gr:'K',md:2,date:'18 Jun',time:'2026-06-18T09:00:00',t1:'Uzbekistan',t2:'Colombia',s1:null,s2:null,done:false},
+  {id:'K4',gr:'K',md:1,date:'18 Jun',time:'2026-06-18T09:00:00',t1:'Uzbekistan',t2:'Colombia',s1:null,s2:null,done:false},
   {id:'A4',gr:'A',md:2,date:'18 Jun',time:'2026-06-18T22:00:00',t1:'Czechia',t2:'South Africa',s1:null,s2:null,done:false},
   {id:'B4',gr:'B',md:2,date:'19 Jun',time:'2026-06-19T01:00:00',t1:'Switzerland',t2:'Bosnia & Herz.',s1:null,s2:null,done:false},
   {id:'B3',gr:'B',md:2,date:'19 Jun',time:'2026-06-19T04:00:00',t1:'Canada',t2:'Qatar',s1:null,s2:null,done:false},
@@ -350,22 +363,22 @@ const BASE_MATCHES = [
   {id:'C4',gr:'C',md:2,date:'20 Jun',time:'2026-06-20T04:00:00',t1:'Scotland',t2:'Morocco',s1:null,s2:null,done:false},
   {id:'C3',gr:'C',md:2,date:'20 Jun',time:'2026-06-20T06:00:00',t1:'Brazil',t2:'Haiti',s1:null,s2:null,done:false},
   {id:'D4',gr:'D',md:2,date:'20 Jun',time:'2026-06-20T09:00:00',t1:'Türkiye',t2:'Paraguay',s1:null,s2:null,done:false},
-  {id:'F6',gr:'F',md:3,date:'20 Jun',time:'2026-06-20T23:00:00',t1:'Netherlands',t2:'Sweden',s1:null,s2:null,done:false},
+  {id:'F6',gr:'F',md:2,date:'20 Jun',time:'2026-06-20T23:00:00',t1:'Netherlands',t2:'Sweden',s1:null,s2:null,done:false},
   {id:'E3',gr:'E',md:2,date:'21 Jun',time:'2026-06-21T02:00:00',t1:'Germany',t2:'Ivory Coast',s1:null,s2:null,done:false},
   {id:'E4',gr:'E',md:2,date:'21 Jun',time:'2026-06-21T06:00:00',t1:'Ecuador',t2:'Curaçao',s1:null,s2:null,done:false},
-  {id:'F5',gr:'F',md:3,date:'21 Jun',time:'2026-06-21T10:00:00',t1:'Tunisia',t2:'Japan',s1:null,s2:null,done:false},
-  {id:'H5',gr:'H',md:3,date:'21 Jun',time:'2026-06-21T22:00:00',t1:'Spain',t2:'Saudi Arabia',s1:null,s2:null,done:false},
+  {id:'F5',gr:'F',md:2,date:'21 Jun',time:'2026-06-21T10:00:00',t1:'Tunisia',t2:'Japan',s1:null,s2:null,done:false},
+  {id:'H5',gr:'H',md:2,date:'21 Jun',time:'2026-06-21T22:00:00',t1:'Spain',t2:'Saudi Arabia',s1:null,s2:null,done:false},
   {id:'G3',gr:'G',md:2,date:'22 Jun',time:'2026-06-22T01:00:00',t1:'Belgium',t2:'Iran',s1:null,s2:null,done:false},
-  {id:'H6',gr:'H',md:3,date:'22 Jun',time:'2026-06-22T04:00:00',t1:'Uruguay',t2:'Cape Verde',s1:null,s2:null,done:false},
+  {id:'H6',gr:'H',md:2,date:'22 Jun',time:'2026-06-22T04:00:00',t1:'Uruguay',t2:'Cape Verde',s1:null,s2:null,done:false},
   {id:'G4',gr:'G',md:2,date:'22 Jun',time:'2026-06-22T07:00:00',t1:'New Zealand',t2:'Egypt',s1:null,s2:null,done:false},
   {id:'J3',gr:'J',md:2,date:'22 Jun',time:'2026-06-22T23:00:00',t1:'Argentina',t2:'Austria',s1:null,s2:null,done:false},
   {id:'I3',gr:'I',md:2,date:'23 Jun',time:'2026-06-23T03:00:00',t1:'France',t2:'Iraq',s1:null,s2:null,done:false},
   {id:'I4',gr:'I',md:2,date:'23 Jun',time:'2026-06-23T06:00:00',t1:'Norway',t2:'Senegal',s1:null,s2:null,done:false},
   {id:'J4',gr:'J',md:2,date:'23 Jun',time:'2026-06-23T09:00:00',t1:'Jordan',t2:'Algeria',s1:null,s2:null,done:false},
-  {id:'K5',gr:'K',md:3,date:'23 Jun',time:'2026-06-23T23:00:00',t1:'Portugal',t2:'Uzbekistan',s1:null,s2:null,done:false},
+  {id:'K5',gr:'K',md:2,date:'23 Jun',time:'2026-06-23T23:00:00',t1:'Portugal',t2:'Uzbekistan',s1:null,s2:null,done:false},
   {id:'L3',gr:'L',md:2,date:'24 Jun',time:'2026-06-24T02:00:00',t1:'England',t2:'Ghana',s1:null,s2:null,done:false},
   {id:'L4',gr:'L',md:2,date:'24 Jun',time:'2026-06-24T05:00:00',t1:'Panama',t2:'Croatia',s1:null,s2:null,done:false},
-  {id:'K6',gr:'K',md:3,date:'24 Jun',time:'2026-06-24T08:00:00',t1:'Colombia',t2:'DR Congo',s1:null,s2:null,done:false},
+  {id:'K6',gr:'K',md:2,date:'24 Jun',time:'2026-06-24T08:00:00',t1:'Colombia',t2:'DR Congo',s1:null,s2:null,done:false},
   {id:'B5',gr:'B',md:3,date:'25 Jun',time:'2026-06-25T01:00:00',t1:'Switzerland',t2:'Canada',s1:null,s2:null,done:false},
   {id:'B6',gr:'B',md:3,date:'25 Jun',time:'2026-06-25T01:00:00',t1:'Bosnia & Herz.',t2:'Qatar',s1:null,s2:null,done:false},
   {id:'C5',gr:'C',md:3,date:'25 Jun',time:'2026-06-25T04:00:00',t1:'Scotland',t2:'Brazil',s1:null,s2:null,done:false},
@@ -374,83 +387,97 @@ const BASE_MATCHES = [
   {id:'A6',gr:'A',md:3,date:'25 Jun',time:'2026-06-25T07:00:00',t1:'South Africa',t2:'South Korea',s1:null,s2:null,done:false},
   {id:'E6',gr:'E',md:3,date:'26 Jun',time:'2026-06-26T02:00:00',t1:'Curaçao',t2:'Ivory Coast',s1:null,s2:null,done:false},
   {id:'E5',gr:'E',md:3,date:'26 Jun',time:'2026-06-26T02:00:00',t1:'Ecuador',t2:'Germany',s1:null,s2:null,done:false},
-  {id:'F3',gr:'F',md:2,date:'26 Jun',time:'2026-06-26T05:00:00',t1:'Japan',t2:'Sweden',s1:null,s2:null,done:false},
-  {id:'F4',gr:'F',md:2,date:'26 Jun',time:'2026-06-26T05:00:00',t1:'Tunisia',t2:'Netherlands',s1:null,s2:null,done:false},
+  {id:'F3',gr:'F',md:3,date:'26 Jun',time:'2026-06-26T05:00:00',t1:'Japan',t2:'Sweden',s1:null,s2:null,done:false},
+  {id:'F4',gr:'F',md:3,date:'26 Jun',time:'2026-06-26T05:00:00',t1:'Tunisia',t2:'Netherlands',s1:null,s2:null,done:false},
   {id:'D5',gr:'D',md:3,date:'26 Jun',time:'2026-06-26T08:00:00',t1:'Türkiye',t2:'USA',s1:null,s2:null,done:false},
   {id:'D6',gr:'D',md:3,date:'26 Jun',time:'2026-06-26T08:00:00',t1:'Paraguay',t2:'Australia',s1:null,s2:null,done:false},
   {id:'I5',gr:'I',md:3,date:'27 Jun',time:'2026-06-27T01:00:00',t1:'Norway',t2:'France',s1:null,s2:null,done:false},
   {id:'I6',gr:'I',md:3,date:'27 Jun',time:'2026-06-27T01:00:00',t1:'Senegal',t2:'Iraq',s1:null,s2:null,done:false},
-  {id:'H4',gr:'H',md:2,date:'27 Jun',time:'2026-06-27T06:00:00',t1:'Cape Verde',t2:'Saudi Arabia',s1:null,s2:null,done:false},
-  {id:'H3',gr:'H',md:2,date:'27 Jun',time:'2026-06-27T06:00:00',t1:'Uruguay',t2:'Spain',s1:null,s2:null,done:false},
+  {id:'H4',gr:'H',md:3,date:'27 Jun',time:'2026-06-27T06:00:00',t1:'Cape Verde',t2:'Saudi Arabia',s1:null,s2:null,done:false},
+  {id:'H3',gr:'H',md:3,date:'27 Jun',time:'2026-06-27T06:00:00',t1:'Uruguay',t2:'Spain',s1:null,s2:null,done:false},
   {id:'G6',gr:'G',md:3,date:'27 Jun',time:'2026-06-27T09:00:00',t1:'Egypt',t2:'Iran',s1:null,s2:null,done:false},
   {id:'G5',gr:'G',md:3,date:'27 Jun',time:'2026-06-27T09:00:00',t1:'New Zealand',t2:'Belgium',s1:null,s2:null,done:false},
   {id:'L5',gr:'L',md:3,date:'28 Jun',time:'2026-06-28T03:00:00',t1:'Panama',t2:'England',s1:null,s2:null,done:false},
   {id:'L6',gr:'L',md:3,date:'28 Jun',time:'2026-06-28T03:00:00',t1:'Ghana',t2:'Croatia',s1:null,s2:null,done:false},
-  {id:'K1',gr:'K',md:1,date:'28 Jun',time:'2026-06-28T05:30:00',t1:'Colombia',t2:'Portugal',s1:null,s2:null,done:false},
-  {id:'K2',gr:'K',md:1,date:'28 Jun',time:'2026-06-28T05:30:00',t1:'DR Congo',t2:'Uzbekistan',s1:null,s2:null,done:false},
+  {id:'K1',gr:'K',md:3,date:'28 Jun',time:'2026-06-28T05:30:00',t1:'Colombia',t2:'Portugal',s1:null,s2:null,done:false},
+  {id:'K2',gr:'K',md:3,date:'28 Jun',time:'2026-06-28T05:30:00',t1:'DR Congo',t2:'Uzbekistan',s1:null,s2:null,done:false},
   {id:'J6',gr:'J',md:3,date:'28 Jun',time:'2026-06-28T08:00:00',t1:'Algeria',t2:'Austria',s1:null,s2:null,done:false},
   {id:'J5',gr:'J',md:3,date:'28 Jun',time:'2026-06-28T08:00:00',t1:'Jordan',t2:'Argentina',s1:null,s2:null,done:false},
-  
 ];
 
 const GROUPS_BLUEPRINT = {
-  'A': ['Mexico', 'South Africa', 'South Korea', 'Czechia'],
-  'B': ['Canada', 'Bosnia & Herz.', 'Qatar', 'Switzerland'],
-  'C': ['Brazil', 'Morocco', 'Haiti', 'Scotland'],
-  'D': ['USA', 'Paraguay', 'Australia', 'Türkiye'],
-  'E': ['Germany', 'Curaçao', 'Ivory Coast', 'Ecuador'],
-  'F': ['Japan', 'Netherlands', 'Sweden', 'Tunisia'],
-  'G': ['Belgium', 'Egypt', 'Iran', 'New Zealand'],
-  'H': ['Spain', 'Cape Verde', 'Uruguay', 'Saudi Arabia'],
-  'I': ['France', 'Senegal', 'Iraq', 'Norway'],
-  'J': ['Argentina', 'Algeria', 'Austria', 'Jordan'],
-  'K': ['Portugal', 'Colombia', 'DR Congo', 'Uzbekistan'],
-  'L': ['England', 'Croatia', 'Ghana', 'Panama']
+  'A':['Mexico','South Africa','South Korea','Czechia'],
+  'B':['Canada','Bosnia & Herz.','Qatar','Switzerland'],
+  'C':['Brazil','Morocco','Haiti','Scotland'],
+  'D':['USA','Paraguay','Australia','Türkiye'],
+  'E':['Germany','Curaçao','Ivory Coast','Ecuador'],
+  'F':['Japan','Netherlands','Sweden','Tunisia'],
+  'G':['Belgium','Egypt','Iran','New Zealand'],
+  'H':['Spain','Cape Verde','Saudi Arabia','Uruguay'],
+  'I':['France','Senegal','Iraq','Norway'],
+  'J':['Argentina','Algeria','Austria','Jordan'],
+  'K':['Portugal','DR Congo','Uzbekistan','Colombia'],
+  'L':['England','Croatia','Ghana','Panama']
 };
 
-let state = { participants: [], picks: [], overrides: {}, currentTab: 'matchday', matchSubTab: 'upcoming' };
-let latestSortedStandings = []; 
-const GLOBAL_APPS_URL = "https://script.google.com/macros/s/AKfycbzwdrmDD8H9fGKY1UF0R-Bluioe2XVJSz0FwKaYIKiyJ4bSrcps0iGPffYLIKJ6Ngjq/exec";
+let state = {
+  participants: [],
+  picks: [],
+  overrides: {},
+  activeUser: "",
+  matchSubTab: "upcoming"
+};
 
-
-function init() {
-  const saved = localStorage.getItem('wc_choice_state_v2');
-  if(saved) { 
-    try { 
-      state = JSON.parse(saved); 
-      if(!Array.isArray(state.picks)) state.picks=[]; 
-    } catch { 
-      state = { participants: [], picks: [], overrides: {}, currentTab: 'matchday', matchSubTab: 'upcoming' }; 
-    } 
+window.onload = function() {
+  const local = localStorage.getItem('wc_choice_state_v2');
+  if(local) {
+    try {
+      state = JSON.parse(local);
+    } catch(e) {
+      console.log("Gagal memuat local state", e);
+    }
   }
-  if(!state.matchSubTab) { state.matchSubTab = 'upcoming'; }
-  if(document.getElementById('inp-apps-url')) { document.getElementById('inp-apps-url').value = GLOBAL_APPS_URL; }
-  
-  // Jalankan penarikan data cloud bawaan skrip Anda
+  if(!state.participants) state.participants = [];
+  if(!state.picks) state.picks = [];
+  if(!state.overrides) state.overrides = {};
+  if(!state.matchSubTab) state.matchSubTab = 'upcoming';
+
+  // Sinkronkan ke input tersembunyi agar fungsi bawaan tetap berjalan normal
+  if(document.getElementById('inp-apps-url')) {
+    document.getElementById('inp-apps-url').value = MASTER_APPS_SCRIPT_URL;
+  }
+
   autoFetchCloudData();
 
-  // Proteksi jika koneksi timeout/gagal total, hapus loader setelah 8 detik agar halaman tidak membeku selamanya
   setTimeout(() => {
     hilangkanInitialLoader();
-  }, 8000);
+  }, 4000);
 
-  setInterval(() => { if(state.matchSubTab === 'upcoming') renderMatches(); }, 60000);
+  setInterval(() => {
+    if(state.matchSubTab === 'upcoming') renderMatches();
+  }, 60000);
 }
 
-// FUNGSI BARU: Untuk menghapus screen loading dengan efek memudar halus
 function hilangkanInitialLoader() {
   const loader = document.getElementById('initial-loader');
   if (loader) {
     loader.style.opacity = '0';
     loader.style.visibility = 'hidden';
-    setTimeout(() => {
-      loader.remove(); // Hancurkan elemen dari memori browser agar enteng
-    }, 500); // 500ms sesuai durasi transition CSS overlay
+    setTimeout(() => { loader.remove(); }, 500);
   }
 }
 
-function saveLocal() { localStorage.setItem('wc_choice_state_v2', JSON.stringify(state)); }
-function getMatches() { return BASE_MATCHES.map(m => state.overrides[m.id] ? { ...m, ...state.overrides[m.id] } : m); }
+function saveLocal() {
+  localStorage.setItem('wc_choice_state_v2', JSON.stringify(state));
+}
+
+function getScriptUrl() {
+  return MASTER_APPS_SCRIPT_URL;
+}
+
+function getMatches() {
+  return BASE_MATCHES.map(m => state.overrides[m.id] ? { ...m, ...state.overrides[m.id] } : m);
+}
 
 function isKickoffPassed(matchTimeString) {
   if(!matchTimeString) return false;
@@ -465,84 +492,71 @@ function renderAll() {
   renderMatches();
   renderWCGroups();
   renderParticipants();
+  buildAdminMatchdayDropdown();
 }
 
-// Tambahkan parameter opsional forceRefresh (default bernilai false)
 function autoFetchCloudData(forceRefresh = false) {
-  if(!GLOBAL_APPS_URL || GLOBAL_APPS_URL.includes("...")) {
+  const cloudUrl = getScriptUrl();
+  if(!cloudUrl || cloudUrl.includes("MASUKKAN_URL")) {
     renderAll();
-    if(typeof hilangkanInitialLoader === "function") hilangkanInitialLoader();
+    hilangkanInitialLoader();
+    return;
+  }
+  
+  const lastFetch = localStorage.getItem('wc_last_cloud_fetch');
+  const now = Date.now();
+  
+  if(!forceRefresh && lastFetch && (now - parseInt(lastFetch) < 15000)) {
+    renderAll();
+    hilangkanInitialLoader();
     return;
   }
 
-  // Cek kapan terakhir kali cloud data sukses diambil
-  const lastFetch = localStorage.getItem('wc_last_cloud_fetch');
-  const now = Date.now();
-
-  // JIKA forceRefresh bernilai TRUE, blok IF di bawah ini akan dilewati (Abaikan Cache!)
-  if (!forceRefresh && state.participants.length > 0 && lastFetch && (now - parseInt(lastFetch) < 300000)) {
-    console.log("Menggunakan cache lokal agar loading instan.");
-    renderAll();
-    if(typeof hilangkanInitialLoader === "function") hilangkanInitialLoader();
-    return; 
-  }
-
-  console.log("Mengambil data segar langsung dari Cloud Server...");
-  
-  // Jika cache kosong, sudah lewat 5 menit, atau sedang DIPAKSA REFRESH:
-  fetch(GLOBAL_APPS_URL + '?action=getData')
+  fetch(cloudUrl + "?action=getAll")
     .then(res => res.json())
-    .then(resData => {
-      if(resData && !resData.error) {
-        state.participants = resData.participants || [];
-        state.picks = resData.picks || [];
-        state.overrides = resData.overrides || {};
+    .then(data => {
+      if(data) {
+        if(data.participants) state.participants = data.participants;
+        if(data.picks) state.picks = data.picks;
+        if(data.overrides) state.overrides = data.overrides;
         saveLocal();
-        localStorage.setItem('wc_last_cloud_fetch', Date.now().toString()); // Simpan timestamp baru
+        localStorage.setItem('wc_last_cloud_fetch', now.toString());
       }
       renderAll();
-      if(typeof hilangkanInitialLoader === "function") hilangkanInitialLoader();
+      hilangkanInitialLoader();
     })
     .catch(err => {
-      console.log("Gagal cloud otomatis:", err.message);
-      renderAll(); 
-      if(typeof hilangkanInitialLoader === "function") hilangkanInitialLoader();
+      console.log("Gagal auto fetch:", err);
+      renderAll();
+      hilangkanInitialLoader();
     });
 }
 
-function generateRandomColor() {
-  const hue = Math.floor(Math.random() * 360);
-  return `hsl(${hue}, 85%, 65%)`;
-}
-
-function switchTab(name) {
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
-  document.getElementById('btn-tab-'+name).classList.add('active');
-  document.getElementById('tab-'+name).classList.add('active');
-}
-
-function switchMatchSubTab(subTab) {
-  state.matchSubTab = subTab;
-  const btnUpcoming = document.getElementById('subtab-upcoming');
-  const btnFinished = document.getElementById('subtab-finished');
-  const frontSelector = document.getElementById('front-user-selector-zone');
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   
-  if (subTab === 'upcoming') {
-    btnUpcoming.style.background = 'var(--gold)'; btnUpcoming.style.color = '#060D18';
-    btnFinished.style.background = 'transparent'; btnFinished.style.color = 'var(--muted)';
-    if(frontSelector) frontSelector.style.display = 'flex';
+  const btn = document.getElementById('btn-tab-' + tabId);
+  const pane = document.getElementById('tab-' + tabId);
+  if(btn && pane) {
+    btn.classList.add('active');
+    pane.classList.add('active');
+  }
+}
+
+function switchMatchSubTab(sub) {
+  state.matchSubTab = sub;
+  const btnUp = document.getElementById('subtab-upcoming');
+  const btnFi = document.getElementById('subtab-finished');
+  if(sub === 'upcoming') {
+    if(btnUp) { btnUp.style.background = 'var(--gold)'; btnUp.style.color = 'var(--bg)'; }
+    if(btnFi) { btnFi.style.background = 'transparent'; btnFi.style.color = 'var(--muted)'; }
   } else {
-    btnFinished.style.background = 'var(--gold)'; btnFinished.style.color = '#060D18';
-    btnUpcoming.style.background = 'transparent'; btnUpcoming.style.color = 'var(--muted)';
-    if(frontSelector) frontSelector.style.display = 'none';
+    if(btnUp) { btnUp.style.background = 'transparent'; btnUp.style.color = 'var(--muted)'; }
+    if(btnFi) { btnFi.style.background = 'var(--gold)'; btnFi.style.color = 'var(--bg)'; }
   }
   renderMatches();
 }
-
-function openAdminModal() { document.getElementById('admin-modal').style.display = 'flex'; renderParticipants(); renderPickForm(); }
-function closeAdminModal() { document.getElementById('admin-modal').style.display = 'none'; renderAll(); }
-function closeAdminModalOnBackdrop(e) { if(e.target.id === 'admin-modal') closeAdminModal(); }
 
 function renderStandings() {
   const container = document.getElementById('pred-standings');
@@ -712,128 +726,127 @@ function downloadKlasemenGambar() {
   });
 }
 
+
 function renderFrontUserSelector() {
   const sel = document.getElementById('front-sel-participant');
   if(!sel) return;
-  // Ambil nilai yang sedang aktif/dipilih sebelumnya
-  const currentActive = state.activeUser || ""; 
-  
+  const currentActive = state.activeUser || "";
   let h = '<option value="">-- Pilih Nama Anda --</option>';
   state.participants.forEach(p => {
-    // Berikan tanda selected jika ID peserta cocok dengan yang sedang aktif di state lokal
-    const isSelected = (p.id === currentActive) ? 'selected' : '';
-    h += `<option value="${p.id}" ${isSelected}>${p.name}</option>`;
+    h += `<option value="${p.id}" ${p.id == currentActive ? 'selected':''}>${p.name}</option>`;
   });
-  
   sel.innerHTML = h;
+}
+
+function bukaFormUserBaru() {
+  document.getElementById('wrapper-pilih-user').style.display = 'none';
+  document.getElementById('wrapper-input-user-baru').style.display = 'flex';
+  document.getElementById('inp-nama-baru').focus();
+}
+function batalFormUserBaru() {
+  document.getElementById('wrapper-pilih-user').style.display = 'flex';
+  document.getElementById('wrapper-input-user-baru').style.display = 'none';
+  document.getElementById('inp-nama-baru').value = '';
+}
+
+function simpanUserBaruKeCloud() {
+  const inputEl = document.getElementById('inp-nama-baru');
+  const namaBaru = inputEl.value.trim();
+  if (!namaBaru) { alert("Silakan masukkan nama Anda terlebih dahulu!"); return; }
+  
+  const cloudUrl = getScriptUrl();
+  if (!cloudUrl || cloudUrl.includes("MASUKKAN_URL")) { alert("URL Apps Script belum dikonfigurasi di dalam kode!"); return; }
+
+  showFrontAlert("⏳ Mendaftarkan nama Anda ke server...");
+  const payload = { action: 'addParticipant', name: namaBaru };
+  
+  fetch(cloudUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) })
+  .then(() => {
+    showFrontAlert("✅ Pendaftaran dikirim! Memperbarui list liga...");
+    setTimeout(() => {
+      inputEl.value = '';
+      batalFormUserBaru();
+      autoFetchCloudData(true);
+    }, 1500);
+  })
+  .catch(e => {
+    showFrontAlert("❌ Gagal mendaftar: " + e.message);
+  });
 }
 
 function renderMatches() {
   const container = document.getElementById('matches-container');
-  const filter = document.getElementById('filter-grup').value;
-  const frontActiveUserId = document.getElementById('front-sel-participant')?.value || "";
+  if(!container) return;
+  
+  const filterGrupEl = document.getElementById('filter-grup');
+  const grFilter = filterGrupEl ? filterGrupEl.value : 'ALL';
+  
   const matches = getMatches();
-  let h = '';
+  const frontActiveUserId = state.activeUser;
 
-  // 1. Filter berdasarkan grup (ALL atau grup spesifik)
-  let filtered = matches.filter(m => filter === 'ALL' || m.gr === filter);
-  
-  // 2. Filter & Sortir berdasarkan Subtab yang Aktif
-  if (state.matchSubTab === 'upcoming') {
-    // Untuk subtab UPCOMING: Biarkan urutan bawaan GSheet (kronologis normal/A1-L6)
-    filtered = filtered.filter(m => !m.done || m.done === 'false' || m.done === 'FALSE');
-    
-  } else {
-    // Untuk subtab FINISHED: Saring yang sudah selesai
-    filtered = filtered.filter(m => m.done && m.done !== 'false' && m.done !== 'FALSE');
-    
-    // KUNCI PERBAIKAN: Fungsi sort di bawah ini WAJIB berada di dalam blok ELSE ini
-    filtered.sort((a, b) => {
-      const timeA = a.time ? new Date(a.time).getTime() : 0;
-      const timeB = b.time ? new Date(b.time).getTime() : 0;
-      return timeB - timeA; // Waktu terbaru (angka milidetik lebih besar) naik ke atas
-    });
-  }
-  
-
-  // ─── LOGIKA DINAMIS: KUNCI SESI BERUNTUN (TAMBAHKAN DI SINI) ───
-  // Buat duplikat master matches lalu urutkan kronologis (waktu terlama ke terbaru)
-  const masterSorted = [...matches].sort((a, b) => {
-    return (a.time ? new Date(a.time).getTime() : 0) - (b.time ? new Date(b.time).getTime() : 0);
+  let filtered = matches.filter(m => {
+    if(grFilter !== 'ALL' && m.gr !== grFilter) return false;
+    const isFinished = (m.done && m.done !== 'false' && m.done !== 'FALSE');
+    if(state.matchSubTab === 'finished') return isFinished;
+    return !isFinished;
   });
 
-  // Cari match pertama di turnamen yang belum selesai (Sesi awal aktif saat ini)
+  if (state.matchSubTab === 'finished') {
+    filtered.sort((a, b) => (b.time ? new Date(b.time).getTime() : 0) - (a.time ? new Date(a.time).getTime() : 0));
+  } else {
+    filtered.sort((a, b) => (a.time ? new Date(a.time).getTime() : 0) - (b.time ? new Date(b.time).getTime() : 0));
+  }
+
+  const masterSorted = [...matches].sort((a, b) => (a.time ? new Date(a.time).getTime() : 0) - (b.time ? new Date(b.time).getTime() : 0));
   const firstUnfinishedIndex = masterSorted.findIndex(m => !m.done || m.done === 'false' || m.done === 'FALSE');
-  
-  // Siapkan Set untuk menyimpan ID match apa saja yang masuk batas "Boleh Diisi"
   const allowedMatchIds = new Set();
   
   if (firstUnfinishedIndex !== -1) {
-    // Jalankan loop dari match aktif pertama untuk menyaring kluster beruntun sesi sekarang
     for (let i = firstUnfinishedIndex; i < masterSorted.length; i++) {
       const currentMatch = masterSorted[i];
       allowedMatchIds.add(currentMatch.id);
-
-      // Periksa apakah ada match berikutnya untuk dibandingkan jeda waktunya
       if (i + 1 < masterSorted.length) {
         const nextMatch = masterSorted[i + 1];
         const currentTime = currentMatch.time ? new Date(currentMatch.time).getTime() : 0;
         const nextTime = nextMatch.time ? new Date(nextMatch.time).getTime() : 0;
-        
-        // Cek jika jarak waktu ke match selanjutnya lebih dari 12 jam (12 * 60 * 60 * 1000 ms)
         if (nextTime - currentTime > 43200000) {
-          // Jeda terdeteksi! Sesi beruntun saat ini berakhir di currentMatch. Break loop!
           break;
         }
       }
     }
   }
-  // ──────────────────────────────────────────────────────────────
 
   if (filtered.length === 0) {
-    container.innerHTML = `<div style="text-align:center; padding:40px 20px; color:var(--muted); font-size:12px;">Tidak ada pertandingan untuk grup ini.</div>`;
+    container.innerHTML = `<div style="text-align:center; padding:40px 20px; color:var(--muted); font-size:12px;">Tidak ada pertandingan untuk subtab ini.</div>`;
     return;
   }
 
+  let html = "";
   filtered.forEach(m => {
-    let pickBadgesT1 = '', pickBadgesT2 = '';
-    let countT1 = 0, countT2 = 0;
-    let currentUserPick = '';
-
+    let arrT1 = [], arrT2 = [];
     state.participants.forEach(p => {
       const pk = state.picks.find(x => x.pid === p.id && x.mid === m.id);
       if(pk) {
-        if(p.id === frontActiveUserId) { currentUserPick = pk.pick; }
-        const badgeHtml = `<div class="pk-badge"><span style="width:6px;height:6px;border-radius:50%;background:${p.color};flex-shrink:0;"></span><strong style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</strong></div>`;
-        if(pk.pick === m.t1) { pickBadgesT1 += badgeHtml; countT1++; } 
-        else if(pk.pick === m.t2) { pickBadgesT2 += badgeHtml; countT2++; }
+        if(pk.pick === m.t1) arrT1.push(p.name);
+        else if(pk.pick === m.t2) arrT2.push(p.name);
       }
     });
 
-    if(!pickBadgesT1) pickBadgesT1 = '<span style="color:var(--muted);font-size:9px;text-align:center;display:block;padding:2px 0;">—</span>';
-    if(!pickBadgesT2) pickBadgesT2 = '<span style="color:var(--muted);font-size:9px;text-align:center;display:block;padding:2px 0;">—</span>';
+    let pickBadgesT1 = arrT1.map(n => `<span class="pk-badge">👤 ${n}</span>`).join('');
+    let pickBadgesT2 = arrT2.map(n => `<span class="pk-badge">👤 ${n}</span>`).join('');
 
     const isFinished = (m.done && m.done !== 'false' && m.done !== 'FALSE');
-    // ─── PERUBAHAN PENENTUAN STATUS LOCK SECARA OTOMATIS ───
-    // Match akan TERKUNCI jika: 
-    // 1. Memang sudah lewat kickoff (logika bawaan Anda), ATAU
-    // 2. Pada subtab upcoming, match ID tersebut tidak terdaftar di Sesi Beruntun Aktif (allowedMatchIds)
-    let isLocked = isKickoffPassed(m.time); 
+    let isLocked = isKickoffPassed(m.time);
     if (state.matchSubTab === 'upcoming' && !allowedMatchIds.has(m.id)) {
-      isLocked = true; 
-    } 
-    
+      isLocked = true;
+    }
 
     let statusLabel = '⏳ BELUM';
     let labelColor = 'var(--muted)';
-    if(isFinished) {
-      statusLabel = '✓ SELESAI'; labelColor = 'var(--gold2)';
-    } else if(isLocked) {
-      if (state.matchSubTab === 'upcoming' && !allowedMatchIds.has(m.id)) {
-        statusLabel = '🔒 LOCKED (SESI BESOK)'; labelColor = '#FFA726'; // Warna orange info
-      } else {
-        statusLabel = '🔒 LIVE / TERKUNCI'; labelColor = '#EF9A9A';
-      }
+    if(isFinished) { statusLabel = '✓ SELESAI'; labelColor = 'var(--gold2)'; }
+    else if(isLocked) {
+      if (state.matchSubTab === 'upcoming' && !allowedMatchIds.has(m.id)) { statusLabel = '🔒 LOCKED (SESI BESOK)'; labelColor = '#FFA726'; }
+      else { statusLabel = '🔒 LIVE / TERKUNCI'; labelColor = '#EF9A9A'; }
     }
 
     let timeLabel = '';
@@ -845,69 +858,111 @@ function renderMatches() {
     let quickPickHtml = '';
     if(!isFinished && frontActiveUserId) {
       if(isLocked) {
-        if (state.matchSubTab === 'upcoming' && !allowedMatchIds.has(m.id)) {
-          quickPickHtml = `
-          <div class="mc-quick-pick-zone" style="background:rgba(192,40,47,0.08); flex-direction:column; gap:4px; align-items:stretch;">
-          <span style="color:var(--loss-text); font-size:10px; font-weight:600; text-align:center;">🔒 POLLING BELUM DIBUKA 🔒</span>
-          <button class="btn btn-outline" style="font-size:10px; padding:4px; border-color:var(--wa-green); color:var(--wa-green)" onclick="shareMatchPicksToWA('${m.id}')">📢 Share Peta Dukungan Match Ini ke WA</button>
-          </div>`;
-        } else {
-          quickPickHtml = `
-          <div class="mc-quick-pick-zone" style="background:rgba(192,40,47,0.08); flex-direction:column; gap:4px; align-items:stretch;">
-          <span style="color:var(--loss-text); font-size:10px; font-weight:600; text-align:center;">🔒 POLLING SUDAH DITUTUP 🔒</span>
-          <button class="btn btn-outline" style="font-size:10px; padding:4px; border-color:var(--wa-green); color:var(--wa-green)" onclick="shareMatchPicksToWA('${m.id}')">📢 Share Peta Dukungan Match Ini ke WA</button>
-          </div>`;
-        }
-      } else {
-        quickPickHtml = `
-        <div class="mc-quick-pick-zone" style="flex-direction:column; gap:6px; align-items:stretch;">
-          <div style="display:flex; gap:6px; align-items:center;">
-            <select id="quick-sel-${m.id}" style="padding:4px 6px; font-size:11px; height:28px; flex:1;">
-              <option value="">- Belum Pilih Dukungan -</option>
-              <option value="${m.t1}" ${currentUserPick === m.t1 ? 'selected' : ''}>Dukung ${m.t1}</option>
-              <option value="${m.t2}" ${currentUserPick === m.t2 ? 'selected' : ''}>Dukung ${m.t2}</option>
-            </select>
-            <button class="btn btn-gold" style="padding:6px 10px; font-size:10px; height:28px;" onclick="saveQuickPick('${m.id}')">⚡ Simpan</button>
-          </div>
-          <button class="btn btn-outline" style="font-size:10px; padding:4px;" onclick="shareMatchPicksToWA('${m.id}')">📲 Ajak Rekan Lain Isi Match Ini</button>
+        quickPickHtml = `<div class="mc-quick-pick-zone" style="background:rgba(192,40,47,0.08); flex-direction:column; gap:4px; align-items:stretch;">
+          <span style="color:var(--loss-text); font-size:10px; font-weight:600; text-align:center;">🔒 PREDIKSI TERKUNCI</span>
+          <button class="btn btn-outline" style="font-size:10px; padding:4px; border-color:var(--wa-green); color:var(--wa-green)" onclick="shareMatchPicksToWA('${m.id}')">📢 Share Peta Dukungan ke WA</button>
         </div>`;
+      } else {
+        const userPickObj = state.picks.find(x => x.pid === frontActiveUserId && x.mid === m.id);
+        const currentPickVal = userPickObj ? userPickObj.pick : "";
+        quickPickHtml = `
+          <div class="mc-quick-pick-zone" id="qp-zone-${m.id}">
+            <span style="font-size:10px; font-weight:700; color:var(--gold2); white-space:nowrap;">PILIHAN ANDA:</span>
+            <select class="front-qp-select" data-mid="${m.id}" onchange="saveQuickPick('${m.id}', this)" style="flex:1; padding:4px 6px; background:var(--s3); font-size:11px; border-color:var(--gold);">
+              <option value="">-- Belum Memilih --</option>
+              <option value="${m.t1}" ${currentPickVal===m.t1?'selected':''}>Dukung ${m.t1}</option>
+              <option value="${m.t2}" ${currentPickVal===m.t2?'selected':''}>Dukung ${m.t2}</option>
+            </select>
+            <button class="btn btn-outline" style="font-size:10px; padding:4px 6px; border-color:var(--wa-green); color:var(--wa-green)" onclick="shareMatchPicksToWA('${m.id}')" title="Share Prediksi">📢 Share</button>
+          </div>`;
       }
+    } else if(!isFinished && !frontActiveUserId) {
+      quickPickHtml = `<div class="mc-quick-pick-zone" style="justify-content:center;">
+        <span style="font-size:10px; color:var(--muted)">💡 Silakan pilih Nama Anda di atas untuk mengisi prediksi secara mandiri.</span>
+      </div>`;
     }
 
-    h += `<div class="match-card">
+    html += `
+    <div class="match-card">
       <div class="mc-header">
-        <div>GRUP ${m.gr} · ${m.date}${timeLabel}</div>
-        <div style="display:flex;align-items:center;gap:6px"><span class="md-badge">MD ${m.md}</span><span style="font-weight:700; font-size:9px; color:${labelColor}">${statusLabel}</span></div>
+        <div><span class="md-badge">MD ${m.md}</span> · GRUP ${m.gr} · ${m.date}${timeLabel}</div>
+        <div style="font-weight:700; color:${labelColor}">${statusLabel}</div>
       </div>
       <div class="mc-body">
-        <div class="mc-team">${getFlag(m.t1)} <span>${m.t1}</span></div>
-        <div class="mc-score" style="color: ${isFinished ? 'var(--gold2)': 'var(--muted)'}">${isFinished ? `${m.s1}-${m.s2}` : 'VS'}</div>
-        <div class="mc-team away"><span>${m.t2}</span> ${getFlag(m.t2)}</div>
+        <div class="mc-team">
+          ${getFlag(m.t1)} <span>${m.t1}</span>
+        </div>
+        <div class="mc-score">
+          ${isFinished ? `${m.s1} - ${m.s2}` : 'VS'}
+        </div>
+        <div class="mc-team away">
+          <span>${m.t2}</span> ${getFlag(m.t2)}
+        </div>
       </div>
       <div class="mc-picks-container">
         <div class="mc-pick-column">
-          <div class="column-title">${m.t1} (${countT1})</div>
-          ${pickBadgesT1}
+          <div class="column-title">Pendukung ${m.t1} (${arrT1.length})</div>
+          ${pickBadgesT1 || '<span style="color:rgba(255,255,255,0.05); font-size:9px; text-align:center;">Kosong</span>'}
         </div>
         <div class="mc-pick-column">
-          <div class="column-title" style="text-align:center;">(${countT2}) ${m.t2}</div>
-          ${pickBadgesT2}
+          <div class="column-title">Pendukung ${m.t2} (${arrT2.length})</div>
+          ${pickBadgesT2 || '<span style="color:rgba(255,255,255,0.05); font-size:9px; text-align:center;">Kosong</span>'}
         </div>
       </div>
       ${quickPickHtml}
     </div>`;
   });
-  container.innerHTML = h;
+  container.innerHTML = html;
+}
+
+function saveQuickPick(matchId, selectEl) {
+  const frontActiveUserId = state.activeUser;
+  if(!frontActiveUserId) return;
+  const selectVal = selectEl.value;
+  
+  if(selectEl) {
+    selectEl.disabled = true;
+    selectEl.style.opacity = "0.5";
+  }
+
+  state.picks = state.picks.filter(x => !(x.pid === frontActiveUserId && x.mid === matchId));
+  if(selectVal) {
+    state.picks.push({ pid: frontActiveUserId, mid: matchId, pick: selectVal });
+  }
+  saveLocal();
+
+  const cloudUrl = getScriptUrl();
+  if(cloudUrl && !cloudUrl.includes("MASUKKAN_URL")) {
+    const payload = {
+      action: 'saveAll',
+      participants: state.participants,
+      picks: state.picks,
+      overrides: state.overrides
+    };
+    fetch(cloudUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) })
+    .then(() => {
+      if(selectEl) { selectEl.disabled = false; selectEl.style.opacity = "1"; }
+      renderMatches();
+      showFrontAlert("✅ Pilihan berhasil disinkronkan ke Cloud!");
+    })
+    .catch(e => {
+      if(selectEl) { selectEl.disabled = false; selectEl.style.opacity = "1"; }
+      renderMatches();
+      showFrontAlert("⚠️ Tersimpan Lokal. Sinkronisasi Cloud Gagal.");
+    });
+  } else {
+    if(selectEl) { selectEl.disabled = false; selectEl.style.opacity = "1"; }
+    renderMatches();
+    showFrontAlert("ℹ️ Pilihan disimpan secara lokal (URL Cloud belum diset)!");
+  }
 }
 
 function shareMatchPicksToWA(matchId) {
   const matches = getMatches();
   const m = matches.find(x => x.id === matchId);
   if(!m) return;
-  
   const isLocked = isKickoffPassed(m.time);
   let arrT1 = [], arrT2 = [];
-  
   state.participants.forEach(p => {
     const pk = state.picks.find(x => x.pid === p.id && x.mid === m.id);
     if(pk) {
@@ -915,7 +970,7 @@ function shareMatchPicksToWA(matchId) {
       else if(pk.pick === m.t2) arrT2.push(p.name);
     }
   });
-  
+
   let text = "";
   if(isLocked) {
     text += `🔒 *PREDIKSI TERKUNCI: ${m.t1.toUpperCase()} vs ${m.t2.toUpperCase()}* 🔒\n`;
@@ -933,188 +988,44 @@ function shareMatchPicksToWA(matchId) {
     text += `📢 *Peta Dukungan Sementara:*\n`;
     text += `• ${m.t1}: ${arrT1.length} orang\n`;
     text += `• ${m.t2}: ${arrT2.length} orang\n\n`;
-    text += "👉 Jangan sampai ketinggalan/zonk! Segera isi atau ubah tim pilihanmu sebelum waktu kick-off terkunci otomatis di:\n";
-    text += window.location.href.includes("file://") ? "[Link Web Prediksi]" : window.location.href;
+    text += "👉 Jangan sampai ketinggalan/zonk! Segera isi atau ubah tim pilihanmu sebelum waktu kick-off terkunci otomatis!\n";
   }
   
-  window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(text), "_blank");
-}
-
-function saveQuickPick(matchId) {
-  const frontActiveUserId = document.getElementById('front-sel-participant')?.value || "";
-  if(!frontActiveUserId) {
-    alert("Silakan pilih nama peserta terlebih dahulu di bagian atas!");
-    return;
-  }
-  
-  const targetMatch = BASE_MATCHES.find(x => x.id === matchId);
-  if(targetMatch && isKickoffPassed(targetMatch.time)) {
-    alert("Waktu pengisian sudah habis! Pertandingan ini sudah kick-off.");
-    renderMatches();
-    return;
-  }
-  
-  const selectVal = document.getElementById(`quick-sel-${matchId}`).value;
-  
-  // Cari element container baris match atau tombol spesifik untuk dikunci
-  const btnEl = document.querySelector(`button[onclick="saveQuickPick('${matchId}')"]`);
-  const selectEl = document.getElementById(`quick-sel-${matchId}`);
-  const originalBtnText = btnEl ? btnEl.innerHTML : "⚡ Simpan";
-
-  // 1. UPDATE DATA LOKAL SECARA INSTAN
-  state.picks = state.picks.filter(x => !(x.pid === frontActiveUserId && x.mid === matchId));
-  if(selectVal) {
-    state.picks.push({ pid: frontActiveUserId, mid: matchId, pick: selectVal });
-  }
-  saveLocal();
-
-  // 2. RENDER STANDING LOKAL (UI update instan untuk background kalkulasi)
-  renderStandings();
-  
-  // Proteksi Spam & Jeda Visual Lokal: Kunci elemen kontrol khusus pada baris pertandingan ini
-  if(btnEl) {
-    btnEl.disabled = true;
-    btnEl.innerHTML = "⏳ Kirim...";
-    btnEl.style.opacity = "0.5";
-    btnEl.style.cursor = "not-allowed";
-  }
-  if(selectEl) {
-    selectEl.disabled = true;
-    selectEl.style.opacity = "0.6";
-  }
-
-  // Catat waktu awal kirim paket data
-  const startTime = Date.now();
-
-  // 3. SINKRONISASI KE GSHEET (Menggunakan skema payload parsial super ringan)
-  if(GLOBAL_APPS_URL && !GLOBAL_APPS_URL.includes("...")) {
-    const payload = {
-      action: 'saveAll',
-      picks: [
-        { pid: String(frontActiveUserId), mid: String(matchId), pick: String(selectVal) }
-      ]
-    };
-
-    fetch(GLOBAL_APPS_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload)
-    })
-    .then(() => {
-      const duration = Date.now() - startTime;
-      const targetDelay = 1500; // Berikan jeda penahan aman selama 1.5 detik
-
-      const normalisasiUI = () => {
-        if(btnEl) {
-          btnEl.disabled = false;
-          btnEl.innerHTML = originalBtnText;
-          btnEl.style.opacity = "1";
-          btnEl.style.cursor = "pointer";
-        }
-        if(selectEl) {
-          selectEl.disabled = false;
-          selectEl.style.opacity = "1";
-        }
-        // Jalankan renderMatches setelah UI dinormalisasi agar status dropdown & warna terbaru terkunci
-        renderMatches();
-        showFrontAlert("✅ Sinkronisasi Cloud Berhasil!");
-      };
-
-      if (duration < targetDelay) {
-        setTimeout(normalisasiUI, targetDelay - duration);
-      } else {
-        normalisasiUI();
-      }
-    })
-    .catch(e => {
-      console.log("Gagal auto-sync:", e.message);
-      if(btnEl) {
-        btnEl.disabled = false;
-        btnEl.innerHTML = originalBtnText;
-        btnEl.style.opacity = "1";
-        btnEl.style.cursor = "pointer";
-      }
-      if(selectEl) {
-        selectEl.disabled = false;
-        selectEl.style.opacity = "1";
-      }
-      renderMatches();
-      showFrontAlert("⚠️ Tersimpan Lokal. Sinkronisasi Cloud Tertunda.");
-    });
-  } else {
-    // Jika URL Apps Script kosong, langsung kembalikan UI ke kondisi normal
-    if(btnEl) {
-      btnEl.disabled = false;
-      btnEl.innerHTML = originalBtnText;
-      btnEl.style.opacity = "1";
-    }
-    if(selectEl) {
-      selectEl.disabled = false;
-    }
-    renderMatches();
-    showFrontAlert("Pilihan disimpan secara lokal!");
-  }
+  const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+  window.open(waUrl, '_blank');
 }
 
 function showFrontAlert(msg) {
-  // Cari atau buat kontainer toast melayang secara dinamis
   let toastContainer = document.getElementById('global-toast-popup');
-  
   if (!toastContainer) {
     toastContainer = document.createElement('div');
     toastContainer.id = 'global-toast-popup';
-    // Menerapkan styling CSS modern langsung di elemen pop-up melayang
-    Object.assign(toastContainer.style, {
-      position: 'fixed',
-      bottom: '30px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      backgroundColor: '#152840',
-      color: '#EDF2FF',
-      padding: '12px 24px',
-      borderRadius: '30px',
-      boxShadow: '0px 10px 25px rgba(0, 0, 0, 0.5)',
-      border: '1px solid #C9A84C',
-      zIndex: '99999',
-      fontSize: '14px',
-      fontWeight: '500',
-      textAlign: 'center',
-      whiteSpace: 'nowrap',
-      opacity: '0',
-      transition: 'opacity 0.3s ease, bottom 0.3s ease',
-      pointerEvents: 'none'
-    });
+    toastContainer.style.cssText = "position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px); background:rgba(11,25,41,0.95); color:#EDF2FF; border:1px solid #C9A84C; padding:12px 20px; border-radius:8px; font-size:12px; font-weight:500; z-index:99999; box-shadow:0 8px 24px rgba(0,0,0,0.6); backdrop-filter:blur(4px); transition:transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s; opacity:0; text-align:center; min-width:250px; pointer-events:none;";
     document.body.appendChild(toastContainer);
   }
-
-  // Set isi pesan teks pemberitahuan
-  toastContainer.innerText = msg;
-  
-  // Tampilkan pop-up dengan efek transisi memudar naik (fade in)
-  toastContainer.style.opacity = '1';
-  toastContainer.style.bottom = '40px';
-
-  // Sembunyikan kembali pop-up setelah durasi 2.5 detik
-  setTimeout(() => {
-    toastContainer.style.opacity = '0';
-    toastContainer.style.bottom = '30px';
-  }, 2500);
+  toastContainer.innerHTML = msg;
+  setTimeout(() => { toastContainer.style.transform = "translateX(-50%) translateY(0)"; toastContainer.style.opacity = "1"; }, 50);
+  setTimeout(() => { toastContainer.style.transform = "translateX(-50%) translateY(100px)"; toastContainer.style.opacity = "0"; }, 3000);
 }
 
 function renderWCGroups() {
   const container = document.getElementById('wc-groups-container');
-  const matches = getMatches(); container.innerHTML = '';
+  if(!container) return;
+  container.innerHTML = '';
+  const matches = getMatches();
 
-  ['A','B','C','D','E','F','G','H','I','J','K','L'].forEach(g => {
+  Object.keys(GROUPS_BLUEPRINT).forEach(g => {
     let teams = {};
     GROUPS_BLUEPRINT[g].forEach(tName => { teams[tName] = { name:tName, gd:0, pts:0 }; });
     matches.filter(m => m.gr === g).forEach(m => {
       const isFinished = (m.done && m.done !== 'false' && m.done !== 'FALSE');
       if(!isFinished) return;
-      let t1 = teams[m.t1], t2 = teams[m.t2]; if(!t1 || !t2) return;
+      let t1 = teams[m.t1], t2 = teams[m.t2];
+      if(!t1 || !t2) return;
       t1.gd += (m.s1 - m.s2); t2.gd += (m.s2 - m.s1);
-      if(m.s1 > m.s2) t1.pts += 3; else if(m.s1 < m.s2) t2.pts += 3; else { t1.pts += 1; t2.pts += 1; }
+      if(m.s1 > m.s2) t1.pts += 3;
+      else if(m.s1 < m.s2) t2.pts += 3;
+      else { t1.pts += 1; t2.pts += 1; }
     });
 
     let sortedTeams = Object.values(teams).sort((a,b) => b.pts - a.pts || b.gd - a.gd);
@@ -1130,355 +1041,265 @@ function renderWCGroups() {
 }
 
 function renderParticipants() {
-  const list = document.getElementById('chip-list'); const sel = document.getElementById('sel-participant');
-  if(!list || !sel) return;
-  list.innerHTML = ''; sel.innerHTML = '<option value="">-- Pilih Kontestan --</option>';
+  const list = document.getElementById('chip-list');
+  if(!list) return;
+  let h = '';
   state.participants.forEach(p => {
-    list.innerHTML += `<div class="chip"><span style="width:6px;height:6px;border-radius:50%;background:${p.color}"></span><span>${p.name}</span><button class="chip-del" onclick="deleteParticipant('${p.id}')">&times;</button></div>`;
-    sel.innerHTML += `<option value="${p.id}">${p.name}</option>`;
+    h += `<div class="chip">
+      <span style="width:8px;height:8px;border-radius:50%;background:${p.color || 'var(--gold)'}"></span>
+      <span>${p.name}</span>
+      <button class="chip-del" onclick="deleteParticipant('${p.id}')">&times;</button>
+    </div>`;
   });
+  list.innerHTML = h || '<span style="color:var(--muted);font-size:11px;">Belum ada peserta.</span>';
 }
 
 function addParticipant() {
-  const name = document.getElementById('inp-name').value.trim(); if(!name) return;
-  const randomColor = generateRandomColor();
-  state.participants.push({ id:'p_'+Date.now(), name, color: randomColor }); 
-  document.getElementById('inp-name').value = ''; saveLocal(); renderFrontUserSelector(); renderParticipants();
+  const inp = document.getElementById('inp-name');
+  if(!inp) return;
+  const name = inp.value.trim();
+  if(!name) return;
+  const colors = ['#C9A84C','#E2BE6E','#A5D6A7','#EF9A9A','#4fc3f7','#b39ddb','#ffb74d','#a1887f','#e0e0e0'];
+  const randColor = colors[Math.floor(Math.random()*colors.length)];
+  const p = { id: 'p_' + Date.now(), name, color: randColor };
+  state.participants.push(p);
+  inp.value = '';
+  saveLocal();
+  renderParticipants();
+  renderFrontUserSelector();
+  renderAdminMatchdayForm();
 }
 
-function deleteParticipant(id) { state.participants = state.participants.filter(p => p.id !== id); state.picks = state.picks.filter(p => p.pid !== id); saveLocal(); renderFrontUserSelector(); renderParticipants(); }
+function deleteParticipant(id) {
+  if(!confirm('Hapus kontestan ini beserta seluruh data prediksinya?')) return;
+  state.participants = state.participants.filter(x => x.id !== id);
+  state.picks = state.picks.filter(x => x.pid !== id);
+  if(state.activeUser === id) state.activeUser = "";
+  saveLocal();
+  renderParticipants();
+  renderFrontUserSelector();
+  renderAdminMatchdayForm();
+}
 
-function renderPickForm() {
-  const area = document.getElementById('pick-form-area');
-  if(!area) return;
-  const pid = document.getElementById('sel-participant').value;
-  if(!pid) {
-    area.innerHTML = '<p style="color:var(--muted);text-align:center;font-size:11px;padding:10px;">Pilih peserta untuk mengisi tim pilihan.</p>';
+function buildAdminMatchdayDropdown() {
+  const sel = document.getElementById('sel-admin-matchday');
+  if(!sel) return;
+  const currentVal = sel.value;
+  const matches = getMatches();
+  
+  let h = '<option value="">-- Pilih Pertandingan --</option>';
+  matches.forEach(m => {
+    h += `<option value="${m.id}">[MD ${m.md} - Grup ${m.gr}] ${m.t1} vs ${m.t2}</option>`;
+  });
+  sel.innerHTML = h;
+  if(currentVal) sel.value = currentVal;
+}
+
+function renderAdminMatchdayForm() {
+  const selectAdminMd = document.getElementById('sel-admin-matchday');
+  const matchId = selectAdminMd ? selectAdminMd.value : '';
+  const formArea = document.getElementById('admin-matchday-form-area');
+  const saveBtn = document.getElementById('btn-save-admin-picks');
+  
+  if(!formArea) return;
+  
+  if(!matchId) {
+    formArea.innerHTML = '<p style="text-align:center; color:var(--muted); padding:10px;">Silakan pilih pertandingan terlebih dahulu.</p>';
+    if(saveBtn) saveBtn.disabled = true;
     return;
   }
-  let h = '<div style="display:flex; flex-direction:column; gap:5px">';
-  getMatches().forEach(m => {
-    const cur = state.picks.find(x => x.pid === pid && x.mid === m.id);
-    const isLocked = isKickoffPassed(m.time);
-    h += `<div class="form-row" style="background:var(--s3); padding:5px; border-radius:6px" data-mid="${m.id}">
-      <div style="flex:1; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-        ${m.t1} vs ${m.t2} ${isLocked ? '<span style="color:var(--loss-text)">[🔒 Kunci]</span>':''}
+  
+  const matches = getMatches();
+  const m = matches.find(x => x.id === matchId);
+  if(!m) {
+    formArea.innerHTML = '<p style="text-align:center; color:var(--red);">Pertandingan tidak ditemukan.</p>';
+    if(saveBtn) saveBtn.disabled = true;
+    return;
+  }
+  
+  if(saveBtn) saveBtn.disabled = false;
+  
+  let h = `<div style="margin-bottom:10px; padding:6px; background:var(--s3); border-radius:4px; text-align:center; font-weight:600; color:var(--gold2);">
+    Detail Laga: ${m.t1} vs ${m.t2}
+  </div>`;
+  
+  if(state.participants.length === 0) {
+    h += '<p style="text-align:center; color:var(--muted); padding:10px;">Belum ada anggota terdaftar di sistem.</p>';
+    formArea.innerHTML = h;
+    return;
+  }
+  
+  state.participants.forEach(p => {
+    const userPickObj = state.picks.find(x => x.pid === p.id && x.mid === m.id);
+    const currentPickVal = userPickObj ? userPickObj.pick : "";
+    
+    h += `
+    <div class="form-row admin-user-pick-row" data-pid="${p.id}" style="border-bottom:1px solid rgba(255,255,255,0.03); padding:6px 0; align-items:center;">
+      <div style="flex:1; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+        👤 ${p.name}
       </div>
-      <div style="width:110px">
-        <select class="pick-select" style="padding:4px; font-size:10px;" ${isLocked ? 'disabled' : ''}>
-          <option value="">- Lewati -</option>
-          <option value="${m.t1}" ${cur?.pick===m.t1?'selected':''}>${m.t1}</option>
-          <option value="${m.t2}" ${cur?.pick===m.t2?'selected':''}>${m.t2}</option>
+      <div style="width:160px;">
+        <select class="admin-pick-select" style="padding:4px; background:var(--s3); font-size:11px;">
+          <option value="">-- Belum Memilih --</option>
+          <option value="${m.t1}" ${currentPickVal === m.t1 ? 'selected' : ''}>${m.t1}</option>
+          <option value="${m.t2}" ${currentPickVal === m.t2 ? 'selected' : ''}>${m.t2}</option>
         </select>
       </div>
     </div>`;
   });
-  area.innerHTML = h + '</div>';
+  
+  formArea.innerHTML = h;
 }
 
-function savePicks() {
-  const pid = document.getElementById('sel-participant').value;
-  if(!pid) return;
-
-  const btnEl = document.querySelector('button[onclick="savePicks()"]');
-  const originalBtnText = btnEl ? btnEl.innerHTML : "💾 Simpan Pilihan Tim";
-
+function saveAdminPicksByMatchday() {
+  const selectAdminMd = document.getElementById('sel-admin-matchday');
+  const matchId = selectAdminMd ? selectAdminMd.value : '';
+  if(!matchId) return;
+  
+  const matches = getMatches();
+  const targetMatch = matches.find(x => x.id === matchId);
+  if(!targetMatch) return;
+  
+  const btnEl = document.getElementById('btn-save-admin-picks');
+  const originalBtnText = btnEl ? btnEl.innerHTML : "Simpan";
   if(btnEl) {
     btnEl.disabled = true;
-    btnEl.innerHTML = "⏳ Menyimpan ke Cloud...";
-    btnEl.style.opacity = "0.6";
+    btnEl.innerHTML = "⏳ Menyimpan Data...";
   }
-
-  const currentPicks = [...state.picks];
-  state.picks = state.picks.filter(x => x.pid !== pid);
   
-  document.querySelectorAll('#pick-form-area .form-row').forEach(row => {
-    const mid = row.getAttribute('data-mid');
-    const selectEl = row.querySelector('.pick-select');
-    if(!selectEl) return;
-    const val = selectEl.value;
-    const targetMatch = BASE_MATCHES.find(x => x.id === mid);
-    if(targetMatch && isKickoffPassed(targetMatch.time)) {
-      const backup = currentPicks.find(x => x.pid === pid && x.mid === mid);
-      if(backup) state.picks.push(backup);
-    } else {
-      if(val) state.picks.push({ pid, mid, pick: val });
+  state.picks = state.picks.filter(x => x.mid !== matchId);
+  
+  const rows = document.querySelectorAll('.admin-user-pick-row');
+  rows.forEach(row => {
+    const pid = row.getAttribute('data-pid');
+    const selectEl = row.querySelector('.admin-pick-select');
+    if(selectEl && selectEl.value) {
+      state.picks.push({
+        pid: pid,
+        mid: matchId,
+        pick: selectEl.value
+      });
     }
   });
   
   saveLocal();
-
-  // Kirim data langsung ke cloud
-  if(GLOBAL_APPS_URL && !GLOBAL_APPS_URL.includes("...")) {
-    fetch(GLOBAL_APPS_URL, {
+  
+  const cloudUrl = getScriptUrl();
+  if(cloudUrl && !cloudUrl.includes("MASUKKAN_URL")) {
+    fetch(cloudUrl, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({ action: 'saveAll', participants: state.participants, picks: state.picks, overrides: state.overrides })
     })
     .then(() => {
-      if(btnEl) {
-        btnEl.disabled = false;
-        btnEl.innerHTML = originalBtnText;
-        btnEl.style.opacity = "1";
-      }
+      if(btnEl) { btnEl.disabled = false; btnEl.innerHTML = originalBtnText; }
       renderStandings();
       renderMatches();
-      showAdminAlert('✅ Semua pilihan berhasil disimpan ke GSheet!');
+      showAdminAlert('✅ Berhasil menyimpan pilihan semua peserta ke Cloud GSheet!');
     })
     .catch(err => {
-      if(btnEl) {
-        btnEl.disabled = false;
-        btnEl.innerHTML = originalBtnText;
-        btnEl.style.opacity = "1";
-      }
+      if(btnEl) { btnEl.disabled = false; btnEl.innerHTML = originalBtnText; }
       showAdminAlert('❌ Gagal sinkronisasi cloud: ' + err.message, 'err');
     });
   } else {
-    if(btnEl) {
-      btnEl.disabled = false;
-      btnEl.innerHTML = originalBtnText;
-      btnEl.style.opacity = "1";
-    }
+    if(btnEl) { btnEl.disabled = false; btnEl.innerHTML = originalBtnText; }
     renderStandings();
     renderMatches();
-    showAdminAlert('Pilihan berhasil disimpan lokal!');
+    showAdminAlert('✅ Pilihan disimpan secara lokal (URL Cloud belum diset)!');
   }
-}
-
-function renderParticipants() {
-  const list = document.getElementById('chip-list');
-  const selAdmin = document.getElementById('sel-participant');
-  const selFront = document.getElementById('front-sel-participant');
-  if(!list) return;
-  
-  let h = '';
-  state.participants.forEach(p => {
-    h += `<div class="chip">
-      <span style="width:8px;height:8px;border-radius:50%;background:${p.color}"></span>
-      <span>${p.name}</span>
-      <button class="chip-del" onclick="deleteParticipant('${p.id}')">&times;</button>
-    </div>`;
-  });
-  list.innerHTML = h || '<p style="color:var(--muted);font-size:11px;">Belum ada anggota.</p>';
-  
-  // Update dropdown admin
-  const currAdmin = selAdmin ? selAdmin.value : "";
-  if(selAdmin) {
-    selAdmin.innerHTML = '<option value="">-- Pilih Peserta --</option>';
-    state.participants.forEach(p => {
-      selAdmin.innerHTML += `<option value="${p.id}" ${currAdmin===p.id?'selected':''}>${p.name}</option>`;
-    });
-  }
-  
-  // Update dropdown depan
-  if(selFront) {
-    const currFront = selFront.value;
-    selFront.innerHTML = '<option value="">-- Lihat Semua (Tanpa Isi) --</option>';
-    state.participants.forEach(p => {
-      selFront.innerHTML += `<option value="${p.id}" ${currFront===p.id?'selected':''}>${p.name}</option>`;
-    });
-  }
-}
-
-function addParticipant() {
-  const inp = document.getElementById('inp-name');
-  if(!inp || !inp.value.trim()) return;
-  const name = inp.value.trim();
-  const colors = ['#C9A84C', '#E2BE6E', '#10B981', '#25D366', '#3B82F6', '#6366F1', '#EC4899', '#F43F5E', '#14B8A6', '#F59E0B'];
-  const color = colors[state.participants.length % colors.length];
-  const id = 'p_' + Date.now();
-  
-  state.participants.push({ id, name, color });
-  inp.value = '';
-  saveLocal();
-  renderAll();
-  showAdminAlert('Anggota baru berhasil didaftarkan!');
-}
-
-function deleteParticipant(id) {
-  if(!confirm('Hapus anggota ini beserta seluruh data pilihannya?')) return;
-  state.participants = state.participants.filter(x => x.id !== id);
-  state.picks = state.picks.filter(x => x.pid !== id);
-  saveLocal();
-  renderAll();
-  showAdminAlert('Anggota berhasil dihapus.');
-}
-
-// Fungsi untuk memindahkan tampilan ke kolom ketik nama baru
-function bukaFormUserBaru() {
-  document.getElementById('wrapper-pilih-user').style.display = 'none';
-  document.getElementById('wrapper-input-user-baru').style.display = 'flex';
-  document.getElementById('inp-nama-baru').focus();
-}
-
-// Fungsi untuk membatalkan input nama baru
-function batalFormUserBaru() {
-  document.getElementById('wrapper-pilih-user').style.display = 'flex';
-  document.getElementById('wrapper-input-user-baru').style.display = 'none';
-  document.getElementById('inp-nama-baru').value = '';
-}
-
-// Fungsi utama mendaftarkan nama baru ke Google Sheets secara realtime
-function simpanUserBaruKeCloud() {
-  const inputEl = document.getElementById('inp-nama-baru');
-  const namaBaru = inputEl.value.trim();
-  
-  if (!namaBaru) {
-    alert("Silakan masukkan nama Anda terlebih dahulu!");
-    return;
-  }
-  
-  if (!GLOBAL_APPS_URL || GLOBAL_APPS_URL.includes("...")) {
-    alert("URL Apps Script belum dikonfigurasi dengan benar!");
-    return;
-  }
-
-  // Tampilkan loading lokal pada tombol sementara proses mendaftar
-  showFrontAlert("⏳ Mendaftarkan nama Anda ke server...");
-  
-  const payload = {
-    action: 'addParticipant',
-    name: namaBaru
-  };
-
-  // Menggunakan method POST untuk mengirim data peserta baru
-  fetch(GLOBAL_APPS_URL, {
-    method: 'POST',
-    mode: 'no-cors', // Tetap no-cors agar pengiriman instan di mobile browser
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify(payload)
-  })
-  .then(() => {
-    // Karena menggunakan mode 'no-cors', browser tidak bisa membaca data return JSON secara langsung.
-    // Solusi cerdas: Kita langsung trigger fungsi refresh otomatis ambil data cloud teranyar.
-    showFrontAlert("✅ Pendaftaran dikirim! Memperbarui list liga...");
-    
-    // Berikan jeda 1.5 detik agar server selesai memproses penulisan baris di GSheet
-    setTimeout(() => {
-      inputEl.value = '';
-      batalFormUserBaru();
-      
-      // Ambil data terbaru dari cloud agar dropdown terupdate otomatis memuat nama baru tersebut
-      if (typeof autoFetchCloudData === 'function') {
-        autoFetchCloudData(true);
-      }
-    }, 1500);
-  })
-  .catch(err => {
-    console.error("Gagal mendaftarkan user baru:", err);
-    showFrontAlert("❌ Gagal mendaftar. Periksa koneksi internet Anda.");
-  });
 }
 
 function openAdminModal() {
-  const m = document.getElementById('admin-modal');
-  if(m) { m.style.display = 'flex'; renderParticipants(); renderPickForm(); }
+  const modal = document.getElementById('admin-modal');
+  if(modal) modal.style.display = 'flex';
+  renderParticipants();
+  buildAdminMatchdayDropdown();
+  renderAdminMatchdayForm();
 }
 
 function closeAdminModal() {
-  const m = document.getElementById('admin-modal');
-  if(m) m.style.display = 'none';
+  const modal = document.getElementById('admin-modal');
+  if(modal) modal.style.display = 'none';
+  renderAll();
 }
 
 function closeAdminModalOnBackdrop(e) {
   if(e.target.id === 'admin-modal') closeAdminModal();
 }
 
-function showAdminAlert(msg, type='ok') {
-  const el = document.getElementById('admin-alert');
-  if(!el) return;
-  el.className = 'alert';
-  el.style.background = type === 'err' ? 'rgba(192,40,47,0.2)' : 'rgba(46,125,50,0.2)';
-  el.style.borderColor = type === 'err' ? 'var(--red2)' : 'var(--win-text)';
-  el.style.color = type === 'err' ? 'var(--red2)' : 'var(--win-text)';
-  el.innerText = msg;
-  el.style.display = 'block';
-  setTimeout(() => { el.style.style = 'none'; el.innerText = ''; }, 3000);
-}
-
-function switchTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  const btn = document.getElementById('btn-tab-' + tab);
-  const pane = document.getElementById('tab-' + tab);
-  if(btn && pane) { btn.classList.add('active'); pane.classList.add('active'); }
-}
-
-function switchMatchSubTab(sub) {
-  state.matchSubTab = sub;
-  const btnUp = document.getElementById('subtab-upcoming');
-  const btnFi = document.getElementById('subtab-finished');
-  if(sub === 'upcoming') {
-    if(btnUp) { btnUp.style.background = 'var(--gold)'; btnUp.style.color = 'var(--bg)'; }
-    if(btnFi) { btnFi.style.background = 'transparent'; btnFi.style.color = 'var(--muted)'; }
-  } else {
-    if(btnUp) { btnUp.style.background = 'transparent'; btnUp.style.color = 'var(--muted)'; }
-    if(btnFi) { btnFi.style.background = 'var(--gold)'; btnFi.style.color = 'var(--bg)'; }
-  }
-  renderMatches();
-}
-
-function getScriptUrl() {
-  const inp = document.getElementById('inp-apps-url');
-  return inp ? inp.value.trim() : GLOBAL_APPS_URL;
-}
-
 function syncFetch() {
   const url = getScriptUrl();
-  if(!url) { showAdminAlert('Error: Masukkan Apps Script URL!', 'err'); return; }
+  if(!url || url.includes("MASUKKAN_URL")) { showAdminAlert('Error: URL belum diset di kode!', 'err'); return; }
   const status = document.getElementById('sync-status');
-  status.innerHTML = '<span style="color:var(--gold)">⏳ Mengambil data cloud...</span>';
-  fetch(url + '?action=getData').then(res => res.json()).then(resData => {
-    if(resData && !resData.error) {
-      state.participants = resData.participants || [];
-      state.picks = resData.picks || [];
-      state.overrides = resData.overrides || {};
+  if(status) status.innerHTML = '<span style="color:var(--gold)">⏳ Menarik data dari cloud...</span>';
+  
+  fetch(url + "?action=getAll")
+  .then(res => res.json())
+  .then(data => {
+    if(data) {
+      if(data.participants) state.participants = data.participants;
+      if(data.picks) state.picks = data.picks;
+      if(data.overrides) state.overrides = data.overrides;
       saveLocal();
-      status.innerHTML = '<span style="color:var(--win-text)\">✅ Sinkronisasi Selesai!</span>';
+      if(status) status.innerHTML = '<span style="color:var(--win-text)">✅ Sinkronisasi Berhasil!</span>';
     }
     renderAll();
+    renderAdminMatchdayForm();
   }).catch(err => {
-    status.innerHTML = `<span style="color:var(--loss-text)">❌ Gagal: ${err.message}</span>`;
-    renderAll();
+    if(status) status.innerHTML = `<span style="color:var(--loss-text)">❌ Gagal: ${err.message}</span>`;
   });
 }
 
 function syncPush() {
   const url = getScriptUrl();
-  if(!url) { showAdminAlert('Error: Masukkan Apps Script URL!', 'err'); return; }
+  if(!url || url.includes("MASUKKAN_URL")) { showAdminAlert('Error: URL belum diset di kode!', 'err'); return; }
   const status = document.getElementById('sync-status');
-  status.innerHTML = '<span style="color:var(--gold)">⏳ Mengirim data ke cloud...</span>';
+  if(status) status.innerHTML = '<span style="color:var(--gold)">⏳ Mengirim data ke cloud...</span>';
+  
   fetch(url, {
     method: 'POST',
     mode: 'no-cors',
     headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify({ action: 'saveAll', participants: state.participants, picks: state.picks, overrides: state.overrides })
   }).then(() => {
-    status.innerHTML = '<span style="color:var(--win-text)">✅ Data Berhasil Diunggah!</span>';
+    if(status) status.innerHTML = '<span style="color:var(--win-text)">✅ Data Berhasil Diunggah!</span>';
   }).catch(err => {
-    status.innerHTML = `<span style="color:var(--loss-text)">❌ Gagal mengunggah: ${err.message}</span>`;
+    if(status) status.innerHTML = `<span style="color:var(--loss-text)">❌ Gagal mengunggah: ${err.message}</span>`;
   });
 }
 
 function scrapeWikipedia() {
   const url = getScriptUrl();
-  if(!url) { showAdminAlert('Error: Masukkan Apps Script URL!', 'err'); return; }
+  if(!url || url.includes("MASUKKAN_URL")) { showAdminAlert('Error: URL belum diset di kode!', 'err'); return; }
   const statusEl = document.getElementById('sync-status');
-  statusEl.innerHTML = '<span style="color:var(--gold)">⏳ Memicu Scraper Wikipedia...</span>';
+  if(statusEl) statusEl.innerHTML = '<span style="color:var(--gold)">⏳ Memicu Scraper Wikipedia...</span>';
+  
   fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'scrapeWikipedia' }) })
   .then(() => {
-    statusEl.innerHTML = '<span style="color:var(--win-text)">✅ Sukses! Mengunduh data teranyar...</span>';
-    setTimeout(() => { syncFetch(); }, 2500);
+    if(statusEl) statusEl.innerHTML = '<span style="color:var(--win-text)">✅ Sukses! Mengunduh data teranyar...</span>';
+    setTimeout(() => { syncFetch(); }, 2000);
   }).catch(err => {
-    statusEl.innerHTML = '<span style="color:var(--loss-text)">❌ Gagal terhubung.</span>';
+    if(statusEl) statusEl.innerHTML = `<span style="color:var(--loss-text)">❌ Gagal scraping: ${err.message}</span>`;
   });
 }
 
-// Inisialisasi Aplikasi Saat Window Dimuat
-window.onload = function() {
-  init();
-};
+function showAdminAlert(msg, type='success') {
+  const el = document.getElementById('admin-alert');
+  if(!el) return;
+  el.style.display = 'block';
+  if(type === 'err') {
+    el.style.background = 'rgba(192,40,47,0.2)';
+    el.style.borderColor = 'var(--red2)';
+    el.style.color = 'var(--red2)';
+  } else {
+    el.style.background = 'rgba(46,125,50,0.2)';
+    el.style.borderColor = 'var(--win-text)';
+    el.style.color = 'var(--win-text)';
+  }
+  el.innerText = msg;
+  setTimeout(() => { el.style.display = 'none'; }, 4000);
+}
 </script>
 </body>
 </html>
