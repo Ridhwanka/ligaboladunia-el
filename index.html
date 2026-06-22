@@ -44,7 +44,7 @@ body {
 .h-title { font-family: 'Bebas Neue', cursive; letter-spacing: 0.5px; }
 .h-main { font-size: 18px; color: var(--white); display: block; line-height: 1; }
 .h-sub { font-size: 9px; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 1px; display: block; }
-.admin-trigger-btn { background: var(--s2); border: 1px solid var(--border); color: var(--gold2); font-size: 16px; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.admin-trigger-btn {  background: var(--s2); border: 1px solid var(--border); color: var(--gold2); font-size: 16px; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
 .admin-trigger-btn:active { background: var(--s3); transform: scale(0.95); }
 
 .tabs { display: flex; background: var(--s1); border-bottom: 1px solid var(--border); position: sticky; top: 62px; z-index: 90; backdrop-filter: blur(8px); }
@@ -178,7 +178,7 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
       <span class="h-sub">Tempat Seru-Seruan Bersama</span>
     </div>
   </div>
-  <!--<button class="admin-trigger-btn" onclick="openAdminModal()" title="Buka Panel Admin">⚙️</button> -->
+  <!-- <button class="admin-trigger-btn" onclick="openAdminModal()" title="Buka Panel Admin">⚙️</button> -->
 </header>
 
 <nav class="tabs">
@@ -235,7 +235,7 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
     <div id="front-user-selector-zone" style="margin-bottom:15px; background:rgba(21,40,64,0.4); border:1px solid var(--border); padding:8px; border-radius:6px; display:flex; align-items:center; gap:8px;">
       <label style="color: var(--muted); font-size: 12px; display: block; margin-bottom: 8px; font-weight: 600; letter-spacing: 0.5px;">PESERTA LIGA PREDIKSI</label>
   
-      <div id="wrapper-pilih-user" style="display: flex; gap: 8px; align-items: center;">
+      <div id="wrapper-pilih-user" style="display: flex; gap: 8px; align-items: center; width:100%;">
         <select id="front-sel-participant" onchange="state.activeUser = this.value; saveLocal(); renderAll();" style="flex: 1; padding: 10px; background: var(--s3); color: var(--white); border: 1px solid var(--border); border-radius: 6px;">
           <option value="">-- Pilih Nama Anda --</option>
         </select>
@@ -277,14 +277,19 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
     </div>
 
     <div class="admin-box">
-      <h3>📝 Input Pilihan Tim Kontestan (Admin Mode)</h3>
+      <h3>📝 Input Pilihan Tim Kontestan (Berdasarkan Matchday)</h3>
       <div class="form-row">
         <div class="form-col">
-          <select id="sel-participant" onchange="renderPickForm()"></select>
-        </div>
-      </div>
-      <div id="pick-form-area" style="max-height:220px; overflow-y:auto; margin-top:6px; border:1px solid var(--border); padding:4px; border-radius:6px; background:rgba(0,0,0,0.2);"></div>
-      <button class="btn btn-gold" style="margin-top:8px; width:100%" onclick="savePicks()">💾 Simpan Pilihan Tim</button>
+          
+<select id="sel-admin-matchday" onchange="renderAdminMatchdayForm()">
+<option value="">-- Pilih Pertandingan --</option>
+</select>
+</div></div>
+<div id="admin-matchday-form-area" style="max-height:280px; overflow-y:auto;margin-top:6px;border:1px solid var(--border);padding:6px;border-radius:6px;background:rgba(0,0,0,0.2)">
+<p style="text-align:center;color:var(--muted);padding:10px">Pilih pertandingan terlebih dahulu.</p>
+</div>
+<button id="btn-save-admin-picks" class="btn btn-gold" style="margin-top:8px;width:100%" onclick="saveAdminPicksByMatchday()" disabled>💾 Simpan Pilihan Seluruh Peserta</button>
+
     </div>
 
     <div class="admin-box">
@@ -544,6 +549,38 @@ function openAdminModal() { document.getElementById('admin-modal').style.display
 function closeAdminModal() { document.getElementById('admin-modal').style.display = 'none'; renderAll(); }
 function closeAdminModalOnBackdrop(e) { if(e.target.id === 'admin-modal') closeAdminModal(); }
 
+
+function getFinishedMatchSessionIds(matches){
+  const finished=[...matches]
+    .filter(m=>m.done)
+    .sort((a,b)=>new Date(a.time)-new Date(b.time));
+
+  const sessions=[];
+  let session=[];
+
+  for(let i=0;i<finished.length;i++){
+    session.push(finished[i]);
+
+    const next=finished[i+1];
+    if(!next){
+      sessions.push(session);
+      break;
+    }
+
+    const gap=new Date(next.time)-new Date(finished[i].time);
+
+    if(gap>7*60*60*1000){
+      sessions.push(session);
+      session=[];
+    }
+  }
+
+  return sessions.length
+    ? new Set(sessions[sessions.length-1].map(m=>m.id))
+    : new Set();
+}
+
+
 function renderStandings() {
   const container = document.getElementById('pred-standings');
   const matches = getMatches();
@@ -551,7 +588,7 @@ function renderStandings() {
   // ─── 1. CARI MATCH TERAKHIR YANG SUDAH SELESAI (Untuk Baseline Tren) ───
   const completedMatches = matches.filter(m => m.done);
   const sortedCompleted = [...completedMatches].sort((a, b) => new Date(b.time) - new Date(a.time));
-  const latestMatchId = sortedCompleted.length > 0 ? sortedCompleted[0].id : null;
+  const currentSessionIds = getFinishedMatchSessionIds(matches);
 
   const userStats = state.participants.map(p => {
     // pts adalah poin sekarang, prevPts adalah poin sebelum pertandingan terakhir selesai
@@ -567,28 +604,28 @@ function renderStandings() {
         stat.gf += m.s1; stat.ga += m.s2;
         if(m.s1 > m.s2) { 
           stat.w++; stat.pts += 3; 
-          if(m.id !== latestMatchId) stat.prevPts += 3; // Simpan ke poin lama jika bukan match terakhir
+          if(!currentSessionIds.has(m.id)) stat.prevPts += 3; // Simpan ke poin lama jika bukan match terakhir
         } else if(m.s1 < m.s2) { 
           stat.l++; 
         } else { 
           stat.d++; stat.pts += 1; 
-          if(m.id !== latestMatchId) stat.prevPts += 1; // Simpan ke poin lama jika bukan match terakhir
+          if(!currentSessionIds.has(m.id)) stat.prevPts += 1; // Simpan ke poin lama jika bukan match terakhir
         }
       } else if(pk.pick === m.t2) {
         stat.gf += m.s2; stat.ga += m.s1;
         if(m.s2 > m.s1) { 
           stat.w++; stat.pts += 3; 
-          if(m.id !== latestMatchId) stat.prevPts += 3; // Simpan ke poin lama jika bukan match terakhir
+          if(!currentSessionIds.has(m.id)) stat.prevPts += 3; // Simpan ke poin lama jika bukan match terakhir
         } else if(m.s2 < m.s1) { 
           stat.l++; 
         } else { 
           stat.d++; stat.pts += 1; 
-          if(m.id !== latestMatchId) stat.prevPts += 1; // Simpan ke poin lama jika bukan match terakhir
+          if(!currentSessionIds.has(m.id)) stat.prevPts += 1; // Simpan ke poin lama jika bukan match terakhir
         }
       }
 
       // Hitung statistik Goal Difference khusus untuk kondisi "Sebelum Match Terakhir"
-      if(m.id !== latestMatchId) {
+      if(!currentSessionIds.has(m.id)) {
         if(pk.pick === m.t1) {
           stat.prevGf += m.s1; stat.prevGd += (m.s1 - m.s2);
         } else if(pk.pick === m.t2) {
@@ -781,7 +818,7 @@ function renderMatches() {
         const nextTime = nextMatch.time ? new Date(nextMatch.time).getTime() : 0;
         
         // Cek jika jarak waktu ke match selanjutnya lebih dari 12 jam (12 * 60 * 60 * 1000 ms)
-        if (nextTime - currentTime > 43200000) {
+        if (nextTime - currentTime > 25200000) {
           // Jeda terdeteksi! Sesi beruntun saat ini berakhir di currentMatch. Break loop!
           break;
         }
@@ -1460,6 +1497,53 @@ function syncPush() {
     status.innerHTML = `<span style="color:var(--loss-text)">❌ Gagal mengunggah: ${err.message}</span>`;
   });
 }
+
+
+function renderAdminMatchdayForm(){
+ const sel=document.getElementById('sel-admin-matchday');
+ const wrap=document.getElementById('admin-matchday-form-area');
+ const btn=document.getElementById('btn-save-admin-picks');
+ if(!sel||!wrap)return;
+ if(!sel.value){wrap.innerHTML='<p style="text-align:center;color:var(--muted)">Pilih pertandingan.</p>';btn.disabled=true;return;}
+ const match=BASE_MATCHES.find(m=>m.id===sel.value);
+ wrap.innerHTML=state.participants.map(p=>`
+ <div class="form-row" data-pid="${p.id}">
+ <div style="flex:1">${p.name}</div>
+ <select class="pick-select">
+ <option value="">-</option>
+ <option value="${match.t1}">${match.t1}</option>
+ <option value="DRAW">DRAW</option>
+ <option value="${match.t2}">${match.t2}</option>
+ </select></div>`).join('');
+ state.participants.forEach(p=>{
+   const ex=state.picks.find(x=>x.pid===p.id&&x.mid===sel.value);
+   if(ex){
+    wrap.querySelector(`[data-pid="${p.id}"] .pick-select`).value=ex.pick;
+   }
+ });
+ btn.disabled=false;
+}
+function saveAdminPicksByMatchday(){
+ const mid=document.getElementById('sel-admin-matchday').value;
+ if(!mid)return;
+ document.querySelectorAll('#admin-matchday-form-area .form-row').forEach(r=>{
+   const pid=r.dataset.pid;
+   const pick=r.querySelector('.pick-select').value;
+   state.picks=state.picks.filter(x=>!(x.pid===pid&&x.mid===mid));
+   if(pick) state.picks.push({pid,mid,pick});
+ });
+ saveLocal();
+ syncPush();
+ renderAll();
+ showAdminAlert('✅ Matchday picks saved');
+}
+document.addEventListener('DOMContentLoaded',()=>{
+ const sel=document.getElementById('sel-admin-matchday');
+ if(sel){
+   sel.innerHTML='<option value="">-- Pilih Pertandingan --</option>'+
+   BASE_MATCHES.map(m=>`<option value="${m.id}">${m.id} • ${m.t1} vs ${m.t2}</option>`).join('');
+ }
+});
 
 function scrapeWikipedia() {
   const url = getScriptUrl();
