@@ -4,205 +4,414 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>WC 2026 — Prediction League</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
+/* =========================================================
+   PREMIUM LIGHT THEME - COLOR PALETTE & VARIABLES
+   ========================================================= */
 :root {
-  --bg:       #060D18;
-  --s1:       #0B1929;
-  --s2:       #0F2035;
-  --s3:       #152840;
-  --gold:     #C9A84C;
-  --gold2:    #E2BE6E;
-  --red:      #C0282F;
-  --red2:     #E03039;
-  --white:    #EDF2FF;
-  --muted:    #6A7D94;
-  --border:   rgba(201,168,76,.12);
-  --border2:  rgba(201,168,76,.35);
-  --win-bg:   rgba(46,125,50,.15);
-  --win-text: #A5D6A7;
-  --loss-text:#EF9A9A;
-  --wa-green: #25D366;
-  --emerald:  #10B981;
+  /* Core Backgrounds */
+  --bg:           #F4F7F9; /* Very soft blue-gray */
+  --surface:      #FFFFFF; /* Pure white for cards */
+  --surface-alt:  #F8FAFC; /* Slightly off-white for sections */
+  
+  /* Brand Colors */
+  --primary:      #1E3A8A; /* Royal Blue */
+  --primary-light:#DBEAFE;
+  --secondary:    #D97706; /* Rich Gold */
+  --secondary-bg: #FEF3C7;
+  
+  /* Text Colors */
+  --text-main:    #0F172A; /* Dark Slate */
+  --text-muted:   #64748B; /* Gray */
+  
+  /* Utilities */
+  --border:       rgba(30, 58, 138, 0.1); /* Subtle blue border */
+  --border-focus: rgba(30, 58, 138, 0.3);
+  --win-text:     #059669; /* Emerald Green */
+  --win-bg:       #D1FAE5;
+  --loss-text:    #DC2626; /* Crimson Red */
+  --loss-bg:      #FEE2E2;
+  --wa-green:     #16A34A;
+  
+  /* Shadows */
+  --shadow-sm:    0 2px 8px rgba(15, 23, 42, 0.04);
+  --shadow-md:    0 8px 24px rgba(15, 23, 42, 0.08);
 }
-*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
-  font-family: 'Inter', sans-serif; background-color: var(--bg);
-  background-image: radial-gradient(circle at 50% 0%, #0f2540 0%, var(--bg) 80%);
-  color: var(--white); min-height: 100vh; font-size: 13px; line-height: 1.4;
+  font-family: 'Inter', sans-serif; 
+  background-color: var(--bg);
+  /* Elegant Subtle Pattern & Gradient Background */
+  background-image:
+    radial-gradient(circle at 15% 0%, rgba(219, 234, 254, 0.7) 0%, transparent 40%),
+    radial-gradient(circle at 85% 100%, rgba(254, 243, 199, 0.6) 0%, transparent 40%),
+    linear-gradient(rgba(30, 58, 138, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 58, 138, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 20px 20px, 20px 20px;
+  background-attachment: fixed;
+  color: var(--text-main); 
+  min-height: 100vh; 
+  font-size: 13px; 
+  line-height: 1.4;
   -webkit-tap-highlight-color: transparent;
 }
+
+/* Custom Scrollbar for Light Theme */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.3); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+/* =========================================================
+   HEADER & NAVIGATION
+   ========================================================= */
 .header {
-  background: linear-gradient(to bottom, var(--s1), rgba(11,25,41,0.9));
-  border-bottom: 1px solid var(--border); padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px;
   display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px);
+  position: sticky; top: 0; z-index: 100; 
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm);
 }
 .h-logo { display: flex; align-items: center; gap: 10px; }
-.h-badge { font-size: 22px; background: linear-gradient(135deg, var(--gold), var(--gold2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.h-title { font-family: 'Bebas Neue', cursive; letter-spacing: 0.5px; }
-.h-main { font-size: 18px; color: var(--white); display: block; line-height: 1; }
-.h-sub { font-size: 9px; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 1px; display: block; }
-.admin-trigger-btn {  background: var(--s2); border: 1px solid var(--border); color: var(--gold2); font-size: 16px; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-.admin-trigger-btn:active { background: var(--s3); transform: scale(0.95); }
+.h-badge { font-size: 24px; filter: drop-shadow(0 2px 4px rgba(217, 119, 6, 0.3)); }
+.h-title { display: flex; flex-direction: column; justify-content: center; }
+.h-main { 
+  font-family: 'Bebas Neue', cursive; 
+  font-size: 22px; 
+  color: var(--primary); 
+  line-height: 1; 
+  letter-spacing: 0.5px;
+}
+.h-sub { 
+  font-size: 9px; 
+  color: var(--secondary); 
+  letter-spacing: 1px; 
+  font-weight: 700;
+  text-transform: uppercase; 
+  margin-top: 2px; 
+}
 
-.tabs { display: flex; background: var(--s1); border-bottom: 1px solid var(--border); position: sticky; top: 62px; z-index: 90; backdrop-filter: blur(8px); }
-.tab-btn { flex: 1; padding: 14px 2px; border: none; background: transparent; color: var(--muted); font-size: 11px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; text-transform: uppercase; text-align: center; }
-.tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); background: rgba(201,168,76,0.02); }
+.admin-trigger-btn {  
+  background: var(--surface-alt); 
+  border: 1px solid var(--border); 
+  color: var(--primary); 
+  font-size: 16px; 
+  cursor: pointer; 
+  width: 36px; height: 36px; 
+  border-radius: 10px; 
+  display: flex; align-items: center; justify-content: center; 
+  transition: all 0.2s; 
+}
+.admin-trigger-btn:active { transform: scale(0.9); background: var(--primary-light); }
 
-.content { padding: 12px; max-width: 600px; margin: 0 auto; padding-bottom: 40px; }
-.tab-pane { display: none; }
+.tabs { 
+  display: flex; 
+  background: rgba(255, 255, 255, 0.95); 
+  padding: 10px 12px 0 12px;
+  gap: 8px;
+  position: sticky; top: 65px; z-index: 90; 
+  backdrop-filter: blur(10px); 
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+.tab-btn { 
+  flex: 1; padding: 12px 4px; 
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: transparent; 
+  color: var(--text-muted); 
+  font-size: 11px; font-weight: 700; 
+  cursor: pointer; 
+  text-transform: uppercase; text-align: center; 
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+}
+.tab-btn.active { 
+  color: var(--primary); 
+  border-bottom-color: var(--secondary);
+  background: linear-gradient(to top, rgba(217, 119, 6, 0.05), transparent);
+}
+
+.content { padding: 16px; max-width: 600px; margin: 0 auto; padding-bottom: 60px; }
+.tab-pane { display: none; animation: fadeIn 0.3s ease; }
 .tab-pane.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-.sec-title { font-family: 'Bebas Neue', cursive; font-size: 18px; letter-spacing: 1px; color: var(--gold2); margin: 12px 0 10px; padding-left: 8px; border-left: 3px solid var(--gold); }
+.sec-title { 
+  font-family: 'Bebas Neue', cursive; font-size: 18px; 
+  letter-spacing: 1px; color: var(--primary); 
+  margin: 12px 0 12px; padding-left: 10px; 
+  border-left: 4px solid var(--secondary);
+}
 
-/* Pembungkus area tangkapan screenshot agar hasilnya rapi dan proporsional */
+/* =========================================================
+   TABLE & STANDINGS (KLASEMEN)
+   ========================================================= */
 .capture-wrapper {
   padding: 16px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #060D18 0%, #0B1929 100%);
-  border: 1px solid rgba(201,168,76, 0.15);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
 }
-.capture-header-branding {
-  display: none;
-  text-align: center;
-  margin-bottom: 12px;
-  border-bottom: 1px dashed rgba(201,168,76, 0.2);
-  padding-bottom: 8px;
+.capture-wrapper::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; 
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
 }
-.capture-footer-branding {
-  display: none;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 12px;
-  font-size: 9px;
-  color: var(--muted);
-  border-top: 1px dashed rgba(201,168,76, 0.2);
-  padding-top: 8px;
-}
+.capture-header-branding { display: none; text-align: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+.capture-footer-branding { display: none; justify-content: space-between; align-items: center; margin-top: 16px; font-size: 10px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 12px; }
 
-.s-table { width: 100%; border-collapse: collapse; font-size: 12px; background: rgba(11,25,41,0.4); border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
-.s-table th { background: rgba(21,40,64,0.7); padding: 10px 4px; font-size: 9px; font-weight: 700; color: var(--muted); text-transform: uppercase; }
-.s-table td { padding: 11px 4px; text-align: center; border-bottom: 1px solid rgba(255,255,255,.03); }
+/* Clean Minimalist Table */
+.s-table { 
+  width: 100%; border-collapse: collapse; border-spacing: 0 4px; 
+  font-size: 11px; background: transparent; border: none;  
+  padding: 12px;
+  overflow-x: auto;
+}
+.s-table th { 
+  background: transparent; color: var(--text-muted); 
+  padding: 10px 4px; font-size: 8px; font-weight: 700; 
+  text-transform: uppercase; letter-spacing: 0.5px; 
+  border-bottom: 1px solid var(--border);
+}
+.s-table td { 
+  padding: 11px 4px; text-align: center; 
+  background: var(--surface-alt); 
+  border-top: 1px solid transparent; 
+  border-bottom: 1px solid transparent; 
+  transition: background 0.2s;
+}
+.s-table tr td:first-child { border-left: 1px solid transparent; border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+.s-table tr td:last-child { border-right: 1px solid transparent; border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+.s-table tr:hover td { background: var(--primary-light); }
 .s-table td.tl { text-align: left; padding-left: 8px; }
-.rank-circle { width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; background: var(--s3); color: var(--muted); }
-.rank-0 { background: var(--gold); color: #000; }
-.rank-1 { background: var(--gold2); color: #000; }
-.rank-2 { background: #A0AAB5; color: #000; }
-.pts-pill { padding: 2px 5px; border-radius: 4px; background: rgba(201,168,76,0.12); border: 1px solid var(--border2); color: var(--gold2); font-weight: 700; font-size: 11px; white-space: nowrap; }
 
-.grid-groups { display: grid; grid-template-columns: 1fr; gap: 12px; }
-@media(min-width: 480px) { .grid-groups { grid-template-columns: repeat(2, 1fr); } }
-.group-card { background: var(--s1); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-.group-header { background: var(--s3); padding: 6px 10px; font-family: 'Bebas Neue', cursive; font-size: 14px; color: var(--gold); letter-spacing: 0.5px; }
+/* Rank Circles */
+.rank-circle { 
+  width: 18px; height: 18px; border-radius: 50%; display: inline-flex; 
+  align-items: center; justify-content: center; font-size: 10px; font-weight: 800; 
+  background: #E2E8F0; color: var(--text-muted);
+}
+.rank-0 { background: #FEF08A; color: #854D0E; box-shadow: 0 2px 4px rgba(133, 77, 14, 0.2); } /* Gold 1st */
+.rank-1 { background: #E2E8F0; color: #475569; box-shadow: 0 2px 4px rgba(71, 85, 105, 0.2); } /* Silver 2nd */
+.rank-2 { background: #FED7AA; color: #9A3412; box-shadow: 0 2px 4px rgba(154, 52, 18, 0.2); } /* Bronze 3rd */
 
-.wc-flag { width: 18px; height: 12px; border-radius: 1px; object-fit: cover; vertical-align: middle; border: 1px solid rgba(255,255,255,0.1); margin-right: 4px; }
-.match-card { background: var(--s1); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
-.mc-header { padding: 6px 10px; background: rgba(21,40,64,0.5); display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); align-items: center; }
-.md-badge { background: var(--s3); color: var(--gold2); padding: 1px 4px; border-radius: 3px; font-weight: 600; font-size: 9px; }
-.mc-body { display: grid; grid-template-columns: 1fr 60px 1fr; align-items: center; padding: 10px 8px; text-align: center; }
-.mc-team { display: flex; align-items: center; gap: 6px; font-weight: 500; font-size: 12px; overflow: hidden; }
+.pts-pill { 
+  padding: 2px 4px; border-radius: 6px; 
+  background: var(--primary-light); border: 1px solid rgba(30, 58, 138, 0.1); 
+  color: var(--primary); font-weight: 800; font-size: 10px; white-space: nowrap; 
+}
+
+/* =========================================================
+   MATCHDAY CARDS (TIKET PERTANDINGAN)
+   ========================================================= */
+.match-card { 
+  background: var(--surface); 
+  border: 1px solid var(--border); 
+  border-radius: 14px; margin-bottom: 14px; overflow: hidden; 
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.match-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+.mc-header { 
+  padding: 8px 12px; background: var(--surface-alt); 
+  display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); align-items: center; 
+  font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+}
+.md-badge { 
+  background: var(--primary); color: #fff; 
+  padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 9px; 
+}
+
+.mc-body { display: grid; grid-template-columns: 1fr 60px 1fr; align-items: center; padding: 14px 10px; text-align: center; }
+.mc-team { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 13px; color: var(--text-main); overflow: hidden; }
 .mc-team span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mc-team.away { justify-content: flex-end; }
-.mc-score { font-family: 'Bebas Neue', cursive; font-size: 20px; letter-spacing: 0.5px; color: var(--white); }
+.wc-flag { width: 22px; height: 16px; border-radius: 3px; object-fit: cover; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
 
-.mc-picks-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(201,168,76,0.08); border-top: 1px solid rgba(255,255,255,0.02); }
-.mc-pick-column { padding: 6px 8px; display: flex; flex-direction: column; gap: 4px; background: rgba(4,9,17,0.2); }
-.mc-pick-column:first-child { border-right: 1px solid rgba(201,168,76,0.1); }
-.column-title { font-size: 9px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 2px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pk-badge { padding: 3px 6px; border-radius: 4px; background: var(--s2); border: 1px solid var(--border); display: flex; align-items: center; gap: 4px; font-size: 10px; }
+.mc-score { font-family: 'Bebas Neue', cursive; font-size: 24px; letter-spacing: 1px; color: var(--primary); }
 
-.mc-quick-pick-zone { background: rgba(201,168,76,0.05); padding: 8px; border-top: 1px dashed rgba(201,168,76,0.2); display: flex; gap: 6px; align-items: center; }
+.mc-picks-container { 
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px; 
+  background: var(--border); border-top: 1px solid var(--border); 
+}
+.mc-pick-column { padding: 8px; display: flex; flex-direction: column; gap: 4px; background: var(--surface-alt); }
 
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4,9,17,0.85); backdrop-filter: blur(8px); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
-.modal-content { background: var(--s1); border-top: 2px solid var(--gold); border-radius: 16px 16px 0 0; width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto; padding: 16px; position: relative; animation: slideUp 0.25s ease-out; }
+.column-title { 
+  font-size: 9px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; 
+  letter-spacing: 0.5px; margin-bottom: 4px; text-align: center; 
+}
+.pk-badge { 
+  padding: 4px 8px; border-radius: 6px; 
+  background: var(--surface); border: 1px solid var(--border); 
+  display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--text-main);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+
+/* Force override JS inline background for quick pick zones */
+.mc-quick-pick-zone { 
+  padding: 12px !important; border-top: 1px solid var(--border) !important; 
+  display: flex; gap: 8px; align-items: center; background: var(--surface) !important;
+}
+/* Locked specific background overriding */
+.mc-quick-pick-zone[style*="background:rgba(192,40,47,0.08)"] {
+  background: var(--loss-bg) !important;
+}
+
+/* =========================================================
+   GROUPS GRID
+   ========================================================= */
+.grid-groups { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media(min-width: 480px) { .grid-groups { grid-template-columns: repeat(2, 1fr); } }
+.group-card { 
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; 
+  overflow: hidden; box-shadow: var(--shadow-sm); 
+}
+.group-header { 
+  background: var(--surface-alt); padding: 8px 12px; 
+  font-family: 'Bebas Neue', cursive; font-size: 16px; color: var(--primary); 
+  letter-spacing: 1px; border-bottom: 1px solid var(--border);
+}
+
+/* =========================================================
+   FORMS, BUTTONS & MODALS
+   ========================================================= */
+select, input[type=text], input[type=number] { 
+  background: var(--surface); border: 1px solid var(--border-focus); color: var(--text-main); 
+  padding: 10px 12px; border-radius: 8px; outline: none; width: 100%; font-size: 13px; 
+  -webkit-appearance: none; font-family: 'Inter', sans-serif; transition: all 0.2s;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
+}
+select:focus, input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.1); }
+
+.btn { 
+  padding: 10px 14px; border: none; border-radius: 8px; 
+  font-weight: 600; cursor: pointer; font-size: 12px; display: inline-flex; 
+  align-items: center; justify-content: center; gap: 6px; text-transform: uppercase; 
+  letter-spacing: 0.5px; transition: all 0.2s; font-family: 'Inter', sans-serif;
+}
+.btn:active { transform: scale(0.97); }
+.btn-gold { 
+  background: var(--primary); color: #fff; 
+  box-shadow: 0 4px 10px rgba(30, 58, 138, 0.2);
+}
+.btn-gold:hover { background: #172a6b; }
+.btn-outline { background: var(--surface); border: 1px solid var(--border-focus); color: var(--primary); }
+.btn-outline:hover { background: var(--primary-light); }
+.btn-image-download { 
+  background: var(--secondary); color: #fff; font-weight: 700; width: 100%; 
+  margin-top: 14px; padding: 12px; border-radius: 8px; font-size: 12px; border: none; 
+  cursor: pointer; box-shadow: 0 4px 10px rgba(217, 119, 6, 0.2); 
+  text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; 
+}
+.btn-image-download:hover { background: #b45309; }
+
+/* Toggling Active Match Subtabs via JS relies on ID styling mostly, but let's provide a smooth active state */
+button[id^="subtab-"] { border: 1px solid transparent !important; }
+
+.modal-overlay { 
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+  background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 200; 
+  display: none; align-items: flex-end; justify-content: center; 
+}
+.modal-content { 
+  background: var(--surface); border-top: 4px solid var(--primary); border-radius: 20px 20px 0 0; 
+  width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto; padding: 20px; 
+  position: relative; animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+  box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
+}
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.modal-close-btn { position: absolute; top: 14px; right: 16px; background: var(--s2); border: 1px solid var(--border); color: var(--muted); border-radius: 50%; width: 28px; height: 28px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.modal-close-btn { 
+  position: absolute; top: 16px; right: 16px; background: var(--surface-alt); 
+  border: 1px solid var(--border); color: var(--text-muted); border-radius: 50%; 
+  width: 32px; height: 32px; font-size: 16px; font-weight: 700; cursor: pointer; 
+  display: flex; align-items: center; justify-content: center; transition: background 0.2s;
+}
+.modal-close-btn:hover { background: var(--loss-bg); color: var(--loss-text); }
 
-select, input[type=text], input[type=number] { background: var(--s2); border: 1px solid var(--border); color: var(--white); padding: 8px 10px; border-radius: 6px; outline: none; width: 100%; font-size: 12px; -webkit-appearance: none; }
-.admin-box { background: rgba(4,9,17,0.4); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 12px; }
-.admin-box h3 { font-family: 'Bebas Neue', cursive; color: var(--gold); margin-bottom: 8px; font-size: 14px; border-bottom: 1px solid var(--border); padding-bottom: 2px; }
-.form-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; align-items: flex-end; }
-.form-col { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 100px; }
-.btn { padding: 8px 12px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
-.btn-gold { background: var(--gold); color: #060D18; }
-.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--white); }
-.btn-image-download { background: var(--emerald); color: #fff; font-weight: bold; width: 100%; margin-top: 10px; padding: 10px; border-radius: 6px; font-size: 12px; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); transition: background 0.2s; }
-.btn-image-download:active { background: #059669; }
-.chip-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
-.chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; background: var(--s2); border: 1px solid var(--border); border-radius: 4px; font-size: 10px; }
-.chip-del { background: none; border: none; color: var(--muted); cursor: pointer; font-weight: 700; margin-left: 2px; }
-.alert { padding: 6px 10px; border-radius: 6px; font-size: 11px; margin-bottom: 10px; background: rgba(46,125,50,0.2); border: 1px solid var(--win-text); color: var(--win-text); text-align: center; }
+.admin-box { background: var(--surface-alt); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+.admin-box h3 { font-family: 'Bebas Neue', cursive; color: var(--primary); margin-bottom: 12px; font-size: 18px; border-bottom: 1px solid var(--border); padding-bottom: 6px; letter-spacing: 0.5px; }
+.form-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; align-items: flex-end; }
+.form-col { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 100px; }
+
+.chip-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; font-size: 11px; font-weight: 600; box-shadow: var(--shadow-sm); color: var(--text-main); }
+.chip-del { background: none; border: none; color: var(--loss-text); cursor: pointer; font-weight: 800; font-size: 14px; margin-left: 2px; }
+
+.alert { padding: 10px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; margin-bottom: 12px; background: var(--win-bg); border: 1px solid var(--win-text); color: var(--win-text); text-align: center; }
+
+/* =========================================================
+   CLEAN LIGHT LOADER
+   ========================================================= */
+.loader-ring { 
+  width: 60px; height: 60px; border: 4px solid var(--primary-light); 
+  border-top: 4px solid var(--primary); border-radius: 50%; 
+  animation: spin 1s cubic-bezier(0.5, 0.1, 0.4, 0.9) infinite; margin-bottom: 20px; 
+}
+.loader-text { 
+  color: var(--primary); font-family: 'Inter', sans-serif; font-size: 14px; 
+  font-weight: 600; letter-spacing: 1px;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
   <div id="initial-loader" style="
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background-color: #060D18; /* Menyesuaikan --bg utama Anda */
+    background-color: #F8FAFC;
     display: flex; flex-direction: column;
     justify-content: center; align-items: center;
-    z-index: 999999; /* Di atas segalanya */
+    z-index: 999999;
     transition: opacity 0.5s ease, visibility 0.5s ease;
   ">
-    <div style="
-      width: 50px; height: 50px;
-      border: 4px solid rgba(201,168,76,0.1);
-      border-top: 4px solid #C9A84C; /* Warna --gold Anda */
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 16px;
-    "></div>
-    <div style="
-      color: #EDF2FF; 
-      font-family: 'Inter', sans-serif; 
-      font-size: 14px; 
-      letter-spacing: 1px;
-      font-weight: 500;
-    ">MEMUAT DATA LEAGUE...</div>
+    <div class="loader-ring"></div>
+    <div class="loader-text">LOADING DATA...</div>
   </div>
-
-  <style>
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  </style>
 
 <header class="header">
   <div class="h-logo">
     <div class="h-badge">🏆</div>
     <div class="h-title">
-      <span class="h-main">LIGA BOLA DUNIA - EL</span>
-      <span class="h-sub">Tempat Seru-Seruan Bersama</span>
+      <span class="h-main">EL-LIGA BOLA DUNIA</span>
+      <span class="h-sub">Yok, Kita Ramaikan!</span>
     </div>
   </div>
   <!-- <button class="admin-trigger-btn" onclick="openAdminModal()" title="Buka Panel Admin">⚙️</button> -->
 </header>
 
 <nav class="tabs">
-  <button id="btn-tab-klasemen" class="tab-btn active" onclick="switchTab('klasemen')">📊 Klasemen EL</button>
-  <button id="btn-tab-pertandingan" class="tab-btn" onclick="switchTab('pertandingan')">⚽ Matchday</button>
-  <button id="btn-tab-grup" class="tab-btn" onclick="switchTab('grup')">🌐 Group Standings</button>
+  <button id="btn-tab-klasemen" class="tab-btn active" onclick="switchTab('klasemen')">📊 Standings</button>
+  <button id="btn-tab-pertandingan" class="tab-btn" onclick="switchTab('pertandingan')">⚽ Matches</button>
+  <button id="btn-tab-grup" class="tab-btn" onclick="switchTab('grup')">🌐 Groups</button>
 </nav>
 
 <main class="content">
   <div id="tab-klasemen" class="tab-pane active">
-    <div class="sec-title">🏆 Klasemen Liga Bola Dunia-EL</div>
+    <div class="sec-title">🏆 KLASEMEN EL</div>
     
     <div id="capture-area-klasemen" class="capture-wrapper">
       <div id="capture-header" class="capture-header-branding">
-        <h2 style="font-family: 'Bebas Neue', cursive; font-size: 22px; color: var(--gold2); letter-spacing: 0.5px;">LIGA BOLA DUNIA - EL</h2>
-        <p style="font-size: 10px; color: var(--gold);">UPDATE KLASEMEN PREDIKSI TERBARU</p>
-        <div id="capture-date" style="font-size: 10px; color: var(--gold);"></div>
+        <h2 style="font-family: 'Bebas Neue', cursive; font-size: 24px; color: var(--primary); letter-spacing: 1px;">LIGA BOLA DUNIA - EL</h2>
+        <p style="font-size: 11px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px; margin-top: 4px;">UPDATE KLASEMEN PREDIKSI TERBARU</p>
+        <div id="capture-date" style="font-size: 10px; color: var(--secondary); margin-top: 4px; font-weight: 600;"></div>
       </div>
 
       <div id="pred-standings"></div>
 
       <div id="capture-footer" class="capture-footer-branding">
         <div>Generasi Otomatis • Sistem Integrasi GSheet</div>
-        <div style="font-weight: 700; color: var(--gold2); letter-spacing: 0.5px;">TEMPAT PROMO SPONSOR</div>
+        <div style="font-weight: 700; color: var(--secondary); letter-spacing: 0.5px;">MASIH CARI SPONSOR</div>
       </div>
     </div>
 
@@ -210,10 +419,10 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
   </div>
 
   <div id="tab-pertandingan" class="tab-pane">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <div class="sec-title" style="margin:0;">⚽ Jadwal Pertandingan</div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <div class="sec-title" style="margin:0;">⚽ JADWAL MATCHDAY</div>
       <div style="width:130px">
-        <select id="filter-grup" onchange="renderMatches()" style="padding: 4px 8px;">
+        <select id="filter-grup" onchange="renderMatches()" style="padding: 6px 8px; font-size:11px;">
           <option value="ALL">Semua Grup</option>
           <option value="A">Grup A</option><option value="B">Grup B</option><option value="C">Grup C</option>
           <option value="D">Grup D</option><option value="E">Grup E</option><option value="F">Grup F</option>
@@ -223,29 +432,29 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
       </div>
     </div>
 
-    <div style="display:flex; background:var(--s2); border:1px solid var(--border); border-radius:6px; padding:3px; margin-bottom:10px; gap:4px;">
-      <button id="subtab-upcoming" onclick="switchMatchSubTab('upcoming')" style="flex:1; border:none; background:var(--gold); color:var(--bg); font-weight:600; font-size:11px; padding:8px 0; border-radius:4px; cursor:pointer; transition:all 0.2s;">
+    <div style="display:flex; background:var(--surface-alt); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:14px; gap:4px;">
+      <button id="subtab-upcoming" onclick="switchMatchSubTab('upcoming')" style="flex:1; background:var(--primary); color:#fff; font-weight:700; font-size:11px; padding:10px 0; border-radius:6px; cursor:pointer; transition:all 0.2s; text-transform: uppercase; border:none;">
         ⏳ UPCOMING / LIVE
       </button>
-      <button id="subtab-finished" onclick="switchMatchSubTab('finished')" style="flex:1; border:none; background:transparent; color:var(--muted); font-weight:600; font-size:11px; padding:8px 0; border-radius:4px; cursor:pointer; transition:all 0.2s;">
+      <button id="subtab-finished" onclick="switchMatchSubTab('finished')" style="flex:1; background:transparent; color:var(--text-muted); font-weight:700; font-size:11px; padding:10px 0; border-radius:6px; cursor:pointer; transition:all 0.2s; text-transform: uppercase; border:none;">
         ✓ FINISHED
       </button>
     </div>
 
-    <div id="front-user-selector-zone" style="margin-bottom:15px; background:rgba(21,40,64,0.4); border:1px solid var(--border); padding:8px; border-radius:6px; display:flex; align-items:center; gap:8px;">
-      <label style="color: var(--muted); font-size: 12px; display: block; margin-bottom: 8px; font-weight: 600; letter-spacing: 0.5px;">PESERTA LIGA PREDIKSI</label>
+    <div id="front-user-selector-zone" style="margin-bottom:16px; background:var(--surface); border:1px solid var(--border); box-shadow: var(--shadow-sm); padding:14px; border-radius:12px; display:flex; flex-direction:column; gap:8px;">
+      <label style="color: var(--text-muted); font-size: 11px; font-weight: 700; letter-spacing: 0.5px;">👤 PROFIL PESERTA</label>
   
       <div id="wrapper-pilih-user" style="display: flex; gap: 8px; align-items: center; width:100%;">
-        <select id="front-sel-participant" onchange="state.activeUser = this.value; saveLocal(); renderAll();" style="flex: 1; padding: 10px; background: var(--s3); color: var(--white); border: 1px solid var(--border); border-radius: 6px;">
+        <select id="front-sel-participant" onchange="state.activeUser = this.value; saveLocal(); renderAll();" style="flex: 1;">
           <option value="">-- Pilih Nama Anda --</option>
         </select>
-        <button class="btn" onclick="bukaFormUserBaru()" style="background: var(--s3); border: 1px solid var(--gold); color: var(--gold); padding: 10px 14px; font-size: 12px; border-radius: 6px; cursor: pointer;">➕ Baru</button>
+        <button class="btn btn-outline" onclick="bukaFormUserBaru()" style="padding: 10px 14px;">➕ Baru</button>
       </div>
 
-      <div id="wrapper-input-user-baru" style="display: none; gap: 8px; align-items: center;">
-        <input type="text" id="inp-nama-baru" placeholder="Ketik nama lengkap Anda..." style="flex: 1; padding: 10px; background: var(--s3); color: var(--white); border: 1px solid var(--gold); border-radius: 6px; font-size: 14px;">
-        <button class="btn" onclick="simpanUserBaruKeCloud()" style="background: var(--gold); color: var(--bg); padding: 10px 14px; font-weight: 600; font-size: 12px; border-radius: 6px; cursor: pointer;">💾 Daftar</button>
-        <button class="btn" onclick="batalFormUserBaru()" style="background: transparent; color: var(--muted); padding: 10px; font-size: 12px; border-radius: 6px; cursor: pointer;">❌</button>
+      <div id="wrapper-input-user-baru" style="display: none; gap: 8px; align-items: center; width:100%;">
+        <input type="text" id="inp-nama-baru" placeholder="Ketik nama lengkap..." style="flex: 1;">
+        <button class="btn btn-gold" onclick="simpanUserBaruKeCloud()" style="padding: 10px 14px;">💾</button>
+        <button class="btn btn-outline" onclick="batalFormUserBaru()" style="padding: 10px; color: var(--loss-text); border-color: rgba(220,38,38,0.3);">❌</button>
       </div>
     </div>
 
@@ -254,7 +463,7 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
   </div>
 
   <div id="tab-grup" class="tab-pane">
-    <div class="sec-title">🌐 Klasemen Fase Grup</div>
+    <div class="sec-title">🌐 KLASEMEN FASE GRUP</div>
     <div class="grid-groups" id="wc-groups-container"></div>
   </div>
 </main>
@@ -262,7 +471,7 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
 <div id="admin-modal" class="modal-overlay" onclick="closeAdminModalOnBackdrop(event)">
   <div class="modal-content">
     <button class="modal-close-btn" onclick="closeAdminModal()">&times;</button>
-    <div class="sec-title" style="margin-top:0; color:var(--gold);">⚙️ Kontrol Panel Admin</div>
+    <div class="sec-title" style="margin-top:0;">⚙️ SYSTEM CONTROL ROOM</div>
     <div id="admin-alert"></div>
 
     <div class="admin-box">
@@ -277,32 +486,31 @@ select, input[type=text], input[type=number] { background: var(--s2); border: 1p
     </div>
 
     <div class="admin-box">
-      <h3>📝 Input Pilihan Tim Kontestan (Berdasarkan Matchday)</h3>
+      <h3>📝 Bypass Pilihan Matchday</h3>
       <div class="form-row">
         <div class="form-col">
-          
-<select id="sel-admin-matchday" onchange="renderAdminMatchdayForm()">
-<option value="">-- Pilih Pertandingan --</option>
-</select>
-</div></div>
-<div id="admin-matchday-form-area" style="max-height:280px; overflow-y:auto;margin-top:6px;border:1px solid var(--border);padding:6px;border-radius:6px;background:rgba(0,0,0,0.2)">
-<p style="text-align:center;color:var(--muted);padding:10px">Pilih pertandingan terlebih dahulu.</p>
-</div>
-<button id="btn-save-admin-picks" class="btn btn-gold" style="margin-top:8px;width:100%" onclick="saveAdminPicksByMatchday()" disabled>💾 Simpan Pilihan Seluruh Peserta</button>
-
+          <select id="sel-admin-matchday" onchange="renderAdminMatchdayForm()">
+            <option value="">-- Pilih Pertandingan --</option>
+          </select>
+        </div>
+      </div>
+      <div id="admin-matchday-form-area" style="max-height:280px; overflow-y:auto; margin-top:8px; border:1px solid var(--border); padding:8px; border-radius:8px; background:var(--surface);">
+        <p style="text-align:center; color:var(--text-muted); padding:10px; font-size:12px;">Pilih pertandingan terlebih dahulu.</p>
+      </div>
+      <button id="btn-save-admin-picks" class="btn btn-gold" style="margin-top:10px; width:100%" onclick="saveAdminPicksByMatchday()" disabled>💾 Override Data Server</button>
     </div>
 
     <div class="admin-box">
-      <h3>🔗 Cloud Sync & Wikipedia Scraper</h3>
-      <div style="display:flex; flex-direction:column; gap:6px">
+      <h3>🔗 Cloud Synchronization</h3>
+      <div style="display:flex; flex-direction:column; gap:8px">
         <input type="text" id="inp-apps-url" placeholder="https://script.google.com/macros/s/.../exec">
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; margin-top:4px;">
-          <button class="btn btn-gold" onclick="syncFetch()">⬇ Ambil Data</button>
-          <button class="btn btn-outline" onclick="syncPush()">⬆ Kirim Data</button>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:4px;">
+          <button class="btn btn-gold" onclick="syncFetch()">⬇ FETCH</button>
+          <button class="btn btn-outline" onclick="syncPush()">⬆ PUSH</button>
         </div>
-        <button class="btn" onclick="scrapeWikipedia()" style="background-color: #2E7D32; color: white; width:100%; margin-top:2px;">🔄 Scrape & Update Wikipedia</button>
+        <button class="btn" onclick="scrapeWikipedia()" style="background: var(--wa-green); color: white; width:100%; border:none; box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);">🔄 Sync Live Wikipedia Data</button>
       </div>
-      <div id="sync-status" style="margin-top:8px; font-size:11px; font-weight:500; text-align:center;"></div>
+      <div id="sync-status" style="margin-top:12px; font-size:11px; font-weight:700; text-align:center; text-transform: uppercase; color: var(--text-muted);"></div>
     </div>
   </div>
 </div>
@@ -343,10 +551,10 @@ const BASE_MATCHES = [
   {id:'I2',gr:'I',md:1,date:'17 Jun',time:'2026-06-17T04:00:00',t1:'Iraq',t2:'Norway',s1:null,s2:null,done:false},
   {id:'J1',gr:'J',md:1,date:'17 Jun',time:'2026-06-17T07:00:00',t1:'Argentina',t2:'Algeria',s1:null,s2:null,done:false},
   {id:'J2',gr:'J',md:1,date:'17 Jun',time:'2026-06-17T10:00:00',t1:'Austria',t2:'Jordan',s1:null,s2:null,done:false},
-  {id:'K3',gr:'K',md:2,date:'17 Jun',time:'2026-06-17T23:00:00',t1:'Portugal',t2:'DR Congo',s1:null,s2:null,done:false},
+  {id:'K3',gr:'K',md:1,date:'17 Jun',time:'2026-06-17T23:00:00',t1:'Portugal',t2:'DR Congo',s1:null,s2:null,done:false},
   {id:'L1',gr:'L',md:1,date:'18 Jun',time:'2026-06-18T02:00:00',t1:'England',t2:'Croatia',s1:null,s2:null,done:false},
   {id:'L2',gr:'L',md:1,date:'18 Jun',time:'2026-06-18T05:00:00',t1:'Ghana',t2:'Panama',s1:null,s2:null,done:false},
-  {id:'K4',gr:'K',md:2,date:'18 Jun',time:'2026-06-18T09:00:00',t1:'Uzbekistan',t2:'Colombia',s1:null,s2:null,done:false},
+  {id:'K4',gr:'K',md:1,date:'18 Jun',time:'2026-06-18T09:00:00',t1:'Uzbekistan',t2:'Colombia',s1:null,s2:null,done:false},
   {id:'A4',gr:'A',md:2,date:'18 Jun',time:'2026-06-18T22:00:00',t1:'Czechia',t2:'South Africa',s1:null,s2:null,done:false},
   {id:'B4',gr:'B',md:2,date:'19 Jun',time:'2026-06-19T01:00:00',t1:'Switzerland',t2:'Bosnia & Herz.',s1:null,s2:null,done:false},
   {id:'B3',gr:'B',md:2,date:'19 Jun',time:'2026-06-19T04:00:00',t1:'Canada',t2:'Qatar',s1:null,s2:null,done:false},
@@ -355,22 +563,22 @@ const BASE_MATCHES = [
   {id:'C4',gr:'C',md:2,date:'20 Jun',time:'2026-06-20T04:00:00',t1:'Scotland',t2:'Morocco',s1:null,s2:null,done:false},
   {id:'C3',gr:'C',md:2,date:'20 Jun',time:'2026-06-20T06:00:00',t1:'Brazil',t2:'Haiti',s1:null,s2:null,done:false},
   {id:'D4',gr:'D',md:2,date:'20 Jun',time:'2026-06-20T09:00:00',t1:'Türkiye',t2:'Paraguay',s1:null,s2:null,done:false},
-  {id:'F6',gr:'F',md:3,date:'20 Jun',time:'2026-06-20T23:00:00',t1:'Netherlands',t2:'Sweden',s1:null,s2:null,done:false},
+  {id:'F6',gr:'F',md:2,date:'20 Jun',time:'2026-06-20T23:00:00',t1:'Netherlands',t2:'Sweden',s1:null,s2:null,done:false},
   {id:'E3',gr:'E',md:2,date:'21 Jun',time:'2026-06-21T02:00:00',t1:'Germany',t2:'Ivory Coast',s1:null,s2:null,done:false},
   {id:'E4',gr:'E',md:2,date:'21 Jun',time:'2026-06-21T06:00:00',t1:'Ecuador',t2:'Curaçao',s1:null,s2:null,done:false},
-  {id:'F5',gr:'F',md:3,date:'21 Jun',time:'2026-06-21T10:00:00',t1:'Tunisia',t2:'Japan',s1:null,s2:null,done:false},
-  {id:'H5',gr:'H',md:3,date:'21 Jun',time:'2026-06-21T22:00:00',t1:'Spain',t2:'Saudi Arabia',s1:null,s2:null,done:false},
+  {id:'F5',gr:'F',md:2,date:'21 Jun',time:'2026-06-21T10:00:00',t1:'Tunisia',t2:'Japan',s1:null,s2:null,done:false},
+  {id:'H5',gr:'H',md:2,date:'21 Jun',time:'2026-06-21T22:00:00',t1:'Spain',t2:'Saudi Arabia',s1:null,s2:null,done:false},
   {id:'G3',gr:'G',md:2,date:'22 Jun',time:'2026-06-22T01:00:00',t1:'Belgium',t2:'Iran',s1:null,s2:null,done:false},
-  {id:'H6',gr:'H',md:3,date:'22 Jun',time:'2026-06-22T04:00:00',t1:'Uruguay',t2:'Cape Verde',s1:null,s2:null,done:false},
+  {id:'H6',gr:'H',md:2,date:'22 Jun',time:'2026-06-22T04:00:00',t1:'Uruguay',t2:'Cape Verde',s1:null,s2:null,done:false},
   {id:'G4',gr:'G',md:2,date:'22 Jun',time:'2026-06-22T07:00:00',t1:'New Zealand',t2:'Egypt',s1:null,s2:null,done:false},
   {id:'J3',gr:'J',md:2,date:'22 Jun',time:'2026-06-22T23:00:00',t1:'Argentina',t2:'Austria',s1:null,s2:null,done:false},
   {id:'I3',gr:'I',md:2,date:'23 Jun',time:'2026-06-23T03:00:00',t1:'France',t2:'Iraq',s1:null,s2:null,done:false},
   {id:'I4',gr:'I',md:2,date:'23 Jun',time:'2026-06-23T06:00:00',t1:'Norway',t2:'Senegal',s1:null,s2:null,done:false},
   {id:'J4',gr:'J',md:2,date:'23 Jun',time:'2026-06-23T09:00:00',t1:'Jordan',t2:'Algeria',s1:null,s2:null,done:false},
-  {id:'K5',gr:'K',md:3,date:'23 Jun',time:'2026-06-23T23:00:00',t1:'Portugal',t2:'Uzbekistan',s1:null,s2:null,done:false},
+  {id:'K5',gr:'K',md:2,date:'23 Jun',time:'2026-06-23T23:00:00',t1:'Portugal',t2:'Uzbekistan',s1:null,s2:null,done:false},
   {id:'L3',gr:'L',md:2,date:'24 Jun',time:'2026-06-24T02:00:00',t1:'England',t2:'Ghana',s1:null,s2:null,done:false},
   {id:'L4',gr:'L',md:2,date:'24 Jun',time:'2026-06-24T05:00:00',t1:'Panama',t2:'Croatia',s1:null,s2:null,done:false},
-  {id:'K6',gr:'K',md:3,date:'24 Jun',time:'2026-06-24T08:00:00',t1:'Colombia',t2:'DR Congo',s1:null,s2:null,done:false},
+  {id:'K6',gr:'K',md:2,date:'24 Jun',time:'2026-06-24T08:00:00',t1:'Colombia',t2:'DR Congo',s1:null,s2:null,done:false},
   {id:'B5',gr:'B',md:3,date:'25 Jun',time:'2026-06-25T01:00:00',t1:'Switzerland',t2:'Canada',s1:null,s2:null,done:false},
   {id:'B6',gr:'B',md:3,date:'25 Jun',time:'2026-06-25T01:00:00',t1:'Bosnia & Herz.',t2:'Qatar',s1:null,s2:null,done:false},
   {id:'C5',gr:'C',md:3,date:'25 Jun',time:'2026-06-25T04:00:00',t1:'Scotland',t2:'Brazil',s1:null,s2:null,done:false},
@@ -379,23 +587,22 @@ const BASE_MATCHES = [
   {id:'A6',gr:'A',md:3,date:'25 Jun',time:'2026-06-25T07:00:00',t1:'South Africa',t2:'South Korea',s1:null,s2:null,done:false},
   {id:'E6',gr:'E',md:3,date:'26 Jun',time:'2026-06-26T02:00:00',t1:'Curaçao',t2:'Ivory Coast',s1:null,s2:null,done:false},
   {id:'E5',gr:'E',md:3,date:'26 Jun',time:'2026-06-26T02:00:00',t1:'Ecuador',t2:'Germany',s1:null,s2:null,done:false},
-  {id:'F3',gr:'F',md:2,date:'26 Jun',time:'2026-06-26T05:00:00',t1:'Japan',t2:'Sweden',s1:null,s2:null,done:false},
-  {id:'F4',gr:'F',md:2,date:'26 Jun',time:'2026-06-26T05:00:00',t1:'Tunisia',t2:'Netherlands',s1:null,s2:null,done:false},
+  {id:'F3',gr:'F',md:3,date:'26 Jun',time:'2026-06-26T05:00:00',t1:'Japan',t2:'Sweden',s1:null,s2:null,done:false},
+  {id:'F4',gr:'F',md:3,date:'26 Jun',time:'2026-06-26T05:00:00',t1:'Tunisia',t2:'Netherlands',s1:null,s2:null,done:false},
   {id:'D5',gr:'D',md:3,date:'26 Jun',time:'2026-06-26T08:00:00',t1:'Türkiye',t2:'USA',s1:null,s2:null,done:false},
   {id:'D6',gr:'D',md:3,date:'26 Jun',time:'2026-06-26T08:00:00',t1:'Paraguay',t2:'Australia',s1:null,s2:null,done:false},
   {id:'I5',gr:'I',md:3,date:'27 Jun',time:'2026-06-27T01:00:00',t1:'Norway',t2:'France',s1:null,s2:null,done:false},
   {id:'I6',gr:'I',md:3,date:'27 Jun',time:'2026-06-27T01:00:00',t1:'Senegal',t2:'Iraq',s1:null,s2:null,done:false},
-  {id:'H4',gr:'H',md:2,date:'27 Jun',time:'2026-06-27T06:00:00',t1:'Cape Verde',t2:'Saudi Arabia',s1:null,s2:null,done:false},
-  {id:'H3',gr:'H',md:2,date:'27 Jun',time:'2026-06-27T06:00:00',t1:'Uruguay',t2:'Spain',s1:null,s2:null,done:false},
+  {id:'H4',gr:'H',md:3,date:'27 Jun',time:'2026-06-27T06:00:00',t1:'Cape Verde',t2:'Saudi Arabia',s1:null,s2:null,done:false},
+  {id:'H3',gr:'H',md:3,date:'27 Jun',time:'2026-06-27T06:00:00',t1:'Uruguay',t2:'Spain',s1:null,s2:null,done:false},
   {id:'G6',gr:'G',md:3,date:'27 Jun',time:'2026-06-27T09:00:00',t1:'Egypt',t2:'Iran',s1:null,s2:null,done:false},
   {id:'G5',gr:'G',md:3,date:'27 Jun',time:'2026-06-27T09:00:00',t1:'New Zealand',t2:'Belgium',s1:null,s2:null,done:false},
   {id:'L5',gr:'L',md:3,date:'28 Jun',time:'2026-06-28T03:00:00',t1:'Panama',t2:'England',s1:null,s2:null,done:false},
   {id:'L6',gr:'L',md:3,date:'28 Jun',time:'2026-06-28T03:00:00',t1:'Ghana',t2:'Croatia',s1:null,s2:null,done:false},
-  {id:'K1',gr:'K',md:1,date:'28 Jun',time:'2026-06-28T05:30:00',t1:'Colombia',t2:'Portugal',s1:null,s2:null,done:false},
-  {id:'K2',gr:'K',md:1,date:'28 Jun',time:'2026-06-28T05:30:00',t1:'DR Congo',t2:'Uzbekistan',s1:null,s2:null,done:false},
+  {id:'K1',gr:'K',md:3,date:'28 Jun',time:'2026-06-28T05:30:00',t1:'Colombia',t2:'Portugal',s1:null,s2:null,done:false},
+  {id:'K2',gr:'K',md:3,date:'28 Jun',time:'2026-06-28T05:30:00',t1:'DR Congo',t2:'Uzbekistan',s1:null,s2:null,done:false},
   {id:'J6',gr:'J',md:3,date:'28 Jun',time:'2026-06-28T08:00:00',t1:'Algeria',t2:'Austria',s1:null,s2:null,done:false},
   {id:'J5',gr:'J',md:3,date:'28 Jun',time:'2026-06-28T08:00:00',t1:'Jordan',t2:'Argentina',s1:null,s2:null,done:false},
-  
 ];
 
 const GROUPS_BLUEPRINT = {
@@ -516,8 +723,9 @@ function autoFetchCloudData(forceRefresh = false) {
 }
 
 function generateRandomColor() {
+  // Use more elegant, slightly muted colors for the light theme
   const hue = Math.floor(Math.random() * 360);
-  return `hsl(${hue}, 85%, 65%)`;
+  return `hsl(${hue}, 75%, 45%)`; 
 }
 
 function switchTab(name) {
@@ -534,12 +742,12 @@ function switchMatchSubTab(subTab) {
   const frontSelector = document.getElementById('front-user-selector-zone');
   
   if (subTab === 'upcoming') {
-    btnUpcoming.style.background = 'var(--gold)'; btnUpcoming.style.color = '#060D18';
-    btnFinished.style.background = 'transparent'; btnFinished.style.color = 'var(--muted)';
+    btnUpcoming.style.background = 'var(--primary)'; btnUpcoming.style.color = '#fff';
+    btnFinished.style.background = 'transparent'; btnFinished.style.color = 'var(--text-muted)';
     if(frontSelector) frontSelector.style.display = 'flex';
   } else {
-    btnFinished.style.background = 'var(--gold)'; btnFinished.style.color = '#060D18';
-    btnUpcoming.style.background = 'transparent'; btnUpcoming.style.color = 'var(--muted)';
+    btnFinished.style.background = 'var(--primary)'; btnFinished.style.color = '#fff';
+    btnUpcoming.style.background = 'transparent'; btnUpcoming.style.color = 'var(--text-muted)';
     if(frontSelector) frontSelector.style.display = 'none';
   }
   renderMatches();
@@ -651,10 +859,10 @@ function renderStandings() {
     shareZone.innerHTML = '';
   }
 
-  if(userStats.length === 0) { container.innerHTML = '<p style="text-align:center;padding:20px;color:var(--muted)">Belum ada anggota terdaftar.</p>'; return; }
+  if(userStats.length === 0) { container.innerHTML = '<p style="text-align:center;padding:20px;color:var(--text-muted)">Belum ada anggota terdaftar.</p>'; return; }
 
   let h = `<table class="s-table">
-    <thead><tr><th style="width:30px">Pos</th><th class="tl">Nama</th><th>Mn</th><th style="color:#A5D6A7">M</th><th>S</th><th style="color:#EF9A9A">K</th><th>SG</th><th>Poin</th></tr></thead><tbody>`;
+    <thead><tr><th style="width:30px">Pos</th><th class="tl">Nama</th><th>Mn</th><th style="color:var(--win-text)">M</th><th>S</th><th style="color:var(--loss-text)">K</th><th>SG</th><th>Poin</th></tr></thead><tbody>`;
   
   userStats.forEach((p, idx) => {
     const currentRank = idx + 1;
@@ -669,19 +877,19 @@ function renderStandings() {
       trendIcon = ""; // Jika liga baru mulai/belum ada match done, kosongkan icon
     } else if (currentRank < previousRank) {
       // Naik peringkat (Angka peringkat mengecil, misal dari 4 ke 2)
-      trendIcon = `<span style="color: #4CAF50; margin-left: 4px; font-size: 11px; font-weight: bold;" title="Naik ${previousRank - currentRank} posisi">▲</span>`;
+      trendIcon = `<span style="color: var(--win-text); margin-left: 4px; font-size: 11px; font-weight: bold;" title="Naik ${previousRank - currentRank} posisi">▲</span>`;
     } else if (currentRank > previousRank) {
       // Turun peringkat
-      trendIcon = `<span style="color: #FF5252; margin-left: 4px; font-size: 11px; font-weight: bold;" title="Turun ${currentRank - previousRank} posisi">▼</span>`;
+      trendIcon = `<span style="color: var(--loss-text); margin-left: 4px; font-size: 11px; font-weight: bold;" title="Turun ${currentRank - previousRank} posisi">▼</span>`;
     } else {
       // Posisi tetap / stagnan
-      trendIcon = `<span style="color: var(--muted); margin-left: 4px; font-size: 8px; vertical-align: middle;">●</span>`;
+      trendIcon = `<span style="color: var(--text-muted); margin-left: 4px; font-size: 8px; vertical-align: middle;">●</span>`;
     }
 
     h += `<tr>
       <td><span class="rank-circle rank-${idx < 3 ? idx : 'default'}">${currentRank}</span></td>
-      <td class="tl" style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px">
-        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${p.color};margin-right:4px"></span>
+      <td class="tl" style="font-weight:700; color:var(--text-main); white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px">
+        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${p.color};margin-right:6px;"></span>
         ${p.name}
         ${trendIcon} </td>
       <td>${p.p}</td><td>${p.w}</td><td>${p.d}</td><td>${p.l}</td><td>${p.gd > 0 ? '+'+p.gd : p.gd}</td>
@@ -694,6 +902,7 @@ function renderStandings() {
 // ──────────────────────────────────────────────────────────────────────────────
 // LOGIKA BARU: JAVASCRIPT UNTUK DOWNLOAD GAMBAR KLASEMEN (html2canvas)
 // ──────────────────────────────────────────────────────────────────────────────
+
 function downloadKlasemenGambar() {
   const targetArea = document.getElementById('capture-area-klasemen');
   const headerBranding = document.getElementById('capture-header');
@@ -706,44 +915,57 @@ function downloadKlasemenGambar() {
   const tanggalHariIni = new Date().toLocaleDateString('id-ID', opsiTanggal);
   
   if (dateBranding) dateBranding.innerText = tanggalHariIni;
+
+  // 1. Simpan state asli agar bisa dikembalikan setelah screenshot
+  const originalStyle = {
+    background: targetArea.style.background,
+    backgroundColor: targetArea.style.backgroundColor,
+    backgroundImage: targetArea.style.backgroundImage,
+    backgroundSize: targetArea.style.backgroundSize,
+    padding: targetArea.style.padding
+  };
+
+  // 2. Terapkan Style Body Anda ke elemen target
+  targetArea.style.backgroundColor = 'var(--bg)';
+  targetArea.style.backgroundImage = `radial-gradient(circle at 85% 100%, rgba(254, 243, 199, 0.6) 0%, transparent 40%),
+    linear-gradient(rgba(30, 58, 138, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 58, 138, 0.02) 1px, transparent 1px)
+  `;
+
   if (headerBranding) headerBranding.style.display = 'block';
   if (footerBranding) footerBranding.style.display = 'flex';
 
+  // 3. Proses Screenshot
   html2canvas(targetArea, {
     scale: 2,
-    backgroundColor: '#060D18',
+    backgroundColor: null, // Penting: set null agar mengikuti background elemen
     logging: false,
     useCORS: true
   }).then(canvas => {
+    // 4. Kembalikan style asli
+    Object.assign(targetArea.style, originalStyle);
     if (headerBranding) headerBranding.style.display = 'none';
     if (footerBranding) footerBranding.style.display = 'none';
 
-    // Konversi canvas menjadi Blob (file objek asli) bukan DataURL string
     canvas.toBlob(blob => {
       const fileGambar = new File([blob], `Klasemen_EL_${tanggalHariIni.replace(/ /g, '_')}.png`, { type: 'image/png' });
       
-      // Cek apakah browser HP mendukung fitur Share File
       if (navigator.canShare && navigator.canShare({ files: [fileGambar] })) {
         navigator.share({
           files: [fileGambar],
           title: 'Klasemen Liga Bola Dunia - EL',
-          text: `Update Klasemen Terbaru Per Tanggal ${tanggalHariIni}`
-        })
-        .then(() => console.log('Berhasil share!'))
-        .catch(err => console.log('Batal share:', err));
+          text: `Update Klasemen Per ${tanggalHariIni}`
+        }).catch(err => console.log('Batal share:', err));
       } else {
-        // Fallback: Jika dibuka di laptop/browser yang tidak mendukung, otomatis download biasa
-        const dataURL = canvas.toDataURL('image/png');
-        const triggerLink = document.createElement('a');
-        triggerLink.href = dataURL;
-        triggerLink.download = `Klasemen_EL_${tanggalHariIni.replace(/ /g, '_')}.png`;
-        document.body.appendChild(triggerLink);
-        triggerLink.click();
-        document.body.removeChild(triggerLink);
+        const link = document.createElement('a');
+        link.download = `Klasemen_EL_${tanggalHariIni.replace(/ /g, '_')}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
       }
     }, 'image/png');
   }).catch(err => {
-    console.error("Gagal memproses gambar:", err);
+    console.error("Gagal memproses:", err);
+    Object.assign(targetArea.style, originalStyle);
     if (headerBranding) headerBranding.style.display = 'none';
     if (footerBranding) footerBranding.style.display = 'none';
   });
@@ -828,7 +1050,7 @@ function renderMatches() {
   // ──────────────────────────────────────────────────────────────
 
   if (filtered.length === 0) {
-    container.innerHTML = `<div style="text-align:center; padding:40px 20px; color:var(--muted); font-size:12px;">Tidak ada pertandingan untuk grup ini.</div>`;
+    container.innerHTML = `<div style="text-align:center; padding:40px 20px; color:var(--text-muted); font-size:12px;">Tidak ada pertandingan untuk grup ini.</div>`;
     return;
   }
 
@@ -841,14 +1063,14 @@ function renderMatches() {
       const pk = state.picks.find(x => x.pid === p.id && x.mid === m.id);
       if(pk) {
         if(p.id === frontActiveUserId) { currentUserPick = pk.pick; }
-        const badgeHtml = `<div class="pk-badge"><span style="width:6px;height:6px;border-radius:50%;background:${p.color};flex-shrink:0;"></span><strong style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</strong></div>`;
+        const badgeHtml = `<div class="pk-badge"><span style="width:8px;height:8px;border-radius:50%;background:${p.color};flex-shrink:0;"></span><strong style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</strong></div>`;
         if(pk.pick === m.t1) { pickBadgesT1 += badgeHtml; countT1++; } 
         else if(pk.pick === m.t2) { pickBadgesT2 += badgeHtml; countT2++; }
       }
     });
 
-    if(!pickBadgesT1) pickBadgesT1 = '<span style="color:var(--muted);font-size:9px;text-align:center;display:block;padding:2px 0;">—</span>';
-    if(!pickBadgesT2) pickBadgesT2 = '<span style="color:var(--muted);font-size:9px;text-align:center;display:block;padding:2px 0;">—</span>';
+    if(!pickBadgesT1) pickBadgesT1 = '<span style="color:var(--text-muted);font-size:10px;text-align:center;display:block;padding:2px 0;">—</span>';
+    if(!pickBadgesT2) pickBadgesT2 = '<span style="color:var(--text-muted);font-size:10px;text-align:center;display:block;padding:2px 0;">—</span>';
 
     const isFinished = (m.done && m.done !== 'false' && m.done !== 'FALSE');
     // ─── PERUBAHAN PENENTUAN STATUS LOCK SECARA OTOMATIS ───
@@ -862,14 +1084,14 @@ function renderMatches() {
     
 
     let statusLabel = '⏳ BELUM';
-    let labelColor = 'var(--muted)';
+    let labelColor = 'var(--text-muted)';
     if(isFinished) {
-      statusLabel = '✓ SELESAI'; labelColor = 'var(--gold2)';
+      statusLabel = '✓ SELESAI'; labelColor = 'var(--primary)';
     } else if(isLocked) {
       if (state.matchSubTab === 'upcoming' && !allowedMatchIds.has(m.id)) {
-        statusLabel = '🔒 LOCKED (SESI BESOK)'; labelColor = '#FFA726'; // Warna orange info
+        statusLabel = '🔒 LOCKED (SESI BESOK)'; labelColor = 'var(--secondary)'; // Warna orange info
       } else {
-        statusLabel = '🔒 LIVE / TERKUNCI'; labelColor = '#EF9A9A';
+        statusLabel = '🔒 LIVE / TERKUNCI'; labelColor = 'var(--loss-text)';
       }
     }
 
@@ -884,29 +1106,29 @@ function renderMatches() {
       if(isLocked) {
         if (state.matchSubTab === 'upcoming' && !allowedMatchIds.has(m.id)) {
           quickPickHtml = `
-          <div class="mc-quick-pick-zone" style="background:rgba(192,40,47,0.08); flex-direction:column; gap:4px; align-items:stretch;">
-          <span style="color:var(--loss-text); font-size:10px; font-weight:600; text-align:center;">🔒 POLLING BELUM DIBUKA 🔒</span>
-          <button class="btn btn-outline" style="font-size:10px; padding:4px; border-color:var(--wa-green); color:var(--wa-green)" onclick="shareMatchPicksToWA('${m.id}')">📢 Share Peta Dukungan Match Ini ke WA</button>
+          <div class="mc-quick-pick-zone" style="background:rgba(217, 119, 6, 0.05); flex-direction:column; gap:6px; align-items:stretch;">
+          <span style="color:var(--secondary); font-size:11px; font-weight:700; text-align:center; letter-spacing:0.5px;">🔒 POLLING BELUM DIBUKA 🔒</span>
+          <button class="btn btn-outline" style="font-size:11px; padding:6px; border-color:var(--primary); color:var(--primary)" onclick="shareMatchPicksToWA('${m.id}')">📢 Share Peta Dukungan ke WA</button>
           </div>`;
         } else {
           quickPickHtml = `
-          <div class="mc-quick-pick-zone" style="background:rgba(192,40,47,0.08); flex-direction:column; gap:4px; align-items:stretch;">
-          <span style="color:var(--loss-text); font-size:10px; font-weight:600; text-align:center;">🔒 POLLING SUDAH DITUTUP 🔒</span>
-          <button class="btn btn-outline" style="font-size:10px; padding:4px; border-color:var(--wa-green); color:var(--wa-green)" onclick="shareMatchPicksToWA('${m.id}')">📢 Share Peta Dukungan Match Ini ke WA</button>
+          <div class="mc-quick-pick-zone" style="background:rgba(220, 38, 38, 0.05); flex-direction:column; gap:6px; align-items:stretch;">
+          <span style="color:var(--loss-text); font-size:11px; font-weight:700; text-align:center; letter-spacing:0.5px;">🔒 POLLING SUDAH DITUTUP 🔒</span>
+          <button class="btn btn-outline" style="font-size:11px; padding:6px; border-color:var(--primary); color:var(--primary)" onclick="shareMatchPicksToWA('${m.id}')">📢 Share Peta Dukungan ke WA</button>
           </div>`;
         }
       } else {
         quickPickHtml = `
-        <div class="mc-quick-pick-zone" style="flex-direction:column; gap:6px; align-items:stretch;">
-          <div style="display:flex; gap:6px; align-items:center;">
-            <select id="quick-sel-${m.id}" style="padding:4px 6px; font-size:11px; height:28px; flex:1;">
+        <div class="mc-quick-pick-zone" style="flex-direction:column; gap:8px; align-items:stretch;">
+          <div style="display:flex; gap:8px; align-items:center;">
+            <select id="quick-sel-${m.id}" style="padding:6px 8px; font-size:12px; height:34px; flex:1;">
               <option value="">- Belum Pilih Dukungan -</option>
               <option value="${m.t1}" ${currentUserPick === m.t1 ? 'selected' : ''}>Dukung ${m.t1}</option>
               <option value="${m.t2}" ${currentUserPick === m.t2 ? 'selected' : ''}>Dukung ${m.t2}</option>
             </select>
-            <button class="btn btn-gold" style="padding:6px 10px; font-size:10px; height:28px;" onclick="saveQuickPick('${m.id}')">⚡ Simpan</button>
+            <button class="btn btn-gold" style="padding:8px 12px; font-size:11px; height:34px;" onclick="saveQuickPick('${m.id}')">⚡ Simpan</button>
           </div>
-          <button class="btn btn-outline" style="font-size:10px; padding:4px;" onclick="shareMatchPicksToWA('${m.id}')">📲 Ajak Rekan Lain Isi Match Ini</button>
+          <button class="btn btn-outline" style="font-size:11px; padding:6px;" onclick="shareMatchPicksToWA('${m.id}')">📲 Ajak Rekan Lain Isi Match Ini</button>
         </div>`;
       }
     }
@@ -914,15 +1136,15 @@ function renderMatches() {
     h += `<div class="match-card">
       <div class="mc-header">
         <div>GRUP ${m.gr} · ${m.date}${timeLabel}</div>
-        <div style="display:flex;align-items:center;gap:6px"><span class="md-badge">MD ${m.md}</span><span style="font-weight:700; font-size:9px; color:${labelColor}">${statusLabel}</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><span class="md-badge">MD ${m.md}</span><span style="font-weight:800; font-size:10px; color:${labelColor};">${statusLabel}</span></div>
       </div>
       <div class="mc-body">
         <div class="mc-team">${getFlag(m.t1)} <span>${m.t1}</span></div>
-        <div class="mc-score" style="color: ${isFinished ? 'var(--gold2)': 'var(--muted)'}">${isFinished ? `${m.s1}-${m.s2}` : 'VS'}</div>
+        <div class="mc-score" style="color: ${isFinished ? 'var(--primary)': 'var(--text-muted)'}">${isFinished ? `${m.s1}-${m.s2}` : 'VS'}</div>
         <div class="mc-team away"><span>${m.t2}</span> ${getFlag(m.t2)}</div>
       </div>
       <div class="mc-picks-container">
-        <div class="mc-pick-column">
+        <div class="mc-pick-column" style="border-right: 1px solid var(--border);">
           <div class="column-title">${m.t1} (${countT1})</div>
           ${pickBadgesT1}
         </div>
@@ -1107,19 +1329,19 @@ function showFrontAlert(msg) {
       bottom: '30px',
       left: '50%',
       transform: 'translateX(-50%)',
-      backgroundColor: '#152840',
-      color: '#EDF2FF',
-      padding: '12px 24px',
+      background: 'var(--surface)',
+      color: 'var(--primary)',
+      padding: '14px 28px',
       borderRadius: '30px',
-      boxShadow: '0px 10px 25px rgba(0, 0, 0, 0.5)',
-      border: '1px solid #C9A84C',
+      boxShadow: '0px 10px 30px rgba(30, 58, 138, 0.15)',
+      border: '1px solid var(--border)',
       zIndex: '99999',
-      fontSize: '14px',
-      fontWeight: '500',
+      fontSize: '13px',
+      fontWeight: '700',
       textAlign: 'center',
       whiteSpace: 'nowrap',
       opacity: '0',
-      transition: 'opacity 0.3s ease, bottom 0.3s ease',
+      transition: 'opacity 0.3s ease, bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
       pointerEvents: 'none'
     });
     document.body.appendChild(toastContainer);
@@ -1158,8 +1380,8 @@ function renderWCGroups() {
     let h = `<div class="group-card"><div class="group-header">GRUP ${g}</div><table class="s-table" style="font-size:11px"><thead><tr><th class="tl">Tim</th><th>SG</th><th>Pts</th></tr></thead><tbody>`;
     sortedTeams.forEach(t => {
       h += `<tr>
-        <td class="tl" style="display:flex;align-items:center;gap:4px;font-weight:500;">${getFlag(t.name)} <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:85px">${t.name}</span></td>
-        <td>${t.gd > 0 ? '+'+t.gd : t.gd}</td><td><span style="color:var(--gold);font-weight:700">${t.pts}</span></td>
+        <td class="tl" style="display:flex;align-items:center;gap:6px;font-weight:700;color:var(--text-main);">${getFlag(t.name)} <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:85px">${t.name}</span></td>
+        <td>${t.gd > 0 ? '+'+t.gd : t.gd}</td><td><span style="color:var(--primary);font-weight:800">${t.pts}</span></td>
       </tr>`;
     });
     container.innerHTML += h + `</tbody></table></div>`;
@@ -1171,7 +1393,7 @@ function renderParticipants() {
   if(!list || !sel) return;
   list.innerHTML = ''; sel.innerHTML = '<option value="">-- Pilih Kontestan --</option>';
   state.participants.forEach(p => {
-    list.innerHTML += `<div class="chip"><span style="width:6px;height:6px;border-radius:50%;background:${p.color}"></span><span>${p.name}</span><button class="chip-del" onclick="deleteParticipant('${p.id}')">&times;</button></div>`;
+    list.innerHTML += `<div class="chip"><span style="width:8px;height:8px;border-radius:50%;background:${p.color};"></span><span>${p.name}</span><button class="chip-del" onclick="deleteParticipant('${p.id}')">&times;</button></div>`;
     sel.innerHTML += `<option value="${p.id}">${p.name}</option>`;
   });
 }
@@ -1190,19 +1412,19 @@ function renderPickForm() {
   if(!area) return;
   const pid = document.getElementById('sel-participant').value;
   if(!pid) {
-    area.innerHTML = '<p style="color:var(--muted);text-align:center;font-size:11px;padding:10px;">Pilih peserta untuk mengisi tim pilihan.</p>';
+    area.innerHTML = '<p style="color:var(--text-muted);text-align:center;font-size:12px;padding:10px;">Pilih peserta untuk mengisi tim pilihan.</p>';
     return;
   }
-  let h = '<div style="display:flex; flex-direction:column; gap:5px">';
+  let h = '<div style="display:flex; flex-direction:column; gap:6px">';
   getMatches().forEach(m => {
     const cur = state.picks.find(x => x.pid === pid && x.mid === m.id);
     const isLocked = isKickoffPassed(m.time);
-    h += `<div class="form-row" style="background:var(--s3); padding:5px; border-radius:6px" data-mid="${m.id}">
-      <div style="flex:1; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-        ${m.t1} vs ${m.t2} ${isLocked ? '<span style="color:var(--loss-text)">[🔒 Kunci]</span>':''}
+    h += `<div class="form-row" style="background:var(--surface); border:1px solid var(--border); padding:8px; border-radius:8px" data-mid="${m.id}">
+      <div style="flex:1; font-size:12px; font-weight:600; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+        ${m.t1} vs ${m.t2} ${isLocked ? '<span style="color:var(--loss-text)">[🔒]</span>':''}
       </div>
       <div style="width:110px">
-        <select class="pick-select" style="padding:4px; font-size:10px;" ${isLocked ? 'disabled' : ''}>
+        <select class="pick-select" style="padding:6px; font-size:11px;" ${isLocked ? 'disabled' : ''}>
           <option value="">- Lewati -</option>
           <option value="${m.t1}" ${cur?.pick===m.t1?'selected':''}>${m.t1}</option>
           <option value="${m.t2}" ${cur?.pick===m.t2?'selected':''}>${m.t2}</option>
@@ -1292,12 +1514,12 @@ function renderParticipants() {
   let h = '';
   state.participants.forEach(p => {
     h += `<div class="chip">
-      <span style="width:8px;height:8px;border-radius:50%;background:${p.color}"></span>
+      <span style="width:10px;height:10px;border-radius:50%;background:${p.color};"></span>
       <span>${p.name}</span>
       <button class="chip-del" onclick="deleteParticipant('${p.id}')">&times;</button>
     </div>`;
   });
-  list.innerHTML = h || '<p style="color:var(--muted);font-size:11px;">Belum ada anggota.</p>';
+  list.innerHTML = h || '<p style="color:var(--text-muted);font-size:12px;">Belum ada anggota.</p>';
   
   // Update dropdown admin
   const currAdmin = selAdmin ? selAdmin.value : "";
@@ -1322,11 +1544,9 @@ function addParticipant() {
   const inp = document.getElementById('inp-name');
   if(!inp || !inp.value.trim()) return;
   const name = inp.value.trim();
-  const colors = ['#C9A84C', '#E2BE6E', '#10B981', '#25D366', '#3B82F6', '#6366F1', '#EC4899', '#F43F5E', '#14B8A6', '#F59E0B'];
-  const color = colors[state.participants.length % colors.length];
   const id = 'p_' + Date.now();
   
-  state.participants.push({ id, name, color });
+  state.participants.push({ id, name, color: generateRandomColor() });
   inp.value = '';
   saveLocal();
   renderAll();
@@ -1426,12 +1646,12 @@ function showAdminAlert(msg, type='ok') {
   const el = document.getElementById('admin-alert');
   if(!el) return;
   el.className = 'alert';
-  el.style.background = type === 'err' ? 'rgba(192,40,47,0.2)' : 'rgba(46,125,50,0.2)';
-  el.style.borderColor = type === 'err' ? 'var(--red2)' : 'var(--win-text)';
-  el.style.color = type === 'err' ? 'var(--red2)' : 'var(--win-text)';
+  el.style.background = type === 'err' ? 'var(--loss-bg)' : 'var(--win-bg)';
+  el.style.borderColor = type === 'err' ? 'var(--loss-text)' : 'var(--win-text)';
+  el.style.color = type === 'err' ? 'var(--loss-text)' : 'var(--win-text)';
   el.innerText = msg;
   el.style.display = 'block';
-  setTimeout(() => { el.style.style = 'none'; el.innerText = ''; }, 3000);
+  setTimeout(() => { el.style.display = 'none'; el.innerText = ''; }, 3000);
 }
 
 function switchTab(tab) {
@@ -1447,11 +1667,11 @@ function switchMatchSubTab(sub) {
   const btnUp = document.getElementById('subtab-upcoming');
   const btnFi = document.getElementById('subtab-finished');
   if(sub === 'upcoming') {
-    if(btnUp) { btnUp.style.background = 'var(--gold)'; btnUp.style.color = 'var(--bg)'; }
-    if(btnFi) { btnFi.style.background = 'transparent'; btnFi.style.color = 'var(--muted)'; }
+    if(btnUp) { btnUp.style.background = 'var(--primary)'; btnUp.style.color = '#fff'; }
+    if(btnFi) { btnFi.style.background = 'transparent'; btnFi.style.color = 'var(--text-muted)'; }
   } else {
-    if(btnUp) { btnUp.style.background = 'transparent'; btnUp.style.color = 'var(--muted)'; }
-    if(btnFi) { btnFi.style.background = 'var(--gold)'; btnFi.style.color = 'var(--bg)'; }
+    if(btnUp) { btnUp.style.background = 'transparent'; btnUp.style.color = 'var(--text-muted)'; }
+    if(btnFi) { btnFi.style.background = 'var(--primary)'; btnFi.style.color = '#fff'; }
   }
   renderMatches();
 }
@@ -1465,7 +1685,7 @@ function syncFetch() {
   const url = getScriptUrl();
   if(!url) { showAdminAlert('Error: Masukkan Apps Script URL!', 'err'); return; }
   const status = document.getElementById('sync-status');
-  status.innerHTML = '<span style="color:var(--gold)">⏳ Mengambil data cloud...</span>';
+  status.innerHTML = '<span style="color:var(--primary)">⏳ Mengambil data cloud...</span>';
   fetch(url + '?action=getData').then(res => res.json()).then(resData => {
     if(resData && !resData.error) {
       state.participants = resData.participants || [];
@@ -1485,7 +1705,7 @@ function syncPush() {
   const url = getScriptUrl();
   if(!url) { showAdminAlert('Error: Masukkan Apps Script URL!', 'err'); return; }
   const status = document.getElementById('sync-status');
-  status.innerHTML = '<span style="color:var(--gold)">⏳ Mengirim data ke cloud...</span>';
+  status.innerHTML = '<span style="color:var(--primary)">⏳ Mengirim data ke cloud...</span>';
   fetch(url, {
     method: 'POST',
     mode: 'no-cors',
@@ -1504,11 +1724,11 @@ function renderAdminMatchdayForm(){
  const wrap=document.getElementById('admin-matchday-form-area');
  const btn=document.getElementById('btn-save-admin-picks');
  if(!sel||!wrap)return;
- if(!sel.value){wrap.innerHTML='<p style="text-align:center;color:var(--muted)">Pilih pertandingan.</p>';btn.disabled=true;return;}
+ if(!sel.value){wrap.innerHTML='<p style="text-align:center;color:var(--text-muted)">Pilih pertandingan.</p>';btn.disabled=true;return;}
  const match=BASE_MATCHES.find(m=>m.id===sel.value);
  wrap.innerHTML=state.participants.map(p=>`
  <div class="form-row" data-pid="${p.id}">
- <div style="flex:1">${p.name}</div>
+ <div style="flex:1; font-weight:600; color:var(--text-main);">${p.name}</div>
  <select class="pick-select">
  <option value="">-</option>
  <option value="${match.t1}">${match.t1}</option>
@@ -1549,7 +1769,7 @@ function scrapeWikipedia() {
   const url = getScriptUrl();
   if(!url) { showAdminAlert('Error: Masukkan Apps Script URL!', 'err'); return; }
   const statusEl = document.getElementById('sync-status');
-  statusEl.innerHTML = '<span style="color:var(--gold)">⏳ Memicu Scraper Wikipedia...</span>';
+  statusEl.innerHTML = '<span style="color:var(--primary)">⏳ Memicu Scraper Wikipedia...</span>';
   fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'scrapeWikipedia' }) })
   .then(() => {
     statusEl.innerHTML = '<span style="color:var(--win-text)">✅ Sukses! Mengunduh data teranyar...</span>';
