@@ -11,31 +11,22 @@
    PREMIUM LIGHT THEME - COLOR PALETTE & VARIABLES
    ========================================================= */
 :root {
-  /* Core Backgrounds */
-  --bg:           #F4F7F9; /* Very soft blue-gray */
-  --surface:      #FFFFFF; /* Pure white for cards */
-  --surface-alt:  #F8FAFC; /* Slightly off-white for sections */
-  
-  /* Brand Colors */
-  --primary:      #1E3A8A; /* Royal Blue */
+  --bg:           #F4F7F9;
+  --surface:      #FFFFFF;
+  --surface-alt:  #F8FAFC;
+  --primary:      #1E3A8A;
   --primary-light:#DBEAFE;
-  --secondary:    #D97706; /* Rich Gold */
+  --secondary:    #D97706;
   --secondary-bg: #FEF3C7;
-  
-  /* Text Colors */
-  --text-main:    #0F172A; /* Dark Slate */
-  --text-muted:   #64748B; /* Gray */
-  
-  /* Utilities */
-  --border:       rgba(30, 58, 138, 0.1); /* Subtle blue border */
+  --text-main:    #0F172A;
+  --text-muted:   #64748B;
+  --border:       rgba(30, 58, 138, 0.1);
   --border-focus: rgba(30, 58, 138, 0.3);
-  --win-text:     #059669; /* Emerald Green */
+  --win-text:     #059669;
   --win-bg:       #D1FAE5;
-  --loss-text:    #DC2626; /* Crimson Red */
+  --loss-text:    #DC2626;
   --loss-bg:      #FEE2E2;
   --wa-green:     #16A34A;
-  
-  /* Shadows */
   --shadow-sm:    0 2px 8px rgba(15, 23, 42, 0.04);
   --shadow-md:    0 8px 24px rgba(15, 23, 42, 0.08);
 }
@@ -45,7 +36,6 @@
 body {
   font-family: 'Inter', sans-serif; 
   background-color: var(--bg);
-  /* Elegant Subtle Pattern & Gradient Background */
   background-image:
     radial-gradient(circle at 15% 0%, rgba(219, 234, 254, 0.7) 0%, transparent 40%),
     radial-gradient(circle at 85% 100%, rgba(254, 243, 199, 0.6) 0%, transparent 40%),
@@ -60,8 +50,7 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Custom Scrollbar for Light Theme */
-::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar { width: 4px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.3); border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
@@ -81,34 +70,8 @@ body {
 .h-logo { display: flex; align-items: center; gap: 10px; }
 .h-badge { font-size: 24px; filter: drop-shadow(0 2px 4px rgba(217, 119, 6, 0.3)); }
 .h-title { display: flex; flex-direction: column; justify-content: center; }
-.h-main { 
-  font-family: 'Bebas Neue', cursive; 
-  font-size: 22px; 
-  color: var(--primary); 
-  line-height: 1; 
-  letter-spacing: 0.5px;
-}
-.h-sub { 
-  font-size: 9px; 
-  color: var(--secondary); 
-  letter-spacing: 1px; 
-  font-weight: 700;
-  text-transform: uppercase; 
-  margin-top: 2px; 
-}
-
-.admin-trigger-btn {  
-  background: var(--surface-alt); 
-  border: 1px solid var(--border); 
-  color: var(--primary); 
-  font-size: 16px; 
-  cursor: pointer; 
-  width: 36px; height: 36px; 
-  border-radius: 10px; 
-  display: flex; align-items: center; justify-content: center; 
-  transition: all 0.2s; 
-}
-.admin-trigger-btn:active { transform: scale(0.9); background: var(--primary-light); }
+.h-main { font-family: 'Bebas Neue', cursive; font-size: 22px; color: var(--primary); line-height: 1; letter-spacing: 0.5px;}
+.h-sub { font-size: 9px; color: var(--secondary); letter-spacing: 1px; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
 
 .tabs { 
   display: flex; 
@@ -119,22 +82,17 @@ body {
   backdrop-filter: blur(10px); 
   border-bottom: 1px solid var(--border);
   box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  overflow-x: auto;
 }
 .tab-btn { 
-  flex: 1; padding: 12px 4px; 
-  border: none;
-  border-bottom: 3px solid transparent;
-  background: transparent; 
-  color: var(--text-muted); 
-  font-size: 11px; font-weight: 700; 
-  cursor: pointer; 
-  text-transform: uppercase; text-align: center; 
-  transition: all 0.2s ease;
-  letter-spacing: 0.5px;
+  flex: 1; min-width: 80px; padding: 12px 4px; 
+  border: none; border-bottom: 3px solid transparent; background: transparent; 
+  color: var(--text-muted); font-size: 11px; font-weight: 700; 
+  cursor: pointer; text-transform: uppercase; text-align: center; 
+  transition: all 0.2s ease; letter-spacing: 0.5px;
 }
 .tab-btn.active { 
-  color: var(--primary); 
-  border-bottom-color: var(--secondary);
+  color: var(--primary); border-bottom-color: var(--secondary);
   background: linear-gradient(to top, rgba(217, 119, 6, 0.05), transparent);
 }
 
@@ -151,230 +109,91 @@ body {
 }
 
 /* =========================================================
-   TABLE & STANDINGS (KLASEMEN)
+   TABLE & STANDINGS
    ========================================================= */
-.capture-wrapper {
-  padding: 16px;
-  border-radius: 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-md);
-  position: relative;
-  overflow: hidden;
-}
-.capture-wrapper::before {
-  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; 
-  background: linear-gradient(90deg, var(--primary), var(--secondary));
-}
+.capture-wrapper { padding: 16px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-md); position: relative; overflow: hidden; }
+.capture-wrapper::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary)); }
 .capture-header-branding { display: none; text-align: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
 .capture-footer-branding { display: none; justify-content: space-between; align-items: center; margin-top: 16px; font-size: 10px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 12px; }
 
-/* Clean Minimalist Table */
-.s-table { 
-  width: 100%; border-collapse: collapse; border-spacing: 0 4px; 
-  font-size: 11px; background: transparent; border: none;  
-  padding: 12px;
-  overflow-x: auto;
-}
-.s-table th { 
-  background: transparent; color: var(--text-muted); 
-  padding: 10px 4px; font-size: 8px; font-weight: 700; 
-  text-transform: uppercase; letter-spacing: 0.5px; 
-  border-bottom: 1px solid var(--border);
-}
-.s-table td { 
-  padding: 11px 4px; text-align: center; 
-  background: var(--surface-alt); 
-  border-top: 1px solid transparent; 
-  border-bottom: 1px solid transparent; 
-  transition: background 0.2s;
-}
+.s-table { width: 100%; border-collapse: collapse; border-spacing: 0 4px; font-size: 11px; background: transparent; border: none; padding: 12px; overflow-x: auto; }
+.s-table th { background: transparent; color: var(--text-muted); padding: 10px 4px; font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+.s-table td { padding: 11px 4px; text-align: center; background: var(--surface-alt); border-top: 1px solid transparent; border-bottom: 1px solid transparent; transition: background 0.2s; }
 .s-table tr td:first-child { border-left: 1px solid transparent; border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
 .s-table tr td:last-child { border-right: 1px solid transparent; border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
 .s-table tr:hover td { background: var(--primary-light); }
 .s-table td.tl { text-align: left; padding-left: 8px; }
 
-/* Rank Circles */
-.rank-circle { 
-  width: 18px; height: 18px; border-radius: 50%; display: inline-flex; 
-  align-items: center; justify-content: center; font-size: 10px; font-weight: 800; 
-  background: #E2E8F0; color: var(--text-muted);
-}
-.rank-0 { background: #FEF08A; color: #854D0E; box-shadow: 0 2px 4px rgba(133, 77, 14, 0.2); } /* Gold 1st */
-.rank-1 { background: #E2E8F0; color: #475569; box-shadow: 0 2px 4px rgba(71, 85, 105, 0.2); } /* Silver 2nd */
-.rank-2 { background: #FED7AA; color: #9A3412; box-shadow: 0 2px 4px rgba(154, 52, 18, 0.2); } /* Bronze 3rd */
-
-.pts-pill { 
-  padding: 2px 4px; border-radius: 6px; 
-  background: var(--primary-light); border: 1px solid rgba(30, 58, 138, 0.1); 
-  color: var(--primary); font-weight: 800; font-size: 10px; white-space: nowrap; 
-}
+.rank-circle { width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; background: #E2E8F0; color: var(--text-muted); }
+.rank-0 { background: #FEF08A; color: #854D0E; box-shadow: 0 2px 4px rgba(133, 77, 14, 0.2); } 
+.rank-1 { background: #E2E8F0; color: #475569; box-shadow: 0 2px 4px rgba(71, 85, 105, 0.2); } 
+.rank-2 { background: #FED7AA; color: #9A3412; box-shadow: 0 2px 4px rgba(154, 52, 18, 0.2); } 
+.pts-pill { padding: 2px 4px; border-radius: 6px; background: var(--primary-light); border: 1px solid rgba(30, 58, 138, 0.1); color: var(--primary); font-weight: 800; font-size: 10px; white-space: nowrap; }
 
 /* =========================================================
-   MATCHDAY CARDS (TIKET PERTANDINGAN)
+   MATCHDAY CARDS
    ========================================================= */
-.match-card { 
-  background: var(--surface); 
-  border: 1px solid var(--border); 
-  border-radius: 14px; margin-bottom: 14px; overflow: hidden; 
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
+.match-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 14px; overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.2s, box-shadow 0.2s; }
 .match-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-
-.mc-header { 
-  padding: 8px 12px; background: var(--surface-alt); 
-  display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); align-items: center; 
-  font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
-  border-bottom: 1px solid var(--border);
-}
-.md-badge { 
-  background: var(--primary); color: #fff; 
-  padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 9px; 
-}
-
+.mc-header { padding: 8px 12px; background: var(--surface-alt); display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); align-items: center; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+.md-badge { background: var(--primary); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 9px; }
 .mc-body { display: grid; grid-template-columns: 1fr 60px 1fr; align-items: center; padding: 14px 10px; text-align: center; }
 .mc-team { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 13px; color: var(--text-main); overflow: hidden; }
 .mc-team span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mc-team.away { justify-content: flex-end; }
 .wc-flag { width: 22px; height: 16px; border-radius: 3px; object-fit: cover; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-
 .mc-score { font-family: 'Bebas Neue', cursive; font-size: 24px; letter-spacing: 1px; color: var(--primary); }
-
-.mc-picks-container { 
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1px; 
-  background: var(--border); border-top: 1px solid var(--border); 
-}
+.mc-picks-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border-top: 1px solid var(--border); }
 .mc-pick-column { padding: 8px; display: flex; flex-direction: column; gap: 4px; background: var(--surface-alt); }
-
-.column-title { 
-  font-size: 9px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; 
-  letter-spacing: 0.5px; margin-bottom: 4px; text-align: center; 
-}
-.pk-badge { 
-  padding: 4px 8px; border-radius: 6px; 
-  background: var(--surface); border: 1px solid var(--border); 
-  display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--text-main);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-}
-
-/* Force override JS inline background for quick pick zones */
-.mc-quick-pick-zone { 
-  padding: 12px !important; border-top: 1px solid var(--border) !important; 
-  display: flex; gap: 8px; align-items: center; background: var(--surface) !important;
-}
-/* Locked specific background overriding */
-.mc-quick-pick-zone[style*="background:rgba(192,40,47,0.08)"] {
-  background: var(--loss-bg) !important;
-}
+.column-title { font-size: 9px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; text-align: center; }
+.pk-badge { padding: 4px 8px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--text-main); box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+.mc-quick-pick-zone { padding: 12px !important; border-top: 1px solid var(--border) !important; display: flex; gap: 8px; align-items: center; background: var(--surface) !important; }
+.mc-quick-pick-zone[style*="background:rgba(192,40,47,0.08)"] { background: var(--loss-bg) !important; }
 
 /* =========================================================
-   GROUPS GRID
+   GROUPS GRID & 3RD PLACE TABLE
    ========================================================= */
 .grid-groups { display: grid; grid-template-columns: 1fr; gap: 12px; }
 @media(min-width: 480px) { .grid-groups { grid-template-columns: repeat(2, 1fr); } }
-.group-card { 
-  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; 
-  overflow: hidden; box-shadow: var(--shadow-sm); 
-}
-.group-header { 
-  background: var(--surface-alt); padding: 8px 12px; 
-  font-family: 'Bebas Neue', cursive; font-size: 16px; color: var(--primary); 
-  letter-spacing: 1px; border-bottom: 1px solid var(--border);
-}
+.group-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm); }
+.group-header { background: var(--surface-alt); padding: 8px 12px; font-family: 'Bebas Neue', cursive; font-size: 16px; color: var(--primary); letter-spacing: 1px; border-bottom: 1px solid var(--border); }
+
+/* =========================================================
+   KNOCKOUT BRACKET STYLES
+   ========================================================= */
+.bracket-wrapper { overflow-x: auto; padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow-sm); }
+.bracket-container { display: flex; gap: 24px; min-width: 900px; }
+.bracket-col { display: flex; flex-direction: column; justify-content: space-around; width: 180px; gap: 12px; }
+.bracket-round-title { text-align: center; font-family: 'Bebas Neue', cursive; color: var(--primary); font-size: 16px; letter-spacing: 1px; margin-bottom: 8px; border-bottom: 2px solid var(--secondary); padding-bottom: 4px; }
+.bracket-match { background: var(--surface-alt); border: 1px solid var(--border); border-radius: 8px; font-size: 11px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; overflow: hidden; }
+.b-team { display: flex; justify-content: space-between; align-items: center; padding: 8px; }
+.b-team:first-child { border-bottom: 1px solid var(--border); }
+.b-name { font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; margin-left: 8px; }
+.b-score { font-weight: 800; color: var(--text-muted); }
+.b-score.winner { color: var(--primary); }
 
 /* =========================================================
    FORMS, BUTTONS & MODALS
    ========================================================= */
-select, input[type=text], input[type=number] { 
-  background: var(--surface); border: 1px solid var(--border-focus); color: var(--text-main); 
-  padding: 10px 12px; border-radius: 8px; outline: none; width: 100%; font-size: 13px; 
-  -webkit-appearance: none; font-family: 'Inter', sans-serif; transition: all 0.2s;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
-}
+select, input[type=text], input[type=number] { background: var(--surface); border: 1px solid var(--border-focus); color: var(--text-main); padding: 10px 12px; border-radius: 8px; outline: none; width: 100%; font-size: 13px; -webkit-appearance: none; font-family: 'Inter', sans-serif; transition: all 0.2s; box-shadow: inset 0 1px 2px rgba(0,0,0,0.02); }
 select:focus, input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.1); }
-
-.btn { 
-  padding: 10px 14px; border: none; border-radius: 8px; 
-  font-weight: 600; cursor: pointer; font-size: 12px; display: inline-flex; 
-  align-items: center; justify-content: center; gap: 6px; text-transform: uppercase; 
-  letter-spacing: 0.5px; transition: all 0.2s; font-family: 'Inter', sans-serif;
-}
+.btn { padding: 10px 14px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; font-family: 'Inter', sans-serif; }
 .btn:active { transform: scale(0.97); }
-.btn-gold { 
-  background: var(--primary); color: #fff; 
-  box-shadow: 0 4px 10px rgba(30, 58, 138, 0.2);
-}
+.btn-gold { background: var(--primary); color: #fff; box-shadow: 0 4px 10px rgba(30, 58, 138, 0.2); }
 .btn-gold:hover { background: #172a6b; }
 .btn-outline { background: var(--surface); border: 1px solid var(--border-focus); color: var(--primary); }
 .btn-outline:hover { background: var(--primary-light); }
-.btn-image-download { 
-  background: var(--secondary); color: #fff; font-weight: 700; width: 100%; 
-  margin-top: 14px; padding: 12px; border-radius: 8px; font-size: 12px; border: none; 
-  cursor: pointer; box-shadow: 0 4px 10px rgba(217, 119, 6, 0.2); 
-  text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; 
-}
+.btn-image-download { background: var(--secondary); color: #fff; font-weight: 700; width: 100%; margin-top: 14px; padding: 12px; border-radius: 8px; font-size: 12px; border: none; cursor: pointer; box-shadow: 0 4px 10px rgba(217, 119, 6, 0.2); text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; }
 .btn-image-download:hover { background: #b45309; }
 
-/* Toggling Active Match Subtabs via JS relies on ID styling mostly, but let's provide a smooth active state */
-button[id^="subtab-"] { border: 1px solid transparent !important; }
-
-.modal-overlay { 
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-  background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 200; 
-  display: none; align-items: flex-end; justify-content: center; 
-}
-.modal-content { 
-  background: var(--surface); border-top: 4px solid var(--primary); border-radius: 20px 20px 0 0; 
-  width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto; padding: 20px; 
-  position: relative; animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-  box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
-}
-@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.modal-close-btn { 
-  position: absolute; top: 16px; right: 16px; background: var(--surface-alt); 
-  border: 1px solid var(--border); color: var(--text-muted); border-radius: 50%; 
-  width: 32px; height: 32px; font-size: 16px; font-weight: 700; cursor: pointer; 
-  display: flex; align-items: center; justify-content: center; transition: background 0.2s;
-}
-.modal-close-btn:hover { background: var(--loss-bg); color: var(--loss-text); }
-
-.admin-box { background: var(--surface-alt); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
-.admin-box h3 { font-family: 'Bebas Neue', cursive; color: var(--primary); margin-bottom: 12px; font-size: 18px; border-bottom: 1px solid var(--border); padding-bottom: 6px; letter-spacing: 0.5px; }
-.form-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; align-items: flex-end; }
-.form-col { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 100px; }
-
-.chip-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-.chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; font-size: 11px; font-weight: 600; box-shadow: var(--shadow-sm); color: var(--text-main); }
-.chip-del { background: none; border: none; color: var(--loss-text); cursor: pointer; font-weight: 800; font-size: 14px; margin-left: 2px; }
-
 .alert { padding: 10px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; margin-bottom: 12px; background: var(--win-bg); border: 1px solid var(--win-text); color: var(--win-text); text-align: center; }
-
-/* =========================================================
-   CLEAN LIGHT LOADER
-   ========================================================= */
-.loader-ring { 
-  width: 60px; height: 60px; border: 4px solid var(--primary-light); 
-  border-top: 4px solid var(--primary); border-radius: 50%; 
-  animation: spin 1s cubic-bezier(0.5, 0.1, 0.4, 0.9) infinite; margin-bottom: 20px; 
-}
-.loader-text { 
-  color: var(--primary); font-family: 'Inter', sans-serif; font-size: 14px; 
-  font-weight: 600; letter-spacing: 1px;
-}
+.loader-ring { width: 60px; height: 60px; border: 4px solid var(--primary-light); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s cubic-bezier(0.5, 0.1, 0.4, 0.9) infinite; margin-bottom: 20px; }
+.loader-text { color: var(--primary); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
-  <div id="initial-loader" style="
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-color: #F8FAFC;
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    z-index: 999999;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-  ">
+  <div id="initial-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #F8FAFC; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999999; transition: opacity 0.5s ease, visibility 0.5s ease;">
     <div class="loader-ring"></div>
     <div class="loader-text">LOADING DATA...</div>
   </div>
@@ -387,34 +206,30 @@ button[id^="subtab-"] { border: 1px solid transparent !important; }
       <span class="h-sub">Yok, Kita Ramaikan!</span>
     </div>
   </div>
-  <!-- <button class="admin-trigger-btn" onclick="openAdminModal()" title="Buka Panel Admin">⚙️</button> -->
 </header>
 
 <nav class="tabs">
   <button id="btn-tab-klasemen" class="tab-btn active" onclick="switchTab('klasemen')">📊 Standings</button>
   <button id="btn-tab-pertandingan" class="tab-btn" onclick="switchTab('pertandingan')">⚽ Matches</button>
   <button id="btn-tab-grup" class="tab-btn" onclick="switchTab('grup')">🌐 Groups</button>
+  <button id="btn-tab-knockout" class="tab-btn" onclick="switchTab('knockout')">🏆 Knockout</button>
 </nav>
 
 <main class="content">
   <div id="tab-klasemen" class="tab-pane active">
     <div class="sec-title">🏆 KLASEMEN EL</div>
-    
     <div id="capture-area-klasemen" class="capture-wrapper">
       <div id="capture-header" class="capture-header-branding">
         <h2 style="font-family: 'Bebas Neue', cursive; font-size: 24px; color: var(--primary); letter-spacing: 1px;">LIGA BOLA DUNIA - EL</h2>
         <p style="font-size: 11px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px; margin-top: 4px;">UPDATE KLASEMEN PREDIKSI TERBARU</p>
         <div id="capture-date" style="font-size: 10px; color: var(--secondary); margin-top: 4px; font-weight: 600;"></div>
       </div>
-
       <div id="pred-standings"></div>
-
       <div id="capture-footer" class="capture-footer-branding">
         <div>Generasi Otomatis • Sistem Integrasi GSheet</div>
         <div style="font-weight: 700; color: var(--secondary); letter-spacing: 0.5px;">MASIH CARI SPONSOR</div>
       </div>
     </div>
-
     <div id="wa-share-standings-zone"></div>
   </div>
 
@@ -423,34 +238,35 @@ button[id^="subtab-"] { border: 1px solid transparent !important; }
       <div class="sec-title" style="margin:0;">⚽ JADWAL MATCHDAY</div>
       <div style="width:130px">
         <select id="filter-grup" onchange="renderMatches()" style="padding: 6px 8px; font-size:11px;">
-          <option value="ALL">Semua Grup</option>
+          <option value="ALL">Semua Match</option>
           <option value="A">Grup A</option><option value="B">Grup B</option><option value="C">Grup C</option>
           <option value="D">Grup D</option><option value="E">Grup E</option><option value="F">Grup F</option>
           <option value="G">Grup G</option><option value="H">Grup H</option><option value="I">Grup I</option>
           <option value="J">Grup J</option><option value="K">Grup K</option><option value="L">Grup L</option>
+          <option disabled>────────</option>
+          <option value="R32">Round of 32</option>
+          <option value="R16">Round of 16</option>
+          <option value="QF">Quarter Finals</option>
+          <option value="SF">Semi Finals</option>
+          <option value="3rd">Third Place</option>
+          <option value="Final">Final</option>
         </select>
       </div>
     </div>
 
     <div style="display:flex; background:var(--surface-alt); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:14px; gap:4px;">
-      <button id="subtab-upcoming" onclick="switchMatchSubTab('upcoming')" style="flex:1; background:var(--primary); color:#fff; font-weight:700; font-size:11px; padding:10px 0; border-radius:6px; cursor:pointer; transition:all 0.2s; text-transform: uppercase; border:none;">
-        ⏳ UPCOMING / LIVE
-      </button>
-      <button id="subtab-finished" onclick="switchMatchSubTab('finished')" style="flex:1; background:transparent; color:var(--text-muted); font-weight:700; font-size:11px; padding:10px 0; border-radius:6px; cursor:pointer; transition:all 0.2s; text-transform: uppercase; border:none;">
-        ✓ FINISHED
-      </button>
+      <button id="subtab-upcoming" onclick="switchMatchSubTab('upcoming')" style="flex:1; background:var(--primary); color:#fff; font-weight:700; font-size:11px; padding:10px 0; border-radius:6px; cursor:pointer; transition:all 0.2s; text-transform: uppercase; border:none;">⏳ UPCOMING / LIVE</button>
+      <button id="subtab-finished" onclick="switchMatchSubTab('finished')" style="flex:1; background:transparent; color:var(--text-muted); font-weight:700; font-size:11px; padding:10px 0; border-radius:6px; cursor:pointer; transition:all 0.2s; text-transform: uppercase; border:none;">✓ FINISHED</button>
     </div>
 
     <div id="front-user-selector-zone" style="margin-bottom:16px; background:var(--surface); border:1px solid var(--border); box-shadow: var(--shadow-sm); padding:14px; border-radius:12px; display:flex; flex-direction:column; gap:8px;">
       <label style="color: var(--text-muted); font-size: 11px; font-weight: 700; letter-spacing: 0.5px;">👤 PROFIL PESERTA</label>
-  
       <div id="wrapper-pilih-user" style="display: flex; gap: 8px; align-items: center; width:100%;">
         <select id="front-sel-participant" onchange="state.activeUser = this.value; saveLocal(); renderAll();" style="flex: 1;">
           <option value="">-- Pilih Nama Anda --</option>
         </select>
         <button class="btn btn-outline" onclick="bukaFormUserBaru()" style="padding: 10px 14px;">➕ Baru</button>
       </div>
-
       <div id="wrapper-input-user-baru" style="display: none; gap: 8px; align-items: center; width:100%;">
         <input type="text" id="inp-nama-baru" placeholder="Ketik nama lengkap..." style="flex: 1;">
         <button class="btn btn-gold" onclick="simpanUserBaruKeCloud()" style="padding: 10px 14px;">💾</button>
@@ -466,54 +282,19 @@ button[id^="subtab-"] { border: 1px solid transparent !important; }
     <div class="sec-title">🌐 KLASEMEN FASE GRUP</div>
     <div class="grid-groups" id="wc-groups-container"></div>
   </div>
-</main>
 
-<div id="admin-modal" class="modal-overlay" onclick="closeAdminModalOnBackdrop(event)">
-  <div class="modal-content">
-    <button class="modal-close-btn" onclick="closeAdminModal()">&times;</button>
-    <div class="sec-title" style="margin-top:0;">⚙️ SYSTEM CONTROL ROOM</div>
-    <div id="admin-alert"></div>
-
-    <div class="admin-box">
-      <h3>👤 Kelola Anggota Liga</h3>
-      <div class="form-row">
-        <div class="form-col" style="flex:2">
-          <input type="text" id="inp-name" placeholder="Nama Kontestan...">
+  <div id="tab-knockout" class="tab-pane">
+    <div class="sec-title">🏆 BAGAN BABAK GUGUR</div>
+    <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">
+      Bagan ini memproyeksikan secara otomatis posisi tim dari hasil fase grup. Tampilan akan terus beradaptasi seiring update skor masuk dari server.
+    </p>
+    <div class="bracket-wrapper">
+      <div class="bracket-container" id="knockout-bracket-container">
         </div>
-        <button class="btn btn-gold" onclick="addParticipant()">+ Daftar</button>
-      </div>
-      <div class="chip-list" id="chip-list"></div>
-    </div>
-
-    <div class="admin-box">
-      <h3>📝 Bypass Pilihan Matchday</h3>
-      <div class="form-row">
-        <div class="form-col">
-          <select id="sel-admin-matchday" onchange="renderAdminMatchdayForm()">
-            <option value="">-- Pilih Pertandingan --</option>
-          </select>
-        </div>
-      </div>
-      <div id="admin-matchday-form-area" style="max-height:280px; overflow-y:auto; margin-top:8px; border:1px solid var(--border); padding:8px; border-radius:8px; background:var(--surface);">
-        <p style="text-align:center; color:var(--text-muted); padding:10px; font-size:12px;">Pilih pertandingan terlebih dahulu.</p>
-      </div>
-      <button id="btn-save-admin-picks" class="btn btn-gold" style="margin-top:10px; width:100%" onclick="saveAdminPicksByMatchday()" disabled>💾 Override Data Server</button>
-    </div>
-
-    <div class="admin-box">
-      <h3>🔗 Cloud Synchronization</h3>
-      <div style="display:flex; flex-direction:column; gap:8px">
-        <input type="text" id="inp-apps-url" placeholder="https://script.google.com/macros/s/.../exec">
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:4px;">
-          <button class="btn btn-gold" onclick="syncFetch()">⬇ FETCH</button>
-          <button class="btn btn-outline" onclick="syncPush()">⬆ PUSH</button>
-        </div>
-        <button class="btn" onclick="scrapeWikipedia()" style="background: var(--wa-green); color: white; width:100%; border:none; box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);">🔄 Sync Live Wikipedia Data</button>
-      </div>
-      <div id="sync-status" style="margin-top:12px; font-size:11px; font-weight:700; text-align:center; text-transform: uppercase; color: var(--text-muted);"></div>
     </div>
   </div>
-</div>
+
+</main>
 
 <script>
 const ISO_MAPPING = {
@@ -530,23 +311,39 @@ function getFlag(name) {
   return code ? `<img src="https://flagcdn.com/w40/${code}.png" class="wc-flag">` : '⚽';
 }
 
+const GROUPS_BLUEPRINT = {
+  'A': ['Mexico', 'South Africa', 'South Korea', 'Czechia'],
+  'B': ['Canada', 'Bosnia & Herz.', 'Qatar', 'Switzerland'],
+  'C': ['Brazil', 'Morocco', 'Haiti', 'Scotland'],
+  'D': ['USA', 'Paraguay', 'Australia', 'Türkiye'],
+  'E': ['Germany', 'Curaçao', 'Ivory Coast', 'Ecuador'],
+  'F': ['Japan', 'Netherlands', 'Sweden', 'Tunisia'],
+  'G': ['Belgium', 'Egypt', 'Iran', 'New Zealand'],
+  'H': ['Spain', 'Cape Verde', 'Uruguay', 'Saudi Arabia'],
+  'I': ['France', 'Senegal', 'Iraq', 'Norway'],
+  'J': ['Argentina', 'Algeria', 'Austria', 'Jordan'],
+  'K': ['Portugal', 'Colombia', 'DR Congo', 'Uzbekistan'],
+  'L': ['England', 'Croatia', 'Ghana', 'Panama']
+};
+
 const BASE_MATCHES = [
-  {id:'A1',gr:'A',md:1,date:'12 Jun',time:'2026-06-12T01:00:00',t1:'Mexico',t2:'South Africa',s1:null,s2:null,done:true},
-  {id:'A2',gr:'A',md:1,date:'12 Jun',time:'2026-06-12T08:00:00',t1:'South Korea',t2:'Czechia',s1:null,s2:null,done:true},
-  {id:'B1',gr:'B',md:1,date:'13 Jun',time:'2026-06-13T01:00:00',t1:'Canada',t2:'Bosnia & Herz.',s1:null,s2:null,done:true},
-  {id:'D1',gr:'D',md:1,date:'13 Jun',time:'2026-06-13T07:00:00',t1:'USA',t2:'Paraguay',s1:null,s2:null,done:true},
-  {id:'B2',gr:'B',md:1,date:'14 Jun',time:'2026-06-14T01:00:00',t1:'Qatar',t2:'Switzerland',s1:null,s2:null,done:true},
-  {id:'C1',gr:'C',md:1,date:'14 Jun',time:'2026-06-14T04:00:00',t1:'Brazil',t2:'Morocco',s1:null,s2:null,done:true},
-  {id:'C2',gr:'C',md:1,date:'14 Jun',time:'2026-06-14T07:00:00',t1:'Haiti',t2:'Scotland',s1:null,s2:null,done:true},
-  {id:'D2',gr:'D',md:1,date:'14 Jun',time:'2026-06-14T10:00:00',t1:'Australia',t2:'Türkiye',s1:null,s2:null,done:true},
-  {id:'E1',gr:'E',md:1,date:'14 Jun',time:'2026-06-14T23:00:00',t1:'Germany',t2:'Curaçao',s1:null,s2:null,done:true},
-  {id:'F1',gr:'F',md:1,date:'15 Jun',time:'2026-06-15T02:00:00',t1:'Japan',t2:'Netherlands',s1:null,s2:null,done:true},
-  {id:'E2',gr:'E',md:1,date:'15 Jun',time:'2026-06-15T05:00:00',t1:'Ivory Coast',t2:'Ecuador',s1:null,s2:null,done:true},
-  {id:'F2',gr:'F',md:1,date:'15 Jun',time:'2026-06-15T08:00:00',t1:'Sweden',t2:'Tunisia',s1:null,s2:null,done:true},
-  {id:'H1',gr:'H',md:1,date:'15 Jun',time:'2026-06-15T22:00:00',t1:'Spain',t2:'Cape Verde',s1:null,s2:null,done:true},
-  {id:'G1',gr:'G',md:1,date:'16 Jun',time:'2026-06-16T01:00:00',t1:'Belgium',t2:'Egypt',s1:null,s2:null,done:true},
-  {id:'H2',gr:'H',md:1,date:'16 Jun',time:'2026-06-16T04:00:00',t1:'Saudi Arabia',t2:'Uruguay',s1:null,s2:null,done:true},
-  {id:'G2',gr:'G',md:1,date:'16 Jun',time:'2026-06-16T07:00:00',t1:'Iran',t2:'New Zealand',s1:null,s2:null,done:true},
+  // FASE GRUP
+  {id:'A1',gr:'A',md:1,date:'12 Jun',time:'2026-06-12T01:00:00',t1:'Mexico',t2:'South Africa',s1:null,s2:null,done:false},
+  {id:'A2',gr:'A',md:1,date:'12 Jun',time:'2026-06-12T08:00:00',t1:'South Korea',t2:'Czechia',s1:null,s2:null,done:false},
+  {id:'B1',gr:'B',md:1,date:'13 Jun',time:'2026-06-13T01:00:00',t1:'Canada',t2:'Bosnia & Herz.',s1:null,s2:null,done:false},
+  {id:'D1',gr:'D',md:1,date:'13 Jun',time:'2026-06-13T07:00:00',t1:'USA',t2:'Paraguay',s1:null,s2:null,done:false},
+  {id:'B2',gr:'B',md:1,date:'14 Jun',time:'2026-06-14T01:00:00',t1:'Qatar',t2:'Switzerland',s1:null,s2:null,done:false},
+  {id:'C1',gr:'C',md:1,date:'14 Jun',time:'2026-06-14T04:00:00',t1:'Brazil',t2:'Morocco',s1:null,s2:null,done:false},
+  {id:'C2',gr:'C',md:1,date:'14 Jun',time:'2026-06-14T07:00:00',t1:'Haiti',t2:'Scotland',s1:null,s2:null,done:false},
+  {id:'D2',gr:'D',md:1,date:'14 Jun',time:'2026-06-14T10:00:00',t1:'Australia',t2:'Türkiye',s1:null,s2:null,done:false},
+  {id:'E1',gr:'E',md:1,date:'14 Jun',time:'2026-06-14T23:00:00',t1:'Germany',t2:'Curaçao',s1:null,s2:null,done:false},
+  {id:'F1',gr:'F',md:1,date:'15 Jun',time:'2026-06-15T02:00:00',t1:'Japan',t2:'Netherlands',s1:null,s2:null,done:false},
+  {id:'E2',gr:'E',md:1,date:'15 Jun',time:'2026-06-15T05:00:00',t1:'Ivory Coast',t2:'Ecuador',s1:null,s2:null,done:false},
+  {id:'F2',gr:'F',md:1,date:'15 Jun',time:'2026-06-15T08:00:00',t1:'Sweden',t2:'Tunisia',s1:null,s2:null,done:false},
+  {id:'H1',gr:'H',md:1,date:'15 Jun',time:'2026-06-15T22:00:00',t1:'Spain',t2:'Cape Verde',s1:null,s2:null,done:false},
+  {id:'G1',gr:'G',md:1,date:'16 Jun',time:'2026-06-16T01:00:00',t1:'Belgium',t2:'Egypt',s1:null,s2:null,done:false},
+  {id:'H2',gr:'H',md:1,date:'16 Jun',time:'2026-06-16T04:00:00',t1:'Saudi Arabia',t2:'Uruguay',s1:null,s2:null,done:false},
+  {id:'G2',gr:'G',md:1,date:'16 Jun',time:'2026-06-16T07:00:00',t1:'Iran',t2:'New Zealand',s1:null,s2:null,done:false},
   {id:'I1',gr:'I',md:1,date:'17 Jun',time:'2026-06-17T01:00:00',t1:'France',t2:'Senegal',s1:null,s2:null,done:false},
   {id:'I2',gr:'I',md:1,date:'17 Jun',time:'2026-06-17T04:00:00',t1:'Iraq',t2:'Norway',s1:null,s2:null,done:false},
   {id:'J1',gr:'J',md:1,date:'17 Jun',time:'2026-06-17T07:00:00',t1:'Argentina',t2:'Algeria',s1:null,s2:null,done:false},
@@ -603,66 +400,168 @@ const BASE_MATCHES = [
   {id:'K2',gr:'K',md:3,date:'28 Jun',time:'2026-06-28T05:30:00',t1:'DR Congo',t2:'Uzbekistan',s1:null,s2:null,done:false},
   {id:'J6',gr:'J',md:3,date:'28 Jun',time:'2026-06-28T08:00:00',t1:'Algeria',t2:'Austria',s1:null,s2:null,done:false},
   {id:'J5',gr:'J',md:3,date:'28 Jun',time:'2026-06-28T08:00:00',t1:'Jordan',t2:'Argentina',s1:null,s2:null,done:false},
+
+  // FASE KNOCKOUT
+  {id:'R32-74',gr:'R32',md:4,date:'30 Jun',time:'2026-06-30T03:30:00',t1:'Juara Grup E',t2:'Peringkat 3 (A,B,C,D,F)',s1:null,s2:null,done:false},
+  {id:'R32-77',gr:'R32',md:4,date:'01 Jul',time:'2026-07-01T04:00:00',t1:'Juara Grup I',t2:'Peringkat 3 (C,D,F,G,H)',s1:null,s2:null,done:false},
+  {id:'R32-73',gr:'R32',md:4,date:'29 Jun',time:'2026-06-29T02:00:00',t1:'Runner-up Grup A',t2:'Runner-up Grup B',s1:null,s2:null,done:false},
+  {id:'R32-75',gr:'R32',md:4,date:'30 Jun',time:'2026-06-30T08:00:00',t1:'Juara Grup F',t2:'Runner-up Grup C',s1:null,s2:null,done:false},
+  {id:'R32-83',gr:'R32',md:4,date:'03 Jul',time:'2026-07-03T06:00:00',t1:'Runner-up Grup K',t2:'Runner-up Grup L',s1:null,s2:null,done:false},
+  {id:'R32-84',gr:'R32',md:4,date:'03 Jul',time:'2026-07-03T02:00:00',t1:'Juara Grup H',t2:'Runner-up Grup J',s1:null,s2:null,done:false},
+  {id:'R32-81',gr:'R32',md:4,date:'02 Jul',time:'2026-07-02T07:00:00',t1:'Juara Grup D',t2:'Peringkat 3 (B,E,F,I,J)',s1:null,s2:null,done:false},
+  {id:'R32-82',gr:'R32',md:4,date:'02 Jul',time:'2026-07-02T03:00:00',t1:'Juara Grup G',t2:'Peringkat 3 (A,E,H,I,J)',s1:null,s2:null,done:false},
+  {id:'R32-76',gr:'R32',md:4,date:'30 Jun',time:'2026-06-30T00:00:00',t1:'Juara Grup C',t2:'Runner-up Grup F',s1:null,s2:null,done:false},
+  {id:'R32-78',gr:'R32',md:4,date:'01 Jul',time:'2026-07-01T00:00:00',t1:'Runner-up Grup E',t2:'Runner-up Grup I',s1:null,s2:null,done:false},
+  {id:'R32-79',gr:'R32',md:4,date:'01 Jul',time:'2026-07-01T08:00:00',t1:'Juara Grup A',t2:'Peringkat 3 (C,E,F,H,I)',s1:null,s2:null,done:false},
+  {id:'R32-80',gr:'R32',md:4,date:'01 Jul',time:'2026-07-01T23:00:00',t1:'Juara Grup L',t2:'Peringkat 3 (E,H,I,J,K)',s1:null,s2:null,done:false},
+  {id:'R32-86',gr:'R32',md:4,date:'04 Jul',time:'2026-07-04T05:00:00',t1:'Juara Grup J',t2:'Runner-up Grup H',s1:null,s2:null,done:false},
+  {id:'R32-88',gr:'R32',md:4,date:'04 Jul',time:'2026-07-04T01:00:00',t1:'Runner-up Grup D',t2:'Runner-up Grup G',s1:null,s2:null,done:false},
+  {id:'R32-85',gr:'R32',md:4,date:'03 Jul',time:'2026-07-03T10:00:00',t1:'Juara Grup B',t2:'Peringkat 3 (E,F,G,I,J)',s1:null,s2:null,done:false},
+  {id:'R32-87',gr:'R32',md:4,date:'04 Jul',time:'2026-07-04T08:30:00',t1:'Juara Grup K',t2:'Peringkat 3 (D,E,I,J,L)',s1:null,s2:null,done:false},
+
+  {id:'R16-89',gr:'R16',md:5,date:'05 Jul',time:'2026-07-05T04:00:00',t1:'Pemenang R32-74',t2:'Pemenang R32-77',s1:null,s2:null,done:false},
+  {id:'R16-90',gr:'R16',md:5,date:'05 Jul',time:'2026-07-05T00:00:00',t1:'Pemenang R32-73',t2:'Pemenang R32-75',s1:null,s2:null,done:false},
+  {id:'R16-93',gr:'R16',md:5,date:'07 Jul',time:'2026-07-07T02:00:00',t1:'Pemenang R32-76',t2:'Pemenang R32-78',s1:null,s2:null,done:false},
+  {id:'R16-94',gr:'R16',md:5,date:'07 Jul',time:'2026-07-07T07:00:00',t1:'Pemenang R32-79',t2:'Pemenang R32-80',s1:null,s2:null,done:false},
+  {id:'R16-91',gr:'R16',md:5,date:'06 Jul',time:'2026-07-06T03:00:00',t1:'Pemenang R32-83',t2:'Pemenang R32-84',s1:null,s2:null,done:false},
+  {id:'R16-92',gr:'R16',md:5,date:'06 Jul',time:'2026-07-06T07:00:00',t1:'Pemenang R32-81',t2:'Pemenang R32-82',s1:null,s2:null,done:false},
+  {id:'R16-95',gr:'R16',md:5,date:'07 Jul',time:'2026-07-07T23:00:00',t1:'Pemenang R32-86',t2:'Pemenang R32-88',s1:null,s2:null,done:false},
+  {id:'R16-96',gr:'R16',md:5,date:'08 Jul',time:'2026-07-08T03:00:00',t1:'Pemenang R32-85',t2:'Pemenang R32-87',s1:null,s2:null,done:false},
+
+  {id:'QF-97',gr:'QF',md:6,date:'10 Jul',time:'2026-07-10T03:00:00',t1:'Pemenang R16-89',t2:'Pemenang R16-90',s1:null,s2:null,done:false},
+  {id:'QF-98',gr:'QF',md:6,date:'11 Jul',time:'2026-07-11T02:00:00',t1:'Pemenang R16-93',t2:'Pemenang R16-94',s1:null,s2:null,done:false},
+  {id:'QF-99',gr:'QF',md:6,date:'12 Jul',time:'2026-07-12T04:00:00',t1:'Pemenang R16-91',t2:'Pemenang R16-92',s1:null,s2:null,done:false},
+  {id:'QF-100',gr:'QF',md:6,date:'12 Jul',time:'2026-07-12T08:00:00',t1:'Pemenang R16-95',t2:'Pemenang R16-96',s1:null,s2:null,done:false},
+
+  {id:'SF-101',gr:'SF',md:7,date:'15 Jul',time:'2026-07-15T02:00:00',t1:'Pemenang QF-97',t2:'Pemenang QF-98',s1:null,s2:null,done:false},
+  {id:'SF-102',gr:'SF',md:7,date:'16 Jul',time:'2026-07-16T02:00:00',t1:'Pemenang QF-99',t2:'Pemenang QF-100',s1:null,s2:null,done:false},
+
+  {id:'TP-1',gr:'3rd',md:8,date:'19 Jul',time:'2026-07-19T04:00:00',t1:'Kalah SF-101',t2:'Kalah SF-102',s1:null,s2:null,done:false},
+  {id:'FN-1',gr:'Final',md:8,date:'20 Jul',time:'2026-07-20T02:00:00',t1:'Pemenang SF-101',t2:'Pemenang SF-102',s1:null,s2:null,done:false}
 ];
 
-const GROUPS_BLUEPRINT = {
-  'A': ['Mexico', 'South Africa', 'South Korea', 'Czechia'],
-  'B': ['Canada', 'Bosnia & Herz.', 'Qatar', 'Switzerland'],
-  'C': ['Brazil', 'Morocco', 'Haiti', 'Scotland'],
-  'D': ['USA', 'Paraguay', 'Australia', 'Türkiye'],
-  'E': ['Germany', 'Curaçao', 'Ivory Coast', 'Ecuador'],
-  'F': ['Japan', 'Netherlands', 'Sweden', 'Tunisia'],
-  'G': ['Belgium', 'Egypt', 'Iran', 'New Zealand'],
-  'H': ['Spain', 'Cape Verde', 'Uruguay', 'Saudi Arabia'],
-  'I': ['France', 'Senegal', 'Iraq', 'Norway'],
-  'J': ['Argentina', 'Algeria', 'Austria', 'Jordan'],
-  'K': ['Portugal', 'Colombia', 'DR Congo', 'Uzbekistan'],
-  'L': ['England', 'Croatia', 'Ghana', 'Panama']
-};
+const KNOCKOUT_ROUNDS = [
+  { id: 'R32', title: 'ROUND OF 32' },
+  { id: 'R16', title: 'ROUND OF 16' },
+  { id: 'QF', title: 'QUARTER FINALS' },
+  { id: 'SF', title: 'SEMI FINALS' },
+  { id: 'Final', title: 'FINAL' },
+  { id: '3rd', title: '3RD PLACE' }
+];
 
 let state = { participants: [], picks: [], overrides: {}, currentTab: 'matchday', matchSubTab: 'upcoming' };
 let latestSortedStandings = []; 
 const GLOBAL_APPS_URL = "https://script.google.com/macros/s/AKfycbzwdrmDD8H9fGKY1UF0R-Bluioe2XVJSz0FwKaYIKiyJ4bSrcps0iGPffYLIKJ6Ngjq/exec";
 
-
 function init() {
   const saved = localStorage.getItem('wc_choice_state_v2');
   if(saved) { 
-    try { 
-      state = JSON.parse(saved); 
-      if(!Array.isArray(state.picks)) state.picks=[]; 
-    } catch { 
-      state = { participants: [], picks: [], overrides: {}, currentTab: 'matchday', matchSubTab: 'upcoming' }; 
-    } 
+    try { state = JSON.parse(saved); if(!Array.isArray(state.picks)) state.picks=[]; } 
+    catch { state = { participants: [], picks: [], overrides: {}, currentTab: 'matchday', matchSubTab: 'upcoming' }; } 
   }
   if(!state.matchSubTab) { state.matchSubTab = 'upcoming'; }
-  if(document.getElementById('inp-apps-url')) { document.getElementById('inp-apps-url').value = GLOBAL_APPS_URL; }
-  
-  // Jalankan penarikan data cloud bawaan skrip Anda
   autoFetchCloudData();
-
-  // Proteksi jika koneksi timeout/gagal total, hapus loader setelah 8 detik agar halaman tidak membeku selamanya
-  setTimeout(() => {
-    hilangkanInitialLoader();
-  }, 8000);
-
+  setTimeout(() => { hilangkanInitialLoader(); }, 8000);
   setInterval(() => { if(state.matchSubTab === 'upcoming') renderMatches(); }, 60000);
 }
 
-// FUNGSI BARU: Untuk menghapus screen loading dengan efek memudar halus
 function hilangkanInitialLoader() {
   const loader = document.getElementById('initial-loader');
   if (loader) {
     loader.style.opacity = '0';
     loader.style.visibility = 'hidden';
-    setTimeout(() => {
-      loader.remove(); // Hancurkan elemen dari memori browser agar enteng
-    }, 500); // 500ms sesuai durasi transition CSS overlay
+    setTimeout(() => { loader.remove(); }, 500);
   }
 }
 
 function saveLocal() { localStorage.setItem('wc_choice_state_v2', JSON.stringify(state)); }
-function getMatches() { return BASE_MATCHES.map(m => state.overrides[m.id] ? { ...m, ...state.overrides[m.id] } : m); }
+
+// =========================================================================
+// OTAK KALKULASI: MENGHITUNG KLASEMEN GRUP MENTAH
+// =========================================================================
+function getComputedGroupStandings() {
+  const matches = BASE_MATCHES.map(m => state.overrides[m.id] ? { ...m, ...state.overrides[m.id] } : m);
+  let groups = {};
+  ['A','B','C','D','E','F','G','H','I','J','K','L'].forEach(g => {
+    groups[g] = [];
+    let teams = {};
+    GROUPS_BLUEPRINT[g].forEach(tName => { teams[tName] = { name:tName, p:0, w:0, d:0, l:0, gf:0, ga:0, gd:0, pts:0 }; });
+    matches.filter(m => m.gr === g).forEach(m => {
+      const isFinished = (m.done && m.done !== 'false' && m.done !== 'FALSE');
+      if(!isFinished) return;
+      let t1 = teams[m.t1], t2 = teams[m.t2]; if(!t1 || !t2) return;
+      t1.p++; t2.p++;
+      t1.gf += m.s1||0; t1.ga += m.s2||0; t1.gd += ((m.s1||0) - (m.s2||0));
+      t2.gf += m.s2||0; t2.ga += m.s1||0; t2.gd += ((m.s2||0) - (m.s1||0));
+      if(m.s1 > m.s2) { t1.w++; t1.pts += 3; t2.l++; }
+      else if(m.s1 < m.s2) { t2.w++; t2.pts += 3; t1.l++; }
+      else { t1.d++; t2.d++; t1.pts += 1; t2.pts += 1; }
+    });
+    // Sort logic: Points > GD > GF > Alphabetical (Penting untuk hari pertama saat poin masih 0)
+    groups[g] = Object.values(teams).sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.name.localeCompare(b.name));
+  });
+  return groups;
+}
+
+// =========================================================================
+// GET MATCHES: MENGUBAH PLACEHOLDER MENJADI NAMA TIM SECARA REAL-TIME
+// =========================================================================
+
+function getMatches() {
+  let matches = BASE_MATCHES.map(m => state.overrides[m.id] ? { ...m, ...state.overrides[m.id] } : { ...m });
+  
+  const groupsData = getComputedGroupStandings();
+  
+  // Proteksi: Pastikan groupsData ada sebelum melakukan mapping peringkat 3
+  let thirdPlaces = ['A','B','C','D','E','F','G','H','I','J','K','L']
+    .filter(g => groupsData && groupsData[g] && groupsData[g][2]) // Pastikan data grup ke-3 tersedia
+    .map(g => ({...groupsData[g][2], gr:g}))
+    .sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || (a.name || '').localeCompare(b.name || ''));
+    
+  let qualifiedThirds = thirdPlaces.slice(0, 8).map(t => t.name);
+
+  function resolveName(name) {
+    if(!name) return name;
+    
+    if(name.startsWith('Juara Grup ')) {
+      const g = name.replace('Juara Grup ', '');
+      return groupsData[g] ? groupsData[g][0].name : name;
+    }
+    if(name.startsWith('Runner-up Grup ')) {
+      const g = name.replace('Runner-up Grup ', '');
+      return groupsData[g] ? groupsData[g][1].name : name;
+    }
+    
+    // PERBAIKAN DI SINI: Mengambil angka di dalam kurung secara akurat
+    if(name.startsWith('Peringkat 3 (')) {
+      const matchBracket = name.match(/\((\d+)\)/); // Mencari angka di dalam ( )
+      if (matchBracket) {
+        const idx = parseInt(matchBracket[1]) - 1; // Mengambil angka hasil tangkapan regex
+        return qualifiedThirds[idx] || name;
+      }
+    }
+    
+    if(name.startsWith('Pemenang ') || name.startsWith('Kalah ')) {
+       const refId = name.split(' ')[1];
+       const refMatch = matches.find(m => m.id === refId);
+       if(refMatch && refMatch.done && refMatch.done !== 'false' && refMatch.done !== 'FALSE') {
+          const t1Win = (refMatch.s1 || 0) > (refMatch.s2 || 0);
+          if(name.startsWith('Pemenang ')) return t1Win ? refMatch.t1 : refMatch.t2;
+          else return t1Win ? refMatch.t2 : refMatch.t1;
+       }
+    }
+    return name;
+  }
+
+  // Selesaikan nama untuk setiap babak secara berurutan
+  matches.filter(m => m.md === 4).forEach(m => { m.t1 = resolveName(m.t1); m.t2 = resolveName(m.t2); });
+  matches.filter(m => m.md === 5).forEach(m => { m.t1 = resolveName(m.t1); m.t2 = resolveName(m.t2); });
+  matches.filter(m => m.md === 6).forEach(m => { m.t1 = resolveName(m.t1); m.t2 = resolveName(m.t2); });
+  matches.filter(m => m.md === 7).forEach(m => { m.t1 = resolveName(m.t1); m.t2 = resolveName(m.t2); });
+  matches.filter(m => m.md === 8).forEach(m => { m.t1 = resolveName(m.t1); m.t2 = resolveName(m.t2); });
+
+  return matches;
+}
 
 function isKickoffPassed(matchTimeString) {
   if(!matchTimeString) return false;
@@ -676,32 +575,24 @@ function renderAll() {
   renderFrontUserSelector();
   renderMatches();
   renderWCGroups();
-  renderParticipants();
+  renderKnockoutTree(); 
 }
 
-// Tambahkan parameter opsional forceRefresh (default bernilai false)
 function autoFetchCloudData(forceRefresh = false) {
   if(!GLOBAL_APPS_URL || GLOBAL_APPS_URL.includes("...")) {
     renderAll();
     if(typeof hilangkanInitialLoader === "function") hilangkanInitialLoader();
     return;
   }
-
-  // Cek kapan terakhir kali cloud data sukses diambil
   const lastFetch = localStorage.getItem('wc_last_cloud_fetch');
   const now = Date.now();
 
-  // JIKA forceRefresh bernilai TRUE, blok IF di bawah ini akan dilewati (Abaikan Cache!)
   if (!forceRefresh && state.participants.length > 0 && lastFetch && (now - parseInt(lastFetch) < 300000)) {
-    console.log("Menggunakan cache lokal agar loading instan.");
     renderAll();
     if(typeof hilangkanInitialLoader === "function") hilangkanInitialLoader();
     return; 
   }
 
-  console.log("Mengambil data segar langsung dari Cloud Server...");
-  
-  // Jika cache kosong, sudah lewat 5 menit, atau sedang DIPAKSA REFRESH:
   fetch(GLOBAL_APPS_URL + '?action=getData')
     .then(res => res.json())
     .then(resData => {
@@ -710,7 +601,7 @@ function autoFetchCloudData(forceRefresh = false) {
         state.picks = resData.picks || [];
         state.overrides = resData.overrides || {};
         saveLocal();
-        localStorage.setItem('wc_last_cloud_fetch', Date.now().toString()); // Simpan timestamp baru
+        localStorage.setItem('wc_last_cloud_fetch', Date.now().toString());
       }
       renderAll();
       if(typeof hilangkanInitialLoader === "function") hilangkanInitialLoader();
@@ -723,7 +614,6 @@ function autoFetchCloudData(forceRefresh = false) {
 }
 
 function generateRandomColor() {
-  // Use more elegant, slightly muted colors for the light theme
   const hue = Math.floor(Math.random() * 360);
   return `hsl(${hue}, 75%, 45%)`; 
 }
@@ -731,8 +621,12 @@ function generateRandomColor() {
 function switchTab(name) {
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
-  document.getElementById('btn-tab-'+name).classList.add('active');
-  document.getElementById('tab-'+name).classList.add('active');
+  const targetBtn = document.getElementById('btn-tab-'+name);
+  const targetPane = document.getElementById('tab-'+name);
+  if (targetBtn && targetPane) {
+    targetBtn.classList.add('active');
+    targetPane.classList.add('active');
+  }
 }
 
 function switchMatchSubTab(subTab) {
@@ -753,145 +647,92 @@ function switchMatchSubTab(subTab) {
   renderMatches();
 }
 
-function openAdminModal() { document.getElementById('admin-modal').style.display = 'flex'; renderParticipants(); renderPickForm(); }
-function closeAdminModal() { document.getElementById('admin-modal').style.display = 'none'; renderAll(); }
-function closeAdminModalOnBackdrop(e) { if(e.target.id === 'admin-modal') closeAdminModal(); }
-
-
 function getFinishedMatchSessionIds(matches){
-  const finished=[...matches]
-    .filter(m=>m.done)
-    .sort((a,b)=>new Date(a.time)-new Date(b.time));
-
-  const sessions=[];
-  let session=[];
-
+  const finished=[...matches].filter(m=>m.done && m.done !== 'false' && m.done !== 'FALSE').sort((a,b)=>new Date(a.time)-new Date(b.time));
+  const sessions=[]; let session=[];
   for(let i=0;i<finished.length;i++){
     session.push(finished[i]);
-
     const next=finished[i+1];
-    if(!next){
-      sessions.push(session);
-      break;
-    }
-
+    if(!next){ sessions.push(session); break; }
     const gap=new Date(next.time)-new Date(finished[i].time);
-
-    if(gap>7*60*60*1000){
-      sessions.push(session);
-      session=[];
-    }
+    if(gap>7*60*60*1000){ sessions.push(session); session=[]; }
   }
-
-  return sessions.length
-    ? new Set(sessions[sessions.length-1].map(m=>m.id))
-    : new Set();
+  return sessions.length ? new Set(sessions[sessions.length-1].map(m=>m.id)) : new Set();
 }
-
 
 function renderStandings() {
   const container = document.getElementById('pred-standings');
   const matches = getMatches();
   
-  // ─── 1. CARI MATCH TERAKHIR YANG SUDAH SELESAI (Untuk Baseline Tren) ───
-  const completedMatches = matches.filter(m => m.done);
+  const completedMatches = matches.filter(m => m.done && m.done !== 'false' && m.done !== 'FALSE');
   const sortedCompleted = [...completedMatches].sort((a, b) => new Date(b.time) - new Date(a.time));
   const currentSessionIds = getFinishedMatchSessionIds(matches);
 
   const userStats = state.participants.map(p => {
-    // pts adalah poin sekarang, prevPts adalah poin sebelum pertandingan terakhir selesai
     let stat = { id:p.id, name:p.name, color:p.color, p:0, w:0, d:0, l:0, gf:0, ga:0, gd:0, pts:0, prevPts:0, prevGd:0, prevGf:0 };
     
     state.picks.forEach(pk => {
       if(pk.pid !== p.id) return;
       const m = matches.find(match => match.id === pk.mid);
-      if(!m || !m.done) return;
+      if(!m || (!m.done || m.done === 'false' || m.done === 'FALSE')) return;
       
       stat.p++;
       if(pk.pick === m.t1) {
         stat.gf += m.s1; stat.ga += m.s2;
         if(m.s1 > m.s2) { 
           stat.w++; stat.pts += 3; 
-          if(!currentSessionIds.has(m.id)) stat.prevPts += 3; // Simpan ke poin lama jika bukan match terakhir
-        } else if(m.s1 < m.s2) { 
-          stat.l++; 
-        } else { 
+          if(!currentSessionIds.has(m.id)) stat.prevPts += 3;
+        } else if(m.s1 < m.s2) { stat.l++; } else { 
           stat.d++; stat.pts += 1; 
-          if(!currentSessionIds.has(m.id)) stat.prevPts += 1; // Simpan ke poin lama jika bukan match terakhir
+          if(!currentSessionIds.has(m.id)) stat.prevPts += 1;
         }
       } else if(pk.pick === m.t2) {
         stat.gf += m.s2; stat.ga += m.s1;
         if(m.s2 > m.s1) { 
           stat.w++; stat.pts += 3; 
-          if(!currentSessionIds.has(m.id)) stat.prevPts += 3; // Simpan ke poin lama jika bukan match terakhir
-        } else if(m.s2 < m.s1) { 
-          stat.l++; 
-        } else { 
+          if(!currentSessionIds.has(m.id)) stat.prevPts += 3;
+        } else if(m.s2 < m.s1) { stat.l++; } else { 
           stat.d++; stat.pts += 1; 
-          if(!currentSessionIds.has(m.id)) stat.prevPts += 1; // Simpan ke poin lama jika bukan match terakhir
+          if(!currentSessionIds.has(m.id)) stat.prevPts += 1;
         }
       }
 
-      // Hitung statistik Goal Difference khusus untuk kondisi "Sebelum Match Terakhir"
       if(!currentSessionIds.has(m.id)) {
-        if(pk.pick === m.t1) {
-          stat.prevGf += m.s1; stat.prevGd += (m.s1 - m.s2);
-        } else if(pk.pick === m.t2) {
-          stat.prevGf += m.s2; stat.prevGd += (m.s2 - m.s1);
-        }
+        if(pk.pick === m.t1) { stat.prevGf += m.s1; stat.prevGd += (m.s1 - m.s2); } 
+        else if(pk.pick === m.t2) { stat.prevGf += m.s2; stat.prevGd += (m.s2 - m.s1); }
       }
     });
-    stat.gd = stat.gf - stat.ga;
-    return stat;
+    stat.gd = stat.gf - stat.ga; return stat;
   });
 
-  // ─── 2. BUAT KLASEMEN BAYANGAN MASA LALU UNTUK TAHU PERINGKAT LAMA ───
   const previousRanked = [...userStats].sort((a,b) => b.prevPts - a.prevPts || b.prevGd - a.prevGd || b.prevGf - a.prevGf || a.name.localeCompare(b.name));
-
-  // ─── 3. URUTKAN KLASEMEN UTAMA SAAT INI (BAWAAAN ASLI KODE ANDA) ───
   userStats.sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.name.localeCompare(b.name));
   latestSortedStandings = userStats;
 
   const shareZone = document.getElementById('wa-share-standings-zone');
   if(userStats.length > 0) {
     shareZone.innerHTML = `<button class="btn-image-download" onclick="downloadKlasemenGambar()">🖼️ Download Gambar Klasemen Terkini</button>`;
-  } else {
-    shareZone.innerHTML = '';
-  }
+  } else { shareZone.innerHTML = ''; }
 
   if(userStats.length === 0) { container.innerHTML = '<p style="text-align:center;padding:20px;color:var(--text-muted)">Belum ada anggota terdaftar.</p>'; return; }
 
-  let h = `<table class="s-table">
-    <thead><tr><th style="width:30px">Pos</th><th class="tl">Nama</th><th>Mn</th><th style="color:var(--win-text)">M</th><th>S</th><th style="color:var(--loss-text)">K</th><th>SG</th><th>Poin</th></tr></thead><tbody>`;
+  let h = `<table class="s-table"><thead><tr><th style="width:30px">Pos</th><th class="tl">Nama</th><th>Mn</th><th style="color:var(--win-text)">M</th><th>S</th><th style="color:var(--loss-text)">K</th><th>SG</th><th>Poin</th></tr></thead><tbody>`;
   
   userStats.forEach((p, idx) => {
     const currentRank = idx + 1;
-    
-    // ─── 4. CARI TAHU POSISI PERINGKAT USER DI KLASEMEN LAMA ───
     const prevIdx = previousRanked.findIndex(pr => pr.id === p.id);
     const previousRank = prevIdx + 1;
-
-    // ─── 5. LOGIKA PENENTUAN ICON TREN NAIK / TURUN ───
     let trendIcon = "";
-    if (completedMatches.length === 0) {
-      trendIcon = ""; // Jika liga baru mulai/belum ada match done, kosongkan icon
-    } else if (currentRank < previousRank) {
-      // Naik peringkat (Angka peringkat mengecil, misal dari 4 ke 2)
-      trendIcon = `<span style="color: var(--win-text); margin-left: 4px; font-size: 11px; font-weight: bold;" title="Naik ${previousRank - currentRank} posisi">▲</span>`;
-    } else if (currentRank > previousRank) {
-      // Turun peringkat
-      trendIcon = `<span style="color: var(--loss-text); margin-left: 4px; font-size: 11px; font-weight: bold;" title="Turun ${currentRank - previousRank} posisi">▼</span>`;
-    } else {
-      // Posisi tetap / stagnan
-      trendIcon = `<span style="color: var(--text-muted); margin-left: 4px; font-size: 8px; vertical-align: middle;">●</span>`;
-    }
+    if (completedMatches.length === 0) { trendIcon = ""; } 
+    else if (currentRank < previousRank) { trendIcon = `<span style="color: var(--win-text); margin-left: 4px; font-size: 11px; font-weight: bold;">▲</span>`; } 
+    else if (currentRank > previousRank) { trendIcon = `<span style="color: var(--loss-text); margin-left: 4px; font-size: 11px; font-weight: bold;">▼</span>`; } 
+    else { trendIcon = `<span style="color: var(--text-muted); margin-left: 4px; font-size: 8px; vertical-align: middle;">●</span>`; }
 
     h += `<tr>
       <td><span class="rank-circle rank-${idx < 3 ? idx : 'default'}">${currentRank}</span></td>
       <td class="tl" style="font-weight:700; color:var(--text-main); white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px">
         <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${p.color};margin-right:6px;"></span>
-        ${p.name}
-        ${trendIcon} </td>
+        ${p.name} ${trendIcon} </td>
       <td>${p.p}</td><td>${p.w}</td><td>${p.d}</td><td>${p.l}</td><td>${p.gd > 0 ? '+'+p.gd : p.gd}</td>
       <td><span class="pts-pill">${p.pts} Pts</span></td>
     </tr>`;
@@ -899,91 +740,15 @@ function renderStandings() {
   container.innerHTML = h + '</tbody></table>';
 }
 
-// ──────────────────────────────────────────────────────────────────────────────
-// LOGIKA BARU: JAVASCRIPT UNTUK DOWNLOAD GAMBAR KLASEMEN (html2canvas)
-// ──────────────────────────────────────────────────────────────────────────────
-
-function downloadKlasemenGambar() {
-  const targetArea = document.getElementById('capture-area-klasemen');
-  const headerBranding = document.getElementById('capture-header');
-  const footerBranding = document.getElementById('capture-footer');
-  const dateBranding = document.getElementById('capture-date');
-
-  if (!targetArea) return;
-
-  const opsiTanggal = { year: 'numeric', month: 'long', day: 'numeric' };
-  const tanggalHariIni = new Date().toLocaleDateString('id-ID', opsiTanggal);
-  
-  if (dateBranding) dateBranding.innerText = tanggalHariIni;
-
-  // 1. Simpan state asli agar bisa dikembalikan setelah screenshot
-  const originalStyle = {
-    background: targetArea.style.background,
-    backgroundColor: targetArea.style.backgroundColor,
-    backgroundImage: targetArea.style.backgroundImage,
-    backgroundSize: targetArea.style.backgroundSize,
-    padding: targetArea.style.padding
-  };
-
-  // 2. Terapkan Style Body Anda ke elemen target
-  targetArea.style.backgroundColor = 'var(--bg)';
-  targetArea.style.backgroundImage = `radial-gradient(circle at 85% 100%, rgba(254, 243, 199, 0.6) 0%, transparent 40%),
-    linear-gradient(rgba(30, 58, 138, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(30, 58, 138, 0.02) 1px, transparent 1px)
-  `;
-
-  if (headerBranding) headerBranding.style.display = 'block';
-  if (footerBranding) footerBranding.style.display = 'flex';
-
-  // 3. Proses Screenshot
-  html2canvas(targetArea, {
-    scale: 2,
-    backgroundColor: null, // Penting: set null agar mengikuti background elemen
-    logging: false,
-    useCORS: true
-  }).then(canvas => {
-    // 4. Kembalikan style asli
-    Object.assign(targetArea.style, originalStyle);
-    if (headerBranding) headerBranding.style.display = 'none';
-    if (footerBranding) footerBranding.style.display = 'none';
-
-    canvas.toBlob(blob => {
-      const fileGambar = new File([blob], `Klasemen_EL_${tanggalHariIni.replace(/ /g, '_')}.png`, { type: 'image/png' });
-      
-      if (navigator.canShare && navigator.canShare({ files: [fileGambar] })) {
-        navigator.share({
-          files: [fileGambar],
-          title: 'Klasemen Liga Bola Dunia - EL',
-          text: `Update Klasemen Per ${tanggalHariIni}`
-        }).catch(err => console.log('Batal share:', err));
-      } else {
-        const link = document.createElement('a');
-        link.download = `Klasemen_EL_${tanggalHariIni.replace(/ /g, '_')}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      }
-    }, 'image/png');
-  }).catch(err => {
-    console.error("Gagal memproses:", err);
-    Object.assign(targetArea.style, originalStyle);
-    if (headerBranding) headerBranding.style.display = 'none';
-    if (footerBranding) footerBranding.style.display = 'none';
-  });
-}
-
 function renderFrontUserSelector() {
   const sel = document.getElementById('front-sel-participant');
   if(!sel) return;
-  // Ambil nilai yang sedang aktif/dipilih sebelumnya
   const currentActive = state.activeUser || ""; 
-  
   let h = '<option value="">-- Pilih Nama Anda --</option>';
   state.participants.forEach(p => {
-    // Berikan tanda selected jika ID peserta cocok dengan yang sedang aktif di state lokal
     const isSelected = (p.id === currentActive) ? 'selected' : '';
     h += `<option value="${p.id}" ${isSelected}>${p.name}</option>`;
   });
-  
   sel.innerHTML = h;
 }
 
@@ -992,68 +757,39 @@ function renderMatches() {
   const filter = document.getElementById('filter-grup').value;
   const frontActiveUserId = document.getElementById('front-sel-participant')?.value || "";
   const matches = getMatches();
-  let h = '';
-
-  // 1. Filter berdasarkan grup (ALL atau grup spesifik)
+  
   let filtered = matches.filter(m => filter === 'ALL' || m.gr === filter);
   
-  // 2. Filter & Sortir berdasarkan Subtab yang Aktif
   if (state.matchSubTab === 'upcoming') {
-    // Untuk subtab UPCOMING: Biarkan urutan bawaan GSheet (kronologis normal/A1-L6)
     filtered = filtered.filter(m => !m.done || m.done === 'false' || m.done === 'FALSE');
-    
   } else {
-    // Untuk subtab FINISHED: Saring yang sudah selesai
     filtered = filtered.filter(m => m.done && m.done !== 'false' && m.done !== 'FALSE');
-    
-    // KUNCI PERBAIKAN: Fungsi sort di bawah ini WAJIB berada di dalam blok ELSE ini
-    filtered.sort((a, b) => {
-      const timeA = a.time ? new Date(a.time).getTime() : 0;
-      const timeB = b.time ? new Date(b.time).getTime() : 0;
-      return timeB - timeA; // Waktu terbaru (angka milidetik lebih besar) naik ke atas
-    });
+    filtered.sort((a, b) => (b.time ? new Date(b.time).getTime() : 0) - (a.time ? new Date(a.time).getTime() : 0));
   }
-  
 
-  // ─── LOGIKA DINAMIS: KUNCI SESI BERUNTUN (TAMBAHKAN DI SINI) ───
-  // Buat duplikat master matches lalu urutkan kronologis (waktu terlama ke terbaru)
-  const masterSorted = [...matches].sort((a, b) => {
-    return (a.time ? new Date(a.time).getTime() : 0) - (b.time ? new Date(b.time).getTime() : 0);
-  });
-
-  // Cari match pertama di turnamen yang belum selesai (Sesi awal aktif saat ini)
+  const masterSorted = [...matches].sort((a, b) => (a.time ? new Date(a.time).getTime() : 0) - (b.time ? new Date(b.time).getTime() : 0));
   const firstUnfinishedIndex = masterSorted.findIndex(m => !m.done || m.done === 'false' || m.done === 'FALSE');
-  
-  // Siapkan Set untuk menyimpan ID match apa saja yang masuk batas "Boleh Diisi"
   const allowedMatchIds = new Set();
   
   if (firstUnfinishedIndex !== -1) {
-    // Jalankan loop dari match aktif pertama untuk menyaring kluster beruntun sesi sekarang
     for (let i = firstUnfinishedIndex; i < masterSorted.length; i++) {
       const currentMatch = masterSorted[i];
       allowedMatchIds.add(currentMatch.id);
-
-      // Periksa apakah ada match berikutnya untuk dibandingkan jeda waktunya
       if (i + 1 < masterSorted.length) {
         const nextMatch = masterSorted[i + 1];
         const currentTime = currentMatch.time ? new Date(currentMatch.time).getTime() : 0;
         const nextTime = nextMatch.time ? new Date(nextMatch.time).getTime() : 0;
-        
-        // Cek jika jarak waktu ke match selanjutnya lebih dari 12 jam (12 * 60 * 60 * 1000 ms)
-        if (nextTime - currentTime > 25200000) {
-          // Jeda terdeteksi! Sesi beruntun saat ini berakhir di currentMatch. Break loop!
-          break;
-        }
+        if (nextTime - currentTime > 25200000) break;
       }
     }
   }
-  // ──────────────────────────────────────────────────────────────
 
   if (filtered.length === 0) {
-    container.innerHTML = `<div style="text-align:center; padding:40px 20px; color:var(--text-muted); font-size:12px;">Tidak ada pertandingan untuk grup ini.</div>`;
+    container.innerHTML = `<div style="text-align:center; padding:40px 20px; color:var(--text-muted); font-size:12px;">Tidak ada pertandingan untuk pilihan ini.</div>`;
     return;
   }
 
+  let h = '';
   filtered.forEach(m => {
     let pickBadgesT1 = '', pickBadgesT2 = '';
     let countT1 = 0, countT2 = 0;
@@ -1073,23 +809,16 @@ function renderMatches() {
     if(!pickBadgesT2) pickBadgesT2 = '<span style="color:var(--text-muted);font-size:10px;text-align:center;display:block;padding:2px 0;">—</span>';
 
     const isFinished = (m.done && m.done !== 'false' && m.done !== 'FALSE');
-    // ─── PERUBAHAN PENENTUAN STATUS LOCK SECARA OTOMATIS ───
-    // Match akan TERKUNCI jika: 
-    // 1. Memang sudah lewat kickoff (logika bawaan Anda), ATAU
-    // 2. Pada subtab upcoming, match ID tersebut tidak terdaftar di Sesi Beruntun Aktif (allowedMatchIds)
     let isLocked = isKickoffPassed(m.time); 
-    if (state.matchSubTab === 'upcoming' && !allowedMatchIds.has(m.id)) {
-      isLocked = true; 
-    } 
+    if (state.matchSubTab === 'upcoming' && !allowedMatchIds.has(m.id)) { isLocked = true; } 
     
-
     let statusLabel = '⏳ BELUM';
     let labelColor = 'var(--text-muted)';
     if(isFinished) {
       statusLabel = '✓ SELESAI'; labelColor = 'var(--primary)';
     } else if(isLocked) {
       if (state.matchSubTab === 'upcoming' && !allowedMatchIds.has(m.id)) {
-        statusLabel = '🔒 LOCKED (SESI BESOK)'; labelColor = 'var(--secondary)'; // Warna orange info
+        statusLabel = '🔒 LOCKED (SESI BESOK)'; labelColor = 'var(--secondary)';
       } else {
         statusLabel = '🔒 LIVE / TERKUNCI'; labelColor = 'var(--loss-text)';
       }
@@ -1105,21 +834,16 @@ function renderMatches() {
     if(!isFinished && frontActiveUserId) {
       if(isLocked) {
         if (state.matchSubTab === 'upcoming' && !allowedMatchIds.has(m.id)) {
-          quickPickHtml = `
-          <div class="mc-quick-pick-zone" style="background:rgba(217, 119, 6, 0.05); flex-direction:column; gap:6px; align-items:stretch;">
+          quickPickHtml = `<div class="mc-quick-pick-zone" style="background:rgba(217, 119, 6, 0.05); flex-direction:column; gap:6px; align-items:stretch;">
           <span style="color:var(--secondary); font-size:11px; font-weight:700; text-align:center; letter-spacing:0.5px;">🔒 POLLING BELUM DIBUKA 🔒</span>
-          <button class="btn btn-outline" style="font-size:11px; padding:6px; border-color:var(--primary); color:var(--primary)" onclick="shareMatchPicksToWA('${m.id}')">📢 Share Peta Dukungan ke WA</button>
-          </div>`;
+          <button class="btn btn-outline" style="font-size:11px; padding:6px; border-color:var(--primary); color:var(--primary)" onclick="shareMatchPicksToWA('${m.id}')">📢 Share Peta Dukungan ke WA</button></div>`;
         } else {
-          quickPickHtml = `
-          <div class="mc-quick-pick-zone" style="background:rgba(220, 38, 38, 0.05); flex-direction:column; gap:6px; align-items:stretch;">
+          quickPickHtml = `<div class="mc-quick-pick-zone" style="background:rgba(220, 38, 38, 0.05); flex-direction:column; gap:6px; align-items:stretch;">
           <span style="color:var(--loss-text); font-size:11px; font-weight:700; text-align:center; letter-spacing:0.5px;">🔒 POLLING SUDAH DITUTUP 🔒</span>
-          <button class="btn btn-outline" style="font-size:11px; padding:6px; border-color:var(--primary); color:var(--primary)" onclick="shareMatchPicksToWA('${m.id}')">📢 Share Peta Dukungan ke WA</button>
-          </div>`;
+          <button class="btn btn-outline" style="font-size:11px; padding:6px; border-color:var(--primary); color:var(--primary)" onclick="shareMatchPicksToWA('${m.id}')">📢 Share Peta Dukungan ke WA</button></div>`;
         }
       } else {
-        quickPickHtml = `
-        <div class="mc-quick-pick-zone" style="flex-direction:column; gap:8px; align-items:stretch;">
+        quickPickHtml = `<div class="mc-quick-pick-zone" style="flex-direction:column; gap:8px; align-items:stretch;">
           <div style="display:flex; gap:8px; align-items:center;">
             <select id="quick-sel-${m.id}" style="padding:6px 8px; font-size:12px; height:34px; flex:1;">
               <option value="">- Belum Pilih Dukungan -</option>
@@ -1128,14 +852,13 @@ function renderMatches() {
             </select>
             <button class="btn btn-gold" style="padding:8px 12px; font-size:11px; height:34px;" onclick="saveQuickPick('${m.id}')">⚡ Simpan</button>
           </div>
-          <button class="btn btn-outline" style="font-size:11px; padding:6px;" onclick="shareMatchPicksToWA('${m.id}')">📲 Ajak Rekan Lain Isi Match Ini</button>
         </div>`;
       }
     }
 
     h += `<div class="match-card">
       <div class="mc-header">
-        <div>GRUP ${m.gr} · ${m.date}${timeLabel}</div>
+        <div>${m.gr.length > 2 ? '' : 'GRUP '} ${m.gr} · ${m.date}${timeLabel}</div>
         <div style="display:flex;align-items:center;gap:6px"><span class="md-badge">MD ${m.md}</span><span style="font-weight:800; font-size:10px; color:${labelColor};">${statusLabel}</span></div>
       </div>
       <div class="mc-body">
@@ -1159,630 +882,174 @@ function renderMatches() {
   container.innerHTML = h;
 }
 
-function shareMatchPicksToWA(matchId) {
-  const matches = getMatches();
-  const m = matches.find(x => x.id === matchId);
-  if(!m) return;
-  
-  const isLocked = isKickoffPassed(m.time);
-  let arrT1 = [], arrT2 = [];
-  
-  state.participants.forEach(p => {
-    const pk = state.picks.find(x => x.pid === p.id && x.mid === m.id);
-    if(pk) {
-      if(pk.pick === m.t1) arrT1.push(p.name);
-      else if(pk.pick === m.t2) arrT2.push(p.name);
-    }
-  });
-  
-  let text = "";
-  if(isLocked) {
-    text += `🔒 *PREDIKSI TERKUNCI: ${m.t1.toUpperCase()} vs ${m.t2.toUpperCase()}* 🔒\n`;
-    text += "=================================\n\n";
-    text += `⚽ *Pendukung ${m.t1} (${arrT1.length}):*\n`;
-    text += arrT1.length > 0 ? arrT1.map(n => `• ${n}`).join("\n") : "• Tidak ada pendukung";
-    text += "\n\n";
-    text += `⚽ *Pendukung ${m.t2} (${arrT2.length}):*\n`;
-    text += arrT2.length > 0 ? arrT2.map(n => `• ${n}`).join("\n") : "• Tidak ada pendukung";
-    text += "\n\n";
-  } else {
-    text += `⏳ *OPEN PREDICTION: ${m.t1} vs ${m.t2}* ⏳\n`;
-    text += `🗓️ Kick-off: ${m.date}\n`;
-    text += "=================================\n\n";
-    text += `📢 *Peta Dukungan Sementara:*\n`;
-    text += `• ${m.t1}: ${arrT1.length} orang\n`;
-    text += `• ${m.t2}: ${arrT2.length} orang\n\n`;
-    text += "👉 Jangan sampai ketinggalan/zonk! Segera isi atau ubah tim pilihanmu sebelum waktu kick-off terkunci otomatis di:\n";
-    text += window.location.href.includes("file://") ? "[Link Web Prediksi]" : window.location.href;
-  }
-  
-  window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(text), "_blank");
-}
-
 function saveQuickPick(matchId) {
   const frontActiveUserId = document.getElementById('front-sel-participant')?.value || "";
-  if(!frontActiveUserId) {
-    alert("Silakan pilih nama peserta terlebih dahulu di bagian atas!");
-    return;
-  }
+  if(!frontActiveUserId) { alert("Silakan pilih nama peserta terlebih dahulu di bagian atas!"); return; }
   
   const targetMatch = BASE_MATCHES.find(x => x.id === matchId);
-  if(targetMatch && isKickoffPassed(targetMatch.time)) {
-    alert("Waktu pengisian sudah habis! Pertandingan ini sudah kick-off.");
-    renderMatches();
-    return;
-  }
+  if(targetMatch && isKickoffPassed(targetMatch.time)) { alert("Waktu pengisian sudah habis! Pertandingan ini sudah kick-off."); renderMatches(); return; }
   
   const selectVal = document.getElementById(`quick-sel-${matchId}`).value;
-  
-  // Cari element container baris match atau tombol spesifik untuk dikunci
   const btnEl = document.querySelector(`button[onclick="saveQuickPick('${matchId}')"]`);
   const selectEl = document.getElementById(`quick-sel-${matchId}`);
   const originalBtnText = btnEl ? btnEl.innerHTML : "⚡ Simpan";
 
-  // 1. UPDATE DATA LOKAL SECARA INSTAN
   state.picks = state.picks.filter(x => !(x.pid === frontActiveUserId && x.mid === matchId));
-  if(selectVal) {
-    state.picks.push({ pid: frontActiveUserId, mid: matchId, pick: selectVal });
-  }
-  saveLocal();
-
-  // 2. RENDER STANDING LOKAL (UI update instan untuk background kalkulasi)
-  renderStandings();
+  if(selectVal) { state.picks.push({ pid: frontActiveUserId, mid: matchId, pick: selectVal }); }
+  saveLocal(); renderStandings();
   
-  // Proteksi Spam & Jeda Visual Lokal: Kunci elemen kontrol khusus pada baris pertandingan ini
-  if(btnEl) {
-    btnEl.disabled = true;
-    btnEl.innerHTML = "⏳ Kirim...";
-    btnEl.style.opacity = "0.5";
-    btnEl.style.cursor = "not-allowed";
-  }
-  if(selectEl) {
-    selectEl.disabled = true;
-    selectEl.style.opacity = "0.6";
-  }
+  if(btnEl) { btnEl.disabled = true; btnEl.innerHTML = "⏳ Kirim..."; btnEl.style.opacity = "0.5"; btnEl.style.cursor = "not-allowed"; }
+  if(selectEl) { selectEl.disabled = true; selectEl.style.opacity = "0.6"; }
 
-  // Catat waktu awal kirim paket data
   const startTime = Date.now();
-
-  // 3. SINKRONISASI KE GSHEET (Menggunakan skema payload parsial super ringan)
   if(GLOBAL_APPS_URL && !GLOBAL_APPS_URL.includes("...")) {
-    const payload = {
-      action: 'saveAll',
-      picks: [
-        { pid: String(frontActiveUserId), mid: String(matchId), pick: String(selectVal) }
-      ]
-    };
-
-    fetch(GLOBAL_APPS_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload)
-    })
+    const payload = { action: 'saveAll', picks: [{ pid: String(frontActiveUserId), mid: String(matchId), pick: String(selectVal) }] };
+    fetch(GLOBAL_APPS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) })
     .then(() => {
       const duration = Date.now() - startTime;
-      const targetDelay = 1500; // Berikan jeda penahan aman selama 1.5 detik
-
       const normalisasiUI = () => {
-        if(btnEl) {
-          btnEl.disabled = false;
-          btnEl.innerHTML = originalBtnText;
-          btnEl.style.opacity = "1";
-          btnEl.style.cursor = "pointer";
-        }
-        if(selectEl) {
-          selectEl.disabled = false;
-          selectEl.style.opacity = "1";
-        }
-        // Jalankan renderMatches setelah UI dinormalisasi agar status dropdown & warna terbaru terkunci
-        renderMatches();
-        showFrontAlert("✅ Sinkronisasi Cloud Berhasil!");
+        if(btnEl) { btnEl.disabled = false; btnEl.innerHTML = originalBtnText; btnEl.style.opacity = "1"; btnEl.style.cursor = "pointer"; }
+        if(selectEl) { selectEl.disabled = false; selectEl.style.opacity = "1"; }
+        renderMatches(); showFrontAlert("✅ Sinkronisasi Cloud Berhasil!");
       };
-
-      if (duration < targetDelay) {
-        setTimeout(normalisasiUI, targetDelay - duration);
-      } else {
-        normalisasiUI();
-      }
-    })
-    .catch(e => {
-      console.log("Gagal auto-sync:", e.message);
-      if(btnEl) {
-        btnEl.disabled = false;
-        btnEl.innerHTML = originalBtnText;
-        btnEl.style.opacity = "1";
-        btnEl.style.cursor = "pointer";
-      }
-      if(selectEl) {
-        selectEl.disabled = false;
-        selectEl.style.opacity = "1";
-      }
-      renderMatches();
-      showFrontAlert("⚠️ Tersimpan Lokal. Sinkronisasi Cloud Tertunda.");
+      if (duration < 1500) setTimeout(normalisasiUI, 1500 - duration); else normalisasiUI();
+    }).catch(e => {
+      if(btnEl) { btnEl.disabled = false; btnEl.innerHTML = originalBtnText; btnEl.style.opacity = "1"; btnEl.style.cursor = "pointer"; }
+      if(selectEl) { selectEl.disabled = false; selectEl.style.opacity = "1"; }
+      renderMatches(); showFrontAlert("⚠️ Tersimpan Lokal. Sinkronisasi Tertunda.");
     });
   } else {
-    // Jika URL Apps Script kosong, langsung kembalikan UI ke kondisi normal
-    if(btnEl) {
-      btnEl.disabled = false;
-      btnEl.innerHTML = originalBtnText;
-      btnEl.style.opacity = "1";
-    }
-    if(selectEl) {
-      selectEl.disabled = false;
-    }
-    renderMatches();
-    showFrontAlert("Pilihan disimpan secara lokal!");
+    if(btnEl) { btnEl.disabled = false; btnEl.innerHTML = originalBtnText; btnEl.style.opacity = "1"; }
+    if(selectEl) selectEl.disabled = false;
+    renderMatches(); showFrontAlert("Pilihan disimpan secara lokal!");
   }
 }
 
 function showFrontAlert(msg) {
-  // Cari atau buat kontainer toast melayang secara dinamis
   let toastContainer = document.getElementById('global-toast-popup');
-  
   if (!toastContainer) {
     toastContainer = document.createElement('div');
     toastContainer.id = 'global-toast-popup';
-    // Menerapkan styling CSS modern langsung di elemen pop-up melayang
-    Object.assign(toastContainer.style, {
-      position: 'fixed',
-      bottom: '30px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      background: 'var(--surface)',
-      color: 'var(--primary)',
-      padding: '14px 28px',
-      borderRadius: '30px',
-      boxShadow: '0px 10px 30px rgba(30, 58, 138, 0.15)',
-      border: '1px solid var(--border)',
-      zIndex: '99999',
-      fontSize: '13px',
-      fontWeight: '700',
-      textAlign: 'center',
-      whiteSpace: 'nowrap',
-      opacity: '0',
-      transition: 'opacity 0.3s ease, bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-      pointerEvents: 'none'
-    });
+    Object.assign(toastContainer.style, { position: 'fixed', bottom: '30px', left: '50%', transform: 'translateX(-50%)', background: 'var(--surface)', color: 'var(--primary)', padding: '14px 28px', borderRadius: '30px', boxShadow: '0px 10px 30px rgba(30, 58, 138, 0.15)', border: '1px solid var(--border)', zIndex: '99999', fontSize: '13px', fontWeight: '700', textAlign: 'center', whiteSpace: 'nowrap', opacity: '0', transition: 'opacity 0.3s ease, bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1)', pointerEvents: 'none' });
     document.body.appendChild(toastContainer);
   }
-
-  // Set isi pesan teks pemberitahuan
   toastContainer.innerText = msg;
-  
-  // Tampilkan pop-up dengan efek transisi memudar naik (fade in)
-  toastContainer.style.opacity = '1';
-  toastContainer.style.bottom = '40px';
-
-  // Sembunyikan kembali pop-up setelah durasi 2.5 detik
-  setTimeout(() => {
-    toastContainer.style.opacity = '0';
-    toastContainer.style.bottom = '30px';
-  }, 2500);
+  toastContainer.style.opacity = '1'; toastContainer.style.bottom = '40px';
+  setTimeout(() => { toastContainer.style.opacity = '0'; toastContainer.style.bottom = '30px'; }, 2500);
 }
 
 function renderWCGroups() {
   const container = document.getElementById('wc-groups-container');
-  const matches = getMatches(); container.innerHTML = '';
-
+  const groupsData = getComputedGroupStandings(); // Ambil data kalkulasi mentah
+  container.innerHTML = '';
+  
+  // 1. Render Tabel 12 Grup Utama
   ['A','B','C','D','E','F','G','H','I','J','K','L'].forEach(g => {
-    let teams = {};
-    GROUPS_BLUEPRINT[g].forEach(tName => { teams[tName] = { name:tName, gd:0, pts:0 }; });
-    matches.filter(m => m.gr === g).forEach(m => {
-      const isFinished = (m.done && m.done !== 'false' && m.done !== 'FALSE');
-      if(!isFinished) return;
-      let t1 = teams[m.t1], t2 = teams[m.t2]; if(!t1 || !t2) return;
-      t1.gd += (m.s1 - m.s2); t2.gd += (m.s2 - m.s1);
-      if(m.s1 > m.s2) t1.pts += 3; else if(m.s1 < m.s2) t2.pts += 3; else { t1.pts += 1; t2.pts += 1; }
-    });
-
-    let sortedTeams = Object.values(teams).sort((a,b) => b.pts - a.pts || b.gd - a.gd);
-    let h = `<div class="group-card"><div class="group-header">GRUP ${g}</div><table class="s-table" style="font-size:11px"><thead><tr><th class="tl">Tim</th><th>SG</th><th>Pts</th></tr></thead><tbody>`;
-    sortedTeams.forEach(t => {
+    let sortedTeams = groupsData[g];
+    let h = `<div class="group-card"><div class="group-header">GRUP ${g}</div><table class="s-table" style="font-size:11px"><thead><tr><th class="tl">Tim</th><th>Mn</th><th>SG</th><th>Pts</th></tr></thead><tbody>`;
+    sortedTeams.forEach((t, index) => {
+      // Indikator Posisi: 1 & 2 (Lolos Langsung - Hijau), 3 (Kualifikasi Peringkat 3 - Kuning)
+      let trStyle = index < 2 ? 'border-left: 3px solid var(--win-text);' : (index === 2 ? 'border-left: 3px solid var(--secondary);' : '');
       h += `<tr>
-        <td class="tl" style="display:flex;align-items:center;gap:6px;font-weight:700;color:var(--text-main);">${getFlag(t.name)} <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:85px">${t.name}</span></td>
-        <td>${t.gd > 0 ? '+'+t.gd : t.gd}</td><td><span style="color:var(--primary);font-weight:800">${t.pts}</span></td>
+        <td class="tl" style="${trStyle} display:flex;align-items:center;gap:6px;font-weight:700;color:var(--text-main);">${getFlag(t.name)} <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:85px">${t.name}</span></td>
+        <td>${t.p}</td><td>${t.gd > 0 ? '+'+t.gd : t.gd}</td><td><span style="color:var(--primary);font-weight:800">${t.pts}</span></td>
       </tr>`;
     });
     container.innerHTML += h + `</tbody></table></div>`;
   });
-}
 
-function renderParticipants() {
-  const list = document.getElementById('chip-list'); const sel = document.getElementById('sel-participant');
-  if(!list || !sel) return;
-  list.innerHTML = ''; sel.innerHTML = '<option value="">-- Pilih Kontestan --</option>';
-  state.participants.forEach(p => {
-    list.innerHTML += `<div class="chip"><span style="width:8px;height:8px;border-radius:50%;background:${p.color};"></span><span>${p.name}</span><button class="chip-del" onclick="deleteParticipant('${p.id}')">&times;</button></div>`;
-    sel.innerHTML += `<option value="${p.id}">${p.name}</option>`;
-  });
-}
-
-function addParticipant() {
-  const name = document.getElementById('inp-name').value.trim(); if(!name) return;
-  const randomColor = generateRandomColor();
-  state.participants.push({ id:'p_'+Date.now(), name, color: randomColor }); 
-  document.getElementById('inp-name').value = ''; saveLocal(); renderFrontUserSelector(); renderParticipants();
-}
-
-function deleteParticipant(id) { state.participants = state.participants.filter(p => p.id !== id); state.picks = state.picks.filter(p => p.pid !== id); saveLocal(); renderFrontUserSelector(); renderParticipants(); }
-
-function renderPickForm() {
-  const area = document.getElementById('pick-form-area');
-  if(!area) return;
-  const pid = document.getElementById('sel-participant').value;
-  if(!pid) {
-    area.innerHTML = '<p style="color:var(--text-muted);text-align:center;font-size:12px;padding:10px;">Pilih peserta untuk mengisi tim pilihan.</p>';
-    return;
-  }
-  let h = '<div style="display:flex; flex-direction:column; gap:6px">';
-  getMatches().forEach(m => {
-    const cur = state.picks.find(x => x.pid === pid && x.mid === m.id);
-    const isLocked = isKickoffPassed(m.time);
-    h += `<div class="form-row" style="background:var(--surface); border:1px solid var(--border); padding:8px; border-radius:8px" data-mid="${m.id}">
-      <div style="flex:1; font-size:12px; font-weight:600; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-        ${m.t1} vs ${m.t2} ${isLocked ? '<span style="color:var(--loss-text)">[🔒]</span>':''}
-      </div>
-      <div style="width:110px">
-        <select class="pick-select" style="padding:6px; font-size:11px;" ${isLocked ? 'disabled' : ''}>
-          <option value="">- Lewati -</option>
-          <option value="${m.t1}" ${cur?.pick===m.t1?'selected':''}>${m.t1}</option>
-          <option value="${m.t2}" ${cur?.pick===m.t2?'selected':''}>${m.t2}</option>
-        </select>
-      </div>
-    </div>`;
-  });
-  area.innerHTML = h + '</div>';
-}
-
-function savePicks() {
-  const pid = document.getElementById('sel-participant').value;
-  if(!pid) return;
-
-  const btnEl = document.querySelector('button[onclick="savePicks()"]');
-  const originalBtnText = btnEl ? btnEl.innerHTML : "💾 Simpan Pilihan Tim";
-
-  if(btnEl) {
-    btnEl.disabled = true;
-    btnEl.innerHTML = "⏳ Menyimpan ke Cloud...";
-    btnEl.style.opacity = "0.6";
-  }
-
-  const currentPicks = [...state.picks];
-  state.picks = state.picks.filter(x => x.pid !== pid);
+  // 2. Render Tabel Khusus Klasemen Peringkat 3 Terbaik
+  let thirdPlaces = ['A','B','C','D','E','F','G','H','I','J','K','L'].map(g => ({...groupsData[g][2], gr:g})).sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.name.localeCompare(b.name));
   
-  document.querySelectorAll('#pick-form-area .form-row').forEach(row => {
-    const mid = row.getAttribute('data-mid');
-    const selectEl = row.querySelector('.pick-select');
-    if(!selectEl) return;
-    const val = selectEl.value;
-    const targetMatch = BASE_MATCHES.find(x => x.id === mid);
-    if(targetMatch && isKickoffPassed(targetMatch.time)) {
-      const backup = currentPicks.find(x => x.pid === pid && x.mid === mid);
-      if(backup) state.picks.push(backup);
-    } else {
-      if(val) state.picks.push({ pid, mid, pick: val });
-    }
-  });
+  let hThird = `<div class="group-card" style="grid-column: 1 / -1; margin-top: 16px; border-color: var(--secondary);">
+    <div class="group-header" style="background: var(--secondary-bg); color: var(--secondary);"><span style="margin-right:8px">🔥</span> KLASEMEN PERINGKAT 3 TERBAIK (8 Lolos)</div>
+    <table class="s-table"><thead><tr><th style="width:30px">Pos</th><th class="tl">Tim</th><th>Grup</th><th>Mn</th><th>SG</th><th>Pts</th></tr></thead><tbody>`;
   
-  saveLocal();
-
-  // Kirim data langsung ke cloud
-  if(GLOBAL_APPS_URL && !GLOBAL_APPS_URL.includes("...")) {
-    fetch(GLOBAL_APPS_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ action: 'saveAll', participants: state.participants, picks: state.picks, overrides: state.overrides })
-    })
-    .then(() => {
-      if(btnEl) {
-        btnEl.disabled = false;
-        btnEl.innerHTML = originalBtnText;
-        btnEl.style.opacity = "1";
-      }
-      renderStandings();
-      renderMatches();
-      showAdminAlert('✅ Semua pilihan berhasil disimpan ke GSheet!');
-    })
-    .catch(err => {
-      if(btnEl) {
-        btnEl.disabled = false;
-        btnEl.innerHTML = originalBtnText;
-        btnEl.style.opacity = "1";
-      }
-      showAdminAlert('❌ Gagal sinkronisasi cloud: ' + err.message, 'err');
-    });
-  } else {
-    if(btnEl) {
-      btnEl.disabled = false;
-      btnEl.innerHTML = originalBtnText;
-      btnEl.style.opacity = "1";
-    }
-    renderStandings();
-    renderMatches();
-    showAdminAlert('Pilihan berhasil disimpan lokal!');
-  }
+  thirdPlaces.forEach((t, idx) => {
+    const isQualified = idx < 8;
+    const rankColor = isQualified ? 'var(--win-text)' : 'var(--loss-text)';
+    const bgRow = isQualified ? 'var(--surface-alt)' : 'var(--loss-bg)';
+    hThird += `<tr>
+      <td style="background:${bgRow}; font-weight:800; color:${rankColor}">${idx+1}</td>
+      <td class="tl" style="background:${bgRow}; display:flex;align-items:center;gap:6px;font-weight:700;color:var(--text-main);">${getFlag(t.name)} <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:85px">${t.name}</span></td>
+      <td style="background:${bgRow}; font-weight:700">${t.gr}</td>
+      <td style="background:${bgRow};">${t.p}</td><td style="background:${bgRow};">${t.gd > 0 ? '+'+t.gd : t.gd}</td><td style="background:${bgRow};"><span style="color:var(--primary);font-weight:800">${t.pts}</span></td>
+    </tr>`;
+  });
+  hThird += `</tbody></table></div>`;
+  container.innerHTML += hThird;
 }
 
-function renderParticipants() {
-  const list = document.getElementById('chip-list');
-  const selAdmin = document.getElementById('sel-participant');
-  const selFront = document.getElementById('front-sel-participant');
-  if(!list) return;
+function renderKnockoutTree() {
+  const container = document.getElementById('knockout-bracket-container');
+  if(!container) return;
+  const matches = getMatches(); // Mengambil data yang sudah otomatis meresolve nama tim
   
   let h = '';
-  state.participants.forEach(p => {
-    h += `<div class="chip">
-      <span style="width:10px;height:10px;border-radius:50%;background:${p.color};"></span>
-      <span>${p.name}</span>
-      <button class="chip-del" onclick="deleteParticipant('${p.id}')">&times;</button>
-    </div>`;
+  KNOCKOUT_ROUNDS.forEach(round => {
+    let roundMatches = matches.filter(m => m.gr === round.id);
+    if(roundMatches.length === 0) return;
+
+    h += `<div class="bracket-col">`;
+    h += `<div class="bracket-round-title">${round.title}</div>`;
+    
+    roundMatches.forEach(m => {
+      const isFinished = (m.done && m.done !== 'false' && m.done !== 'FALSE');
+      const s1 = isFinished ? m.s1 : '-';
+      const s2 = isFinished ? m.s2 : '-';
+      const win1 = isFinished && m.s1 > m.s2 ? 'winner' : '';
+      const win2 = isFinished && m.s2 > m.s1 ? 'winner' : '';
+      
+      h += `
+      <div class="bracket-match">
+        <div class="b-team">
+          ${getFlag(m.t1)}
+          <span class="b-name" title="${m.t1}">${m.t1}</span>
+          <span class="b-score ${win1}">${s1}</span>
+        </div>
+        <div class="b-team">
+          ${getFlag(m.t2)}
+          <span class="b-name" title="${m.t2}">${m.t2}</span>
+          <span class="b-score ${win2}">${s2}</span>
+        </div>
+      </div>`;
+    });
+    h += `</div>`;
   });
-  list.innerHTML = h || '<p style="color:var(--text-muted);font-size:12px;">Belum ada anggota.</p>';
-  
-  // Update dropdown admin
-  const currAdmin = selAdmin ? selAdmin.value : "";
-  if(selAdmin) {
-    selAdmin.innerHTML = '<option value="">-- Pilih Peserta --</option>';
-    state.participants.forEach(p => {
-      selAdmin.innerHTML += `<option value="${p.id}" ${currAdmin===p.id?'selected':''}>${p.name}</option>`;
-    });
-  }
-  
-  // Update dropdown depan
-  if(selFront) {
-    const currFront = selFront.value;
-    selFront.innerHTML = '<option value="">-- Lihat Semua (Tanpa Isi) --</option>';
-    state.participants.forEach(p => {
-      selFront.innerHTML += `<option value="${p.id}" ${currFront===p.id?'selected':''}>${p.name}</option>`;
-    });
-  }
+
+  container.innerHTML = h;
 }
 
-function addParticipant() {
-  const inp = document.getElementById('inp-name');
-  if(!inp || !inp.value.trim()) return;
-  const name = inp.value.trim();
-  const id = 'p_' + Date.now();
-  
-  state.participants.push({ id, name, color: generateRandomColor() });
-  inp.value = '';
-  saveLocal();
-  renderAll();
-  showAdminAlert('Anggota baru berhasil didaftarkan!');
-}
-
-function deleteParticipant(id) {
-  if(!confirm('Hapus anggota ini beserta seluruh data pilihannya?')) return;
-  state.participants = state.participants.filter(x => x.id !== id);
-  state.picks = state.picks.filter(x => x.pid !== id);
-  saveLocal();
-  renderAll();
-  showAdminAlert('Anggota berhasil dihapus.');
-}
-
-// Fungsi untuk memindahkan tampilan ke kolom ketik nama baru
 function bukaFormUserBaru() {
   document.getElementById('wrapper-pilih-user').style.display = 'none';
   document.getElementById('wrapper-input-user-baru').style.display = 'flex';
   document.getElementById('inp-nama-baru').focus();
 }
 
-// Fungsi untuk membatalkan input nama baru
 function batalFormUserBaru() {
   document.getElementById('wrapper-pilih-user').style.display = 'flex';
   document.getElementById('wrapper-input-user-baru').style.display = 'none';
   document.getElementById('inp-nama-baru').value = '';
 }
 
-// Fungsi utama mendaftarkan nama baru ke Google Sheets secara realtime
 function simpanUserBaruKeCloud() {
   const inputEl = document.getElementById('inp-nama-baru');
   const namaBaru = inputEl.value.trim();
-  
-  if (!namaBaru) {
-    alert("Silakan masukkan nama Anda terlebih dahulu!");
-    return;
-  }
-  
-  if (!GLOBAL_APPS_URL || GLOBAL_APPS_URL.includes("...")) {
-    alert("URL Apps Script belum dikonfigurasi dengan benar!");
-    return;
-  }
-
-  // Tampilkan loading lokal pada tombol sementara proses mendaftar
+  if (!namaBaru) { alert("Silakan masukkan nama Anda terlebih dahulu!"); return; }
+  if (!GLOBAL_APPS_URL || GLOBAL_APPS_URL.includes("...")) { alert("URL Apps Script belum dikonfigurasi dengan benar!"); return; }
   showFrontAlert("⏳ Mendaftarkan nama Anda ke server...");
-  
-  const payload = {
-    action: 'addParticipant',
-    name: namaBaru
-  };
-
-  // Menggunakan method POST untuk mengirim data peserta baru
-  fetch(GLOBAL_APPS_URL, {
-    method: 'POST',
-    mode: 'no-cors', // Tetap no-cors agar pengiriman instan di mobile browser
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify(payload)
-  })
+  const payload = { action: 'addParticipant', name: namaBaru };
+  fetch(GLOBAL_APPS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) })
   .then(() => {
-    // Karena menggunakan mode 'no-cors', browser tidak bisa membaca data return JSON secara langsung.
-    // Solusi cerdas: Kita langsung trigger fungsi refresh otomatis ambil data cloud teranyar.
     showFrontAlert("✅ Pendaftaran dikirim! Memperbarui list liga...");
-    
-    // Berikan jeda 1.5 detik agar server selesai memproses penulisan baris di GSheet
     setTimeout(() => {
-      inputEl.value = '';
-      batalFormUserBaru();
-      
-      // Ambil data terbaru dari cloud agar dropdown terupdate otomatis memuat nama baru tersebut
-      if (typeof autoFetchCloudData === 'function') {
-        autoFetchCloudData(true);
-      }
+      inputEl.value = ''; batalFormUserBaru();
+      if (typeof autoFetchCloudData === 'function') { autoFetchCloudData(true); }
     }, 1500);
-  })
-  .catch(err => {
-    console.error("Gagal mendaftarkan user baru:", err);
-    showFrontAlert("❌ Gagal mendaftar. Periksa koneksi internet Anda.");
-  });
+  }).catch(err => { showFrontAlert("❌ Gagal mendaftar. Periksa koneksi internet Anda."); });
 }
 
-function openAdminModal() {
-  const m = document.getElementById('admin-modal');
-  if(m) { m.style.display = 'flex'; renderParticipants(); renderPickForm(); }
-}
-
-function closeAdminModal() {
-  const m = document.getElementById('admin-modal');
-  if(m) m.style.display = 'none';
-}
-
-function closeAdminModalOnBackdrop(e) {
-  if(e.target.id === 'admin-modal') closeAdminModal();
-}
-
-function showAdminAlert(msg, type='ok') {
-  const el = document.getElementById('admin-alert');
-  if(!el) return;
-  el.className = 'alert';
-  el.style.background = type === 'err' ? 'var(--loss-bg)' : 'var(--win-bg)';
-  el.style.borderColor = type === 'err' ? 'var(--loss-text)' : 'var(--win-text)';
-  el.style.color = type === 'err' ? 'var(--loss-text)' : 'var(--win-text)';
-  el.innerText = msg;
-  el.style.display = 'block';
-  setTimeout(() => { el.style.display = 'none'; el.innerText = ''; }, 3000);
-}
-
-function switchTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  const btn = document.getElementById('btn-tab-' + tab);
-  const pane = document.getElementById('tab-' + tab);
-  if(btn && pane) { btn.classList.add('active'); pane.classList.add('active'); }
-}
-
-function switchMatchSubTab(sub) {
-  state.matchSubTab = sub;
-  const btnUp = document.getElementById('subtab-upcoming');
-  const btnFi = document.getElementById('subtab-finished');
-  if(sub === 'upcoming') {
-    if(btnUp) { btnUp.style.background = 'var(--primary)'; btnUp.style.color = '#fff'; }
-    if(btnFi) { btnFi.style.background = 'transparent'; btnFi.style.color = 'var(--text-muted)'; }
-  } else {
-    if(btnUp) { btnUp.style.background = 'transparent'; btnUp.style.color = 'var(--text-muted)'; }
-    if(btnFi) { btnFi.style.background = 'var(--primary)'; btnFi.style.color = '#fff'; }
-  }
-  renderMatches();
-}
-
-function getScriptUrl() {
-  const inp = document.getElementById('inp-apps-url');
-  return inp ? inp.value.trim() : GLOBAL_APPS_URL;
-}
-
-function syncFetch() {
-  const url = getScriptUrl();
-  if(!url) { showAdminAlert('Error: Masukkan Apps Script URL!', 'err'); return; }
-  const status = document.getElementById('sync-status');
-  status.innerHTML = '<span style="color:var(--primary)">⏳ Mengambil data cloud...</span>';
-  fetch(url + '?action=getData').then(res => res.json()).then(resData => {
-    if(resData && !resData.error) {
-      state.participants = resData.participants || [];
-      state.picks = resData.picks || [];
-      state.overrides = resData.overrides || {};
-      saveLocal();
-      status.innerHTML = '<span style="color:var(--win-text)\">✅ Sinkronisasi Selesai!</span>';
-    }
-    renderAll();
-  }).catch(err => {
-    status.innerHTML = `<span style="color:var(--loss-text)">❌ Gagal: ${err.message}</span>`;
-    renderAll();
-  });
-}
-
-function syncPush() {
-  const url = getScriptUrl();
-  if(!url) { showAdminAlert('Error: Masukkan Apps Script URL!', 'err'); return; }
-  const status = document.getElementById('sync-status');
-  status.innerHTML = '<span style="color:var(--primary)">⏳ Mengirim data ke cloud...</span>';
-  fetch(url, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify({ action: 'saveAll', participants: state.participants, picks: state.picks, overrides: state.overrides })
-  }).then(() => {
-    status.innerHTML = '<span style="color:var(--win-text)">✅ Data Berhasil Diunggah!</span>';
-  }).catch(err => {
-    status.innerHTML = `<span style="color:var(--loss-text)">❌ Gagal mengunggah: ${err.message}</span>`;
-  });
-}
-
-
-function renderAdminMatchdayForm(){
- const sel=document.getElementById('sel-admin-matchday');
- const wrap=document.getElementById('admin-matchday-form-area');
- const btn=document.getElementById('btn-save-admin-picks');
- if(!sel||!wrap)return;
- if(!sel.value){wrap.innerHTML='<p style="text-align:center;color:var(--text-muted)">Pilih pertandingan.</p>';btn.disabled=true;return;}
- const match=BASE_MATCHES.find(m=>m.id===sel.value);
- wrap.innerHTML=state.participants.map(p=>`
- <div class="form-row" data-pid="${p.id}">
- <div style="flex:1; font-weight:600; color:var(--text-main);">${p.name}</div>
- <select class="pick-select">
- <option value="">-</option>
- <option value="${match.t1}">${match.t1}</option>
- <option value="DRAW">DRAW</option>
- <option value="${match.t2}">${match.t2}</option>
- </select></div>`).join('');
- state.participants.forEach(p=>{
-   const ex=state.picks.find(x=>x.pid===p.id&&x.mid===sel.value);
-   if(ex){
-    wrap.querySelector(`[data-pid="${p.id}"] .pick-select`).value=ex.pick;
-   }
- });
- btn.disabled=false;
-}
-function saveAdminPicksByMatchday(){
- const mid=document.getElementById('sel-admin-matchday').value;
- if(!mid)return;
- document.querySelectorAll('#admin-matchday-form-area .form-row').forEach(r=>{
-   const pid=r.dataset.pid;
-   const pick=r.querySelector('.pick-select').value;
-   state.picks=state.picks.filter(x=>!(x.pid===pid&&x.mid===mid));
-   if(pick) state.picks.push({pid,mid,pick});
- });
- saveLocal();
- syncPush();
- renderAll();
- showAdminAlert('✅ Matchday picks saved');
-}
-document.addEventListener('DOMContentLoaded',()=>{
- const sel=document.getElementById('sel-admin-matchday');
- if(sel){
-   sel.innerHTML='<option value="">-- Pilih Pertandingan --</option>'+
-   BASE_MATCHES.map(m=>`<option value="${m.id}">${m.id} • ${m.t1} vs ${m.t2}</option>`).join('');
- }
-});
-
-function scrapeWikipedia() {
-  const url = getScriptUrl();
-  if(!url) { showAdminAlert('Error: Masukkan Apps Script URL!', 'err'); return; }
-  const statusEl = document.getElementById('sync-status');
-  statusEl.innerHTML = '<span style="color:var(--primary)">⏳ Memicu Scraper Wikipedia...</span>';
-  fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'scrapeWikipedia' }) })
-  .then(() => {
-    statusEl.innerHTML = '<span style="color:var(--win-text)">✅ Sukses! Mengunduh data teranyar...</span>';
-    setTimeout(() => { syncFetch(); }, 2500);
-  }).catch(err => {
-    statusEl.innerHTML = '<span style="color:var(--loss-text)">❌ Gagal terhubung.</span>';
-  });
-}
-
-// Inisialisasi Aplikasi Saat Window Dimuat
-window.onload = function() {
-  init();
-};
+window.onload = function() { init(); };
 </script>
 </body>
 </html>
