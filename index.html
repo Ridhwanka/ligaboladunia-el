@@ -740,6 +740,75 @@ function renderStandings() {
   container.innerHTML = h + '</tbody></table>';
 }
 
+function downloadKlasemenGambar() {
+  const targetArea = document.getElementById('capture-area-klasemen');
+  const headerBranding = document.getElementById('capture-header');
+  const footerBranding = document.getElementById('capture-footer');
+  const dateBranding = document.getElementById('capture-date');
+
+  if (!targetArea) return;
+
+  const opsiTanggal = { year: 'numeric', month: 'long', day: 'numeric' };
+  const tanggalHariIni = new Date().toLocaleDateString('id-ID', opsiTanggal);
+  
+  if (dateBranding) dateBranding.innerText = tanggalHariIni;
+
+  // 1. Simpan state asli agar bisa dikembalikan setelah screenshot
+  const originalStyle = {
+    background: targetArea.style.background,
+    backgroundColor: targetArea.style.backgroundColor,
+    backgroundImage: targetArea.style.backgroundImage,
+    backgroundSize: targetArea.style.backgroundSize,
+    padding: targetArea.style.padding
+  };
+
+  // 2. Terapkan Style Body Anda ke elemen target
+  targetArea.style.backgroundColor = 'var(--bg)';
+  targetArea.style.backgroundImage = `radial-gradient(circle at 85% 100%, rgba(254, 243, 199, 0.6) 0%, transparent 40%),
+    linear-gradient(rgba(30, 58, 138, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 58, 138, 0.02) 1px, transparent 1px)
+  `;
+
+  if (headerBranding) headerBranding.style.display = 'block';
+  if (footerBranding) footerBranding.style.display = 'flex';
+
+  // 3. Proses Screenshot
+  html2canvas(targetArea, {
+    scale: 2,
+    backgroundColor: null, // Penting: set null agar mengikuti background elemen
+    logging: false,
+    useCORS: true
+  }).then(canvas => {
+    // 4. Kembalikan style asli
+    Object.assign(targetArea.style, originalStyle);
+    if (headerBranding) headerBranding.style.display = 'none';
+    if (footerBranding) footerBranding.style.display = 'none';
+
+    canvas.toBlob(blob => {
+      const fileGambar = new File([blob], `Klasemen_EL_${tanggalHariIni.replace(/ /g, '_')}.png`, { type: 'image/png' });
+      
+      if (navigator.canShare && navigator.canShare({ files: [fileGambar] })) {
+        navigator.share({
+          files: [fileGambar],
+          title: 'Klasemen Liga Bola Dunia - EL',
+          text: `Update Klasemen Per ${tanggalHariIni}`
+        }).catch(err => console.log('Batal share:', err));
+      } else {
+        const link = document.createElement('a');
+        link.download = `Klasemen_EL_${tanggalHariIni.replace(/ /g, '_')}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }
+    }, 'image/png');
+  }).catch(err => {
+    console.error("Gagal memproses:", err);
+    Object.assign(targetArea.style, originalStyle);
+    if (headerBranding) headerBranding.style.display = 'none';
+    if (footerBranding) footerBranding.style.display = 'none';
+  });
+}
+
+
 function renderFrontUserSelector() {
   const sel = document.getElementById('front-sel-participant');
   if(!sel) return;
