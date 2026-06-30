@@ -155,7 +155,7 @@ body {
 .mc-team span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mc-team.away { justify-content: flex-end; }
 .wc-flag { width: 22px; height: 16px; border-radius: 3px; object-fit: cover; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-.mc-score { font-family: 'Bebas Neue', cursive; font-size: 24px; letter-spacing: 1px; color: var(--primary); }
+.mc-score { font-family: 'Bebas Neue', cursive; font-size: 24px; letter-spacing: 1px; color: var(--primary); display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .mc-picks-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border-top: 1px solid var(--border); }
 .mc-pick-column { padding: 8px; display: flex; flex-direction: column; gap: 4px; background: var(--surface-alt); }
 .column-title { font-size: 9px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; text-align: center; }
@@ -182,7 +182,7 @@ body {
 .b-team { display: flex; justify-content: space-between; align-items: center; padding: 8px; }
 .b-team:first-child { border-bottom: 1px solid var(--border); }
 .b-name { font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; margin-left: 8px; }
-.b-score { font-weight: 800; color: var(--text-muted); }
+.b-score { font-weight: 800; color: var(--text-muted); display: flex; align-items: center; }
 .b-score.winner { color: var(--primary); }
 
 /* =========================================================
@@ -242,7 +242,7 @@ select:focus, input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px 
       <span class="h-sub">Yok, Kita Ramaikan!</span>
     </div>
   </div>
-  <!-- <button class="admin-trigger-btn" onclick="openAdminModal()" title="Buka Panel Admin">⚙️</button> -->
+  <button class="admin-trigger-btn" onclick="openAdminModal()" title="Buka Panel Admin">⚙️</button>
 </header>
 
 <nav class="tabs">
@@ -486,44 +486,42 @@ const BASE_MATCHES = [
   {id:'J5',gr:'J',md:3,date:'28 Jun',time:'2026-06-28T08:00:00',t1:'Jordan',t2:'Argentina',s1:null,s2:null,done:false},
 
   // FASE KNOCKOUT
-  {id:'R32-73',gr:'R32',md:4,date:'29 Jun',time:'2026-06-29T02:00:00',t1:'Runner-up Grup A',t2:'Runner-up Grup B',s1:null,s2:null,done:false},
-  {id:'R32-75',gr:'R32',md:4,date:'30 Jun',time:'2026-06-30T08:00:00',t1:'Juara Grup F',t2:'Runner-up Grup C',s1:null,s2:null,done:false},
-  {id:'R32-74',gr:'R32',md:4,date:'30 Jun',time:'2026-06-30T03:30:00',t1:'Juara Grup E',t2:'Paraguay',s1:null,s2:null,done:false},
-  {id:'R32-77',gr:'R32',md:4,date:'01 Jul',time:'2026-07-01T04:00:00',t1:'Juara Grup I',t2:'Sweden',s1:null,s2:null,done:false},
-  {id:'R32-82',gr:'R32',md:4,date:'02 Jul',time:'2026-07-02T03:00:00',t1:'Juara Grup G',t2:'Senegal',s1:null,s2:null,done:false},
-  {id:'R32-81',gr:'R32',md:4,date:'02 Jul',time:'2026-07-02T07:00:00',t1:'Juara Grup D',t2:'Bosnia & Herz.',s1:null,s2:null,done:false},
-  {id:'R32-84',gr:'R32',md:4,date:'03 Jul',time:'2026-07-03T02:00:00',t1:'Juara Grup H',t2:'Runner-up Grup J',s1:null,s2:null,done:false},
-  {id:'R32-83',gr:'R32',md:4,date:'03 Jul',time:'2026-07-03T06:00:00',t1:'Runner-up Grup K',t2:'Runner-up Grup L',s1:null,s2:null,done:false}, 
-  {id:'R32-76',gr:'R32',md:4,date:'30 Jun',time:'2026-06-30T00:00:00',t1:'Juara Grup C',t2:'Runner-up Grup F',s1:null,s2:null,done:false},
-  {id:'R32-78',gr:'R32',md:4,date:'01 Jul',time:'2026-07-01T00:00:00',t1:'Runner-up Grup E',t2:'Runner-up Grup I',s1:null,s2:null,done:false},
-  {id:'R32-79',gr:'R32',md:4,date:'01 Jul',time:'2026-07-01T08:00:00',t1:'Juara Grup A',t2:'Ecuador',s1:null,s2:null,done:false},
-  {id:'R32-80',gr:'R32',md:4,date:'01 Jul',time:'2026-07-01T23:00:00',t1:'Juara Grup L',t2:'DR Congo',s1:null,s2:null,done:false},
-  {id:'R32-85',gr:'R32',md:4,date:'03 Jul',time:'2026-07-03T10:00:00',t1:'Juara Grup B',t2:'Algeria',s1:null,s2:null,done:false},
-  {id:'R32-87',gr:'R32',md:4,date:'04 Jul',time:'2026-07-04T08:30:00',t1:'Juara Grup K',t2:'Ghana',s1:null,s2:null,done:false},
-  {id:'R32-88',gr:'R32',md:4,date:'04 Jul',time:'2026-07-04T01:00:00',t1:'Runner-up Grup D',t2:'Runner-up Grup G',s1:null,s2:null,done:false},
-  {id:'R32-86',gr:'R32',md:4,date:'04 Jul',time:'2026-07-04T05:00:00',t1:'Juara Grup J',t2:'Runner-up Grup H',s1:null,s2:null,done:false},
+  {id:'R32-73',gr:'R32',md:4,date:'29 Jun',time:'2026-06-29T02:00:00',t1:'Runner-up Grup A',t2:'Runner-up Grup B',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R32-75',gr:'R32',md:4,date:'30 Jun',time:'2026-06-30T08:00:00',t1:'Juara Grup F',t2:'Runner-up Grup C',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R32-74',gr:'R32',md:4,date:'30 Jun',time:'2026-06-30T03:30:00',t1:'Juara Grup E',t2:'Paraguay',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R32-77',gr:'R32',md:4,date:'01 Jul',time:'2026-07-01T04:00:00',t1:'Juara Grup I',t2:'Sweden',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R32-82',gr:'R32',md:4,date:'02 Jul',time:'2026-07-02T03:00:00',t1:'Juara Grup G',t2:'Senegal',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R32-81',gr:'R32',md:4,date:'02 Jul',time:'2026-07-02T07:00:00',t1:'Juara Grup D',t2:'Bosnia & Herz.',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R32-84',gr:'R32',md:4,date:'03 Jul',time:'2026-07-03T02:00:00',t1:'Juara Grup H',t2:'Runner-up Grup J',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R32-83',gr:'R32',md:4,date:'03 Jul',time:'2026-07-03T06:00:00',t1:'Runner-up Grup K',t2:'Runner-up Grup L',s1:null,s2:null,p1:null,p2:null,done:false}, 
+  {id:'R32-76',gr:'R32',md:4,date:'30 Jun',time:'2026-06-30T00:00:00',t1:'Juara Grup C',t2:'Runner-up Grup F',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R32-78',gr:'R32',md:4,date:'01 Jul',time:'2026-07-01T00:00:00',t1:'Runner-up Grup E',t2:'Runner-up Grup I',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R32-79',gr:'R32',md:4,date:'01 Jul',time:'2026-07-01T08:00:00',t1:'Juara Grup A',t2:'Ecuador',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R32-80',gr:'R32',md:4,date:'01 Jul',time:'2026-07-01T23:00:00',t1:'Juara Grup L',t2:'DR Congo',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R32-85',gr:'R32',md:4,date:'03 Jul',time:'2026-07-03T10:00:00',t1:'Juara Grup B',t2:'Algeria',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R32-87',gr:'R32',md:4,date:'04 Jul',time:'2026-07-04T08:30:00',t1:'Juara Grup K',t2:'Ghana',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R32-88',gr:'R32',md:4,date:'04 Jul',time:'2026-07-04T01:00:00',t1:'Runner-up Grup D',t2:'Runner-up Grup G',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R32-86',gr:'R32',md:4,date:'04 Jul',time:'2026-07-04T05:00:00',t1:'Juara Grup J',t2:'Runner-up Grup H',s1:null,s2:null,p1:null,p2:null,done:false},
   
+  {id:'R16-90',gr:'R16',md:5,date:'05 Jul',time:'2026-07-05T00:00:00',t1:'Pemenang R32-73',t2:'Pemenang R32-75',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R16-89',gr:'R16',md:5,date:'05 Jul',time:'2026-07-05T04:00:00',t1:'Pemenang R32-74',t2:'Pemenang R32-77',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R16-92',gr:'R16',md:5,date:'06 Jul',time:'2026-07-06T07:00:00',t1:'Pemenang R32-81',t2:'Pemenang R32-82',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R16-91',gr:'R16',md:5,date:'06 Jul',time:'2026-07-06T03:00:00',t1:'Pemenang R32-83',t2:'Pemenang R32-84',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R16-93',gr:'R16',md:5,date:'07 Jul',time:'2026-07-07T02:00:00',t1:'Pemenang R32-76',t2:'Pemenang R32-78',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R16-94',gr:'R16',md:5,date:'07 Jul',time:'2026-07-07T07:00:00',t1:'Pemenang R32-79',t2:'Pemenang R32-80',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R16-96',gr:'R16',md:5,date:'08 Jul',time:'2026-07-08T03:00:00',t1:'Pemenang R32-85',t2:'Pemenang R32-87',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'R16-95',gr:'R16',md:5,date:'07 Jul',time:'2026-07-07T23:00:00',t1:'Pemenang R32-86',t2:'Pemenang R32-88',s1:null,s2:null,p1:null,p2:null,done:false},
   
-  {id:'R16-90',gr:'R16',md:5,date:'05 Jul',time:'2026-07-05T00:00:00',t1:'Pemenang R32-73',t2:'Pemenang R32-75',s1:null,s2:null,done:false},
-  {id:'R16-89',gr:'R16',md:5,date:'05 Jul',time:'2026-07-05T04:00:00',t1:'Pemenang R32-74',t2:'Pemenang R32-77',s1:null,s2:null,done:false},
-  {id:'R16-92',gr:'R16',md:5,date:'06 Jul',time:'2026-07-06T07:00:00',t1:'Pemenang R32-81',t2:'Pemenang R32-82',s1:null,s2:null,done:false},
-  {id:'R16-91',gr:'R16',md:5,date:'06 Jul',time:'2026-07-06T03:00:00',t1:'Pemenang R32-83',t2:'Pemenang R32-84',s1:null,s2:null,done:false},
-  {id:'R16-93',gr:'R16',md:5,date:'07 Jul',time:'2026-07-07T02:00:00',t1:'Pemenang R32-76',t2:'Pemenang R32-78',s1:null,s2:null,done:false},
-  {id:'R16-94',gr:'R16',md:5,date:'07 Jul',time:'2026-07-07T07:00:00',t1:'Pemenang R32-79',t2:'Pemenang R32-80',s1:null,s2:null,done:false},
-  {id:'R16-96',gr:'R16',md:5,date:'08 Jul',time:'2026-07-08T03:00:00',t1:'Pemenang R32-85',t2:'Pemenang R32-87',s1:null,s2:null,done:false},
-  {id:'R16-95',gr:'R16',md:5,date:'07 Jul',time:'2026-07-07T23:00:00',t1:'Pemenang R32-86',t2:'Pemenang R32-88',s1:null,s2:null,done:false},
-  
+  {id:'QF-97',gr:'QF',md:6,date:'10 Jul',time:'2026-07-10T03:00:00',t1:'Pemenang R16-89',t2:'Pemenang R16-90',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'QF-98',gr:'QF',md:6,date:'11 Jul',time:'2026-07-11T02:00:00',t1:'Pemenang R16-93',t2:'Pemenang R16-94',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'QF-99',gr:'QF',md:6,date:'12 Jul',time:'2026-07-12T04:00:00',t1:'Pemenang R16-91',t2:'Pemenang R16-92',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'QF-100',gr:'QF',md:6,date:'12 Jul',time:'2026-07-12T08:00:00',t1:'Pemenang R16-95',t2:'Pemenang R16-96',s1:null,s2:null,p1:null,p2:null,done:false},
 
-  {id:'QF-97',gr:'QF',md:6,date:'10 Jul',time:'2026-07-10T03:00:00',t1:'Pemenang R16-89',t2:'Pemenang R16-90',s1:null,s2:null,done:false},
-  {id:'QF-98',gr:'QF',md:6,date:'11 Jul',time:'2026-07-11T02:00:00',t1:'Pemenang R16-93',t2:'Pemenang R16-94',s1:null,s2:null,done:false},
-  {id:'QF-99',gr:'QF',md:6,date:'12 Jul',time:'2026-07-12T04:00:00',t1:'Pemenang R16-91',t2:'Pemenang R16-92',s1:null,s2:null,done:false},
-  {id:'QF-100',gr:'QF',md:6,date:'12 Jul',time:'2026-07-12T08:00:00',t1:'Pemenang R16-95',t2:'Pemenang R16-96',s1:null,s2:null,done:false},
+  {id:'SF-101',gr:'SF',md:7,date:'15 Jul',time:'2026-07-15T02:00:00',t1:'Pemenang QF-97',t2:'Pemenang QF-98',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'SF-102',gr:'SF',md:7,date:'16 Jul',time:'2026-07-16T02:00:00',t1:'Pemenang QF-99',t2:'Pemenang QF-100',s1:null,s2:null,p1:null,p2:null,done:false},
 
-  {id:'SF-101',gr:'SF',md:7,date:'15 Jul',time:'2026-07-15T02:00:00',t1:'Pemenang QF-97',t2:'Pemenang QF-98',s1:null,s2:null,done:false},
-  {id:'SF-102',gr:'SF',md:7,date:'16 Jul',time:'2026-07-16T02:00:00',t1:'Pemenang QF-99',t2:'Pemenang QF-100',s1:null,s2:null,done:false},
-
-  {id:'TP-1',gr:'3rd',md:8,date:'19 Jul',time:'2026-07-19T04:00:00',t1:'Kalah SF-101',t2:'Kalah SF-102',s1:null,s2:null,done:false},
-  {id:'FN-1',gr:'Final',md:8,date:'20 Jul',time:'2026-07-20T02:00:00',t1:'Pemenang SF-101',t2:'Pemenang SF-102',s1:null,s2:null,done:false}
+  {id:'TP-1',gr:'3rd',md:8,date:'19 Jul',time:'2026-07-19T04:00:00',t1:'Kalah SF-101',t2:'Kalah SF-102',s1:null,s2:null,p1:null,p2:null,done:false},
+  {id:'FN-1',gr:'Final',md:8,date:'20 Jul',time:'2026-07-20T02:00:00',t1:'Pemenang SF-101',t2:'Pemenang SF-102',s1:null,s2:null,p1:null,p2:null,done:false}
 ];
 
 const KNOCKOUT_ROUNDS = [
@@ -581,11 +579,15 @@ function getComputedGroupStandings() {
       t1.p++; t2.p++;
       t1.gf += m.s1||0; t1.ga += m.s2||0; t1.gd += ((m.s1||0) - (m.s2||0));
       t2.gf += m.s2||0; t2.ga += m.s1||0; t2.gd += ((m.s2||0) - (m.s1||0));
-      if(m.s1 > m.s2) { t1.w++; t1.pts += 3; t2.l++; }
-      else if(m.s1 < m.s2) { t2.w++; t2.pts += 3; t1.l++; }
+      
+      // Hitung adu penalti juga bila ada di fase grup (meski jarang)
+      const isT1Win = (m.s1 > m.s2) || (m.s1 === m.s2 && m.p1 > m.p2);
+      const isT2Win = (m.s2 > m.s1) || (m.s1 === m.s2 && m.p2 > m.p1);
+      
+      if(isT1Win) { t1.w++; t1.pts += 3; t2.l++; }
+      else if(isT2Win) { t2.w++; t2.pts += 3; t1.l++; }
       else { t1.d++; t2.d++; t1.pts += 1; t2.pts += 1; }
     });
-    // Sort logic: Points > GD > GF > Alphabetical (Penting untuk hari pertama saat poin masih 0)
     groups[g] = Object.values(teams).sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.name.localeCompare(b.name));
   });
   return groups;
@@ -594,15 +596,12 @@ function getComputedGroupStandings() {
 // =========================================================================
 // GET MATCHES: MENGUBAH PLACEHOLDER MENJADI NAMA TIM SECARA REAL-TIME
 // =========================================================================
-
 function getMatches() {
   let matches = BASE_MATCHES.map(m => state.overrides[m.id] ? { ...m, ...state.overrides[m.id] } : { ...m });
-  
   const groupsData = getComputedGroupStandings();
   
-  // Proteksi: Pastikan groupsData ada sebelum melakukan mapping peringkat 3
   let thirdPlaces = ['A','B','C','D','E','F','G','H','I','J','K','L']
-    .filter(g => groupsData && groupsData[g] && groupsData[g][2]) // Pastikan data grup ke-3 tersedia
+    .filter(g => groupsData && groupsData[g] && groupsData[g][2])
     .map(g => ({...groupsData[g][2], gr:g}))
     .sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || (a.name || '').localeCompare(b.name || ''));
     
@@ -619,12 +618,10 @@ function getMatches() {
       const g = name.replace('Runner-up Grup ', '');
       return groupsData[g] ? groupsData[g][1].name : name;
     }
-    
-    // PERBAIKAN DI SINI: Mengambil angka di dalam kurung secara akurat
     if(name.startsWith('Peringkat 3 (')) {
-      const matchBracket = name.match(/\((\d+)\)/); // Mencari angka di dalam ( )
+      const matchBracket = name.match(/\((\d+)\)/);
       if (matchBracket) {
-        const idx = parseInt(matchBracket[1]) - 1; // Mengambil angka hasil tangkapan regex
+        const idx = parseInt(matchBracket[1]) - 1;
         return qualifiedThirds[idx] || name;
       }
     }
@@ -633,7 +630,8 @@ function getMatches() {
        const refId = name.split(' ')[1];
        const refMatch = matches.find(m => m.id === refId);
        if(refMatch && refMatch.done && refMatch.done !== 'false' && refMatch.done !== 'FALSE') {
-          const t1Win = (refMatch.s1 || 0) > (refMatch.s2 || 0);
+          // Logika Penalti: Pemenang ditentukan dari score atau dari hasil penalti
+          const t1Win = (refMatch.s1 > refMatch.s2) || (refMatch.s1 === refMatch.s2 && refMatch.p1 > refMatch.p2);
           if(name.startsWith('Pemenang ')) return t1Win ? refMatch.t1 : refMatch.t2;
           else return t1Win ? refMatch.t2 : refMatch.t1;
        }
@@ -641,7 +639,6 @@ function getMatches() {
     return name;
   }
 
-  // Selesaikan nama untuk setiap babak secara berurutan
   matches.filter(m => m.md === 4).forEach(m => { m.t1 = resolveName(m.t1); m.t2 = resolveName(m.t2); });
   matches.filter(m => m.md === 5).forEach(m => { m.t1 = resolveName(m.t1); m.t2 = resolveName(m.t2); });
   matches.filter(m => m.md === 6).forEach(m => { m.t1 = resolveName(m.t1); m.t2 = resolveName(m.t2); });
@@ -768,13 +765,19 @@ function renderStandings() {
       if(!m || (!m.done || m.done === 'false' || m.done === 'FALSE')) return;
       
       stat.p++;
+      
+      // LOGIKA KEMENANGAN (Memperhitungkan Penalti)
+      let isT1Win = (m.s1 > m.s2) || (m.s1 === m.s2 && m.p1 > m.p2);
+      let isT2Win = (m.s2 > m.s1) || (m.s1 === m.s2 && m.p2 > m.p1);
+      let isDraw = (m.s1 === m.s2 && (m.p1 == null || m.p1 === "") && (m.p2 == null || m.p2 === ""));
+      
       if(pk.pick === m.t1) {
-        stat.gf += m.s1; stat.ga += m.s2;
+        stat.gf += m.s1; stat.ga += m.s2; // GD hanya berdasar skor normal
         
-        if(m.s1 > m.s2) { 
+        if(isT1Win) { 
           if(m.surprise) { stat.l++; } 
           else { stat.w++; stat.pts += 3; if(!currentSessionIds.has(m.id)) stat.prevPts += 3; }
-        } else if(m.s1 < m.s2) { 
+        } else if(isT2Win) { 
           if(m.surprise) { stat.w++; stat.pts += 3; if(!currentSessionIds.has(m.id)) stat.prevPts += 3; } 
           else { stat.l++; } 
         } else { 
@@ -785,10 +788,10 @@ function renderStandings() {
       } else if(pk.pick === m.t2) {
         stat.gf += m.s2; stat.ga += m.s1;
         
-        if(m.s2 > m.s1) { 
+        if(isT2Win) { 
           if(m.surprise) { stat.l++; } 
           else { stat.w++; stat.pts += 3; if(!currentSessionIds.has(m.id)) stat.prevPts += 3; }
-        } else if(m.s2 < m.s1) { 
+        } else if(isT1Win) { 
           if(m.surprise) { stat.w++; stat.pts += 3; if(!currentSessionIds.has(m.id)) stat.prevPts += 3; } 
           else { stat.l++; } 
         } else { 
@@ -903,7 +906,6 @@ function downloadKlasemenGambar() {
     if (footerBranding) footerBranding.style.display = 'none';
   });
 }
-
 
 function renderFrontUserSelector() {
   const sel = document.getElementById('front-sel-participant');
@@ -1026,7 +1028,11 @@ function renderMatches() {
       surpriseBanner = `<div style="background: var(--secondary); color: #fff; font-size: 11px; font-weight: 800; text-align: center; padding: 6px; letter-spacing: 1px;">🔥 SURPRISE MATCH: PILIH TIM YANG KALAH 🔥</div>`;
     }
 
-    // Disini surpriseBanner diinject ke dalam elemen card
+    let scoreHTML = isFinished ? `${m.s1}-${m.s2}` : 'VS';
+    if(isFinished && m.p1 != null && m.p2 != null) {
+      scoreHTML = `<div style="line-height:1;">${m.s1}-${m.s2}</div><div style="font-size:11px; font-family:'Inter', sans-serif; color:var(--text-muted); margin-top:2px;">(${m.p1}-${m.p2} pen)</div>`;
+    }
+
     h += `<div class="match-card">
       <div class="mc-header">
         <div>${m.gr.length > 2 ? '' : 'GRUP '} ${m.gr} · ${m.date}${timeLabel}</div>
@@ -1035,7 +1041,7 @@ function renderMatches() {
       ${surpriseBanner}
       <div class="mc-body">
         <div class="mc-team">${getFlag(m.t1)} <span>${m.t1}</span></div>
-        <div class="mc-score" style="color: ${isFinished ? 'var(--primary)': 'var(--text-muted)'}">${isFinished ? `${m.s1}-${m.s2}` : 'VS'}</div>
+        <div class="mc-score" style="color: ${isFinished ? 'var(--primary)': 'var(--text-muted)'}">${scoreHTML}</div>
         <div class="mc-team away"><span>${m.t2}</span> ${getFlag(m.t2)}</div>
       </div>
       <div class="mc-picks-container">
@@ -1112,10 +1118,9 @@ function showFrontAlert(msg) {
 
 function renderWCGroups() {
   const container = document.getElementById('wc-groups-container');
-  const groupsData = getComputedGroupStandings(); // Ambil data kalkulasi mentah
+  const groupsData = getComputedGroupStandings();
   container.innerHTML = '';
   
-  // 1. Render Tabel 12 Grup Utama
   ['A','B','C','D','E','F','G','H','I','J','K','L'].forEach(g => {
     let sortedTeams = groupsData[g];
     let h = `<div class="group-card"><div class="group-header">GRUP ${g}</div><table class="s-table" style="font-size:11px"><thead><tr><th class="tl">Tim</th><th>Mn</th><th>SG</th><th>Pts</th></tr></thead><tbody>`;
@@ -1129,7 +1134,6 @@ function renderWCGroups() {
     container.innerHTML += h + `</tbody></table></div>`;
   });
 
-  // 2. Render Tabel Khusus Klasemen Peringkat 3 Terbaik
   let thirdPlaces = ['A','B','C','D','E','F','G','H','I','J','K','L'].map(g => ({...groupsData[g][2], gr:g})).sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.name.localeCompare(b.name));
   
   let hThird = `<div class="group-card" style="grid-column: 1 / -1; margin-top: 16px; border-color: var(--secondary);">
@@ -1168,20 +1172,23 @@ function renderKnockoutTree() {
       const isFinished = (m.done && m.done !== 'false' && m.done !== 'FALSE');
       const s1 = isFinished ? m.s1 : '-';
       const s2 = isFinished ? m.s2 : '-';
-      const win1 = isFinished && m.s1 > m.s2 ? 'winner' : '';
-      const win2 = isFinished && m.s2 > m.s1 ? 'winner' : '';
+      const win1 = isFinished && ((m.s1 > m.s2) || (m.s1 === m.s2 && m.p1 > m.p2)) ? 'winner' : '';
+      const win2 = isFinished && ((m.s2 > m.s1) || (m.s1 === m.s2 && m.p2 > m.p1)) ? 'winner' : '';
       
+      let p1Str = (isFinished && m.p1 != null) ? `<span style="font-size:9px; color:var(--text-muted); margin-left:4px;">(${m.p1})</span>` : '';
+      let p2Str = (isFinished && m.p2 != null) ? `<span style="font-size:9px; color:var(--text-muted); margin-left:4px;">(${m.p2})</span>` : '';
+
       h += `
       <div class="bracket-match">
         <div class="b-team">
           ${getFlag(m.t1)}
           <span class="b-name" title="${m.t1}">${m.t1}</span>
-          <span class="b-score ${win1}">${s1}</span>
+          <span class="b-score ${win1}">${s1}${p1Str}</span>
         </div>
         <div class="b-team">
           ${getFlag(m.t2)}
           <span class="b-name" title="${m.t2}">${m.t2}</span>
-          <span class="b-score ${win2}">${s2}</span>
+          <span class="b-score ${win2}">${s2}${p2Str}</span>
         </div>
       </div>`;
     });
@@ -1278,7 +1285,7 @@ function addParticipant() {
   state.participants.push({ id, name, color: generateRandomColor() });
   inp.value = '';
   saveLocal();
-  renderAll(); // Memperbarui semua dropdown di UI Depan
+  renderAll();
   showAdminAlert('Anggota baru berhasil didaftarkan secara lokal! Sinkronisasi cloud untuk permanen.');
 }
 
@@ -1295,7 +1302,7 @@ function populateAdminMatchDropdown() {
   const sel = document.getElementById('sel-admin-matchday');
   if (!sel) return;
   const currentVal = sel.value;
-  const matches = getMatches(); // Menggunakan getMatches() agar nama tim Knockout diselesaikan otomatis
+  const matches = getMatches();
   let html = '<option value="">-- Pilih Pertandingan --</option>';
   matches.forEach(m => {
     html += `<option value="${m.id}">${m.id} • ${m.t1} vs ${m.t2}</option>`;
@@ -1319,7 +1326,6 @@ function renderAdminMatchdayForm() {
   const matches = getMatches();
   const match = matches.find(m => m.id === sel.value);
   
-  // Periksa apakah match ini sudah diset sebagai surprise sebelumnya
   const isSurprise = match.surprise ? 'checked' : '';
   
   let html = `
@@ -1358,7 +1364,6 @@ function saveAdminPicksByMatchday() {
   const mid = document.getElementById('sel-admin-matchday').value;
   if(!mid) return;
   
-  // 1. Simpan Overrides Pilihan Peserta
   document.querySelectorAll('#admin-matchday-form-area .form-row').forEach(r => {
     const pid = r.dataset.pid;
     const pick = r.querySelector('.pick-select').value;
@@ -1366,12 +1371,9 @@ function saveAdminPicksByMatchday() {
     if(pick) state.picks.push({ pid, mid, pick });
   });
   
-  // 2. Simpan Status Surprise Match
   const chkSurprise = document.getElementById('admin-chk-surprise');
   if (chkSurprise) {
-    if (!state.overrides[mid]) {
-      state.overrides[mid] = {};
-    }
+    if (!state.overrides[mid]) { state.overrides[mid] = {}; }
     state.overrides[mid].surprise = chkSurprise.checked;
   }
   
